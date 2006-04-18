@@ -282,7 +282,7 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $parent->addFSM($child);
         $parent->addTransition('A', 'r', 'D');
         $parent->addTransition('A', 'y', 'S');
-        $parent->addTransition('A', 'v', 'C');
+        $parent->addTransition('A', 'v', 'S');
         $parent->addTransition('S', 'z', 'A');
         $parent->setEntryAction('S', array(&$this, 'invokeEntryOfS'));
         $parent->start();
