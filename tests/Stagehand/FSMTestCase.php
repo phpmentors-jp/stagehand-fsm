@@ -516,7 +516,6 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $parent = &new Stagehand_FSM();
         $parent->setFirstState('Running');
         $parent->addFSM($child);
-        $parent->addTransition('PowerOff', 'restorePower', 'Running');
         $parent->addTransition('PowerOff', 'restorePower', 'Running',
                                null, null, true
                                );
