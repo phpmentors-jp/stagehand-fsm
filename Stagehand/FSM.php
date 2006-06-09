@@ -47,6 +47,7 @@
 
 require_once 'Stagehand/FSM/State.php';
 require_once 'Stagehand/FSM/FSMState.php';
+require_once 'Stagehand/FSM/Error.php';
 
 // {{{ constants
 
@@ -62,7 +63,7 @@ define('STAGEHAND_FSM_STATE_FINAL', '_final');
 /**
  * A Finite State Machine.
  *
- * Stagehand_FSM provides a self configuring Finite State Machine.
+ * Stagehand_FSM provides a self configuring Finite State Machine(FSM).
  * The following is a list of features of Stagehand_FSM.
  * o Transition action
  * o Entry and Exit state actions
@@ -205,9 +206,17 @@ class Stagehand_FSM
      * @param string  $eventName
      * @param boolean $transitionToHistoryMarker
      * @return Stagehand_FSM_State
+     * @throws PEAR_ErrorStack
      */
     function &triggerEvent($eventName, $transitionToHistoryMarker = false)
     {
+        if ($this->_currentState->getName() == STAGEHAND_FSM_STATE_FINAL) {
+            $error = &Stagehand_FSM_Error::raiseError(STAGEHAND_FSM_ERROR_INVALID_OPERATION,
+                                                      'The FSM was already shutdown.'
+                                                      );
+            return $error;
+        }
+
         $event = &$this->_currentState->getEvent($eventName);
 
         if (is_null($event)
