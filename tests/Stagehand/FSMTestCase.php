@@ -496,17 +496,17 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $GLOBALS['finalizeCalled'] = false;
 
         $fsm = &new Stagehand_FSM();
-        $fsm->setFirstState('A');
-        $fsm->addTransition('A', 'a', 'B');
-        $fsm->addTransition('B', STAGEHAND_FSM_EVENT_END, STAGEHAND_FSM_STATE_FINAL, array(&$this, 'finalize'));
+        $fsm->setFirstState('ending');
+        $fsm->addTransition('ending', STAGEHAND_FSM_EVENT_END, STAGEHAND_FSM_STATE_FINAL);
+        $fsm->setEntryAction(STAGEHAND_FSM_STATE_FINAL, array(&$this, 'finalize'));
         $fsm->start();
 
-        $fsm->triggerEvent('a');
         $fsm->triggerEvent(STAGEHAND_FSM_EVENT_END);
-        $fsm->triggerEvent('a');
 
         $this->assertTrue($GLOBALS['finalizeCalled']);
-        $this->assertTrue(PEAR_ErrorStack::staticHasErrors());
+        $this->assertFalse(PEAR_ErrorStack::staticHasErrors());
+
+        $fsm->triggerEvent('foo');
 
         $stack = &Stagehand_FSM_Error::getErrorStack();
         $error = $stack->pop();
