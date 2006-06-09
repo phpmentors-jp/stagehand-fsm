@@ -88,13 +88,17 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
 
     function setUp()
     {
+        PEAR_ErrorStack::staticPushCallback(create_function('$error', 'var_dump($error); return ' . PEAR_ERRORSTACK_DIE . ';'));
         $this->_keeper = new GateKeeper();
     }
 
     function tearDown()
     {
         $this->_keeper = null;
-    }
+        $stack = &Stagehand_FSM_Error::getErrorStack();
+        $stack->getErrors(true);
+        PEAR_ErrorStack::staticPopCallback();
+     }
 
     function testAddingState()
     {
@@ -464,11 +468,11 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
 
         $currentState = &$fsm->getCurrentState();
 
-        $this->assertEquals('Spinning', $currentState->getName());
+        $this->assertEquals('Rinsing', $currentState->getName());
 
         $previousState = &$fsm->getPreviousState();
 
-        $this->assertEquals('Rinsing', $previousState->getName());
+        $this->assertEquals('Washing', $previousState->getName());
     }
 
     function triggerEventInEntryAction(&$fsm, &$event, &$payload)
@@ -486,17 +490,36 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $fsm->triggerEvent('w');
     }
 
-    function triggerEventInTransitionAction(&$fsm, &$event, &$payload)
+    function testShutdown()
     {
-        $currentState = &$fsm->getCurrentState();
+        PEAR_ErrorStack::staticPushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
+        $GLOBALS['finalizeCalled'] = false;
 
-        $this->assertEquals('Rinsing', $currentState->getName());
+        $fsm = &new Stagehand_FSM();
+        $fsm->setFirstState('A');
+        $fsm->addTransition('A', 'a', 'B');
+        $fsm->addTransition('B', STAGEHAND_FSM_EVENT_END, STAGEHAND_FSM_STATE_FINAL, array(&$this, 'finalize'));
+        $fsm->start();
 
-        $previousState = &$fsm->getPreviousState();
+        $fsm->triggerEvent('a');
+        $fsm->triggerEvent(STAGEHAND_FSM_EVENT_END);
+        $fsm->triggerEvent('a');
 
-        $this->assertEquals('Washing', $previousState->getName());
+        $this->assertTrue($GLOBALS['finalizeCalled']);
+        $this->assertTrue(PEAR_ErrorStack::staticHasErrors());
 
-        $fsm->triggerEvent('r');
+        $stack = &Stagehand_FSM_Error::getErrorStack();
+        $error = $stack->pop();
+
+        $this->assertEquals(STAGEHAND_FSM_ERROR_INVALID_OPERATION, $error['code']);
+
+        unset($GLOBALS['finalizeCalled']);
+        PEAR_ErrorStack::staticPopCallback();
+    }
+
+    function finalize()
+    {
+        $GLOBALS['finalizeCalled'] = true;
     }
 
     /**#@-*/
