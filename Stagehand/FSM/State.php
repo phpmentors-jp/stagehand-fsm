@@ -47,6 +47,7 @@ require_once 'Stagehand/FSM/Event.php';
 define('STAGEHAND_FSM_EVENT_ENTRY', '_entry');
 define('STAGEHAND_FSM_EVENT_EXIT', '_exit');
 define('STAGEHAND_FSM_EVENT_START', '_start');
+define('STAGEHAND_FSM_EVENT_END', '_end');
 define('STAGEHAND_FSM_EVENT_DO', '_do');
 
 // }}}
