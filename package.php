@@ -40,8 +40,10 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.2.0';
-$notes = 'The first release of Stagehand_FSM.';
+$version = '1.3.0';
+$notes = '- Added support for the shutdown of FSMs.
+- Added error handling with the PEAR_ErrorStack class.
+- Added STAGEHAND_FSM_EVENT_END constant.';
 
 $package = new PEAR_PackageFileManager2();
 $result = $package->setOptions(array('filelistgenerator' => 'svn',
@@ -60,7 +62,7 @@ if (PEAR::isError($result)) {
 $package->setPackage('Stagehand_FSM');
 $package->setPackageType('php');
 $package->setSummary('A Finite State Machine.');
-$package->setDescription('Stagehand_FSM provides a self configuring Finite State Machine.
+$package->setDescription('Stagehand_FSM provides a self configuring Finite State Machine(FSM).
 The following is a list of features of Stagehand_FSM.
 o Transition action
 o Entry and Exit state actions
@@ -73,15 +75,14 @@ $package->setChannel('pear.hatotech.org');
 $package->setLicense('BSD License (revised)',
                      'http://www.opensource.org/licenses/bsd-license.php'
                      );
-$package->setAPIVersion('1.2.0');
+$package->setAPIVersion('1.3.0');
 $package->setAPIStability('stable');
 $package->setReleaseVersion($version);
 $package->setReleaseStability('stable');
 $package->setNotes($notes);
 $package->setPhpDep('4.2.0');
 $package->setPearinstallerDep('1.4.3');
-$package->addMaintainer('lead', 'kubo', 'KUBO Atsuhiro', 'iteman2002@yahoo.co.jp');
-$package->addMaintainer('developer', 'miya', 'MIYAI Fumihiko', 'fumichz@yahoo.co.jp');
+$package->addMaintainer('lead', 'iteman', 'KUBO Atsuhiro', 'iteman2002@yahoo.co.jp');
 $package->addIgnore(array('package.php', 'package.xml', 'package2.xml'));
 $package->addGlobalReplacement('package-info', '@package_version@', 'version');
 $package->generateContents();

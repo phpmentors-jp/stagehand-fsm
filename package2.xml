@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.4.8" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.4.9" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Stagehand_FSM</name>
  <channel>pear.hatotech.org</channel>
  <summary>A Finite State Machine.</summary>
- <description>Stagehand_FSM provides a self configuring Finite State Machine.
+ <description>Stagehand_FSM provides a self configuring Finite State Machine(FSM).
 The following is a list of features of Stagehand_FSM.
 o Transition action
 o Entry and Exit state actions
@@ -17,28 +17,24 @@ o Activity
 o User defined payload</description>
  <lead>
   <name>KUBO Atsuhiro</name>
-  <user>kubo</user>
+  <user>iteman</user>
   <email>iteman2002@yahoo.co.jp</email>
   <active>yes</active>
  </lead>
- <developer>
-  <name>MIYAI Fumihiko</name>
-  <user>miya</user>
-  <email>fumichz@yahoo.co.jp</email>
-  <active>yes</active>
- </developer>
- <date>2006-04-18</date>
- <time>11:49:27</time>
+ <date>2006-06-10</date>
+ <time>10:24:48</time>
  <version>
-  <release>1.2.0</release>
-  <api>1.2.0</api>
+  <release>1.3.0</release>
+  <api>1.3.0</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
- <notes>The first release of Stagehand_FSM.</notes>
+ <notes>- Added support for the shutdown of FSMs.
+- Added error handling with the PEAR_ErrorStack class.
+- Added STAGEHAND_FSM_EVENT_END constant.</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -48,6 +44,9 @@ o User defined payload</description>
    </dir> <!-- /docs -->
    <dir name="Stagehand">
     <dir name="FSM">
+     <file name="Error.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
      <file name="Event.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
@@ -104,15 +103,30 @@ o User defined payload</description>
    </pearinstaller>
   </required>
   <optional>
-    <package>
-     <name>Stagehand_TestRunner</name>
-     <channel>pear.hatotech.org</channel>
-     <min>0.3.0</min>
-    </package>
+   <package>
+    <name>Stagehand_TestRunner</name>
+    <channel>pear.hatotech.org</channel>
+    <min>0.3.0</min>
+   </package>
   </optional>
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.3.0</release>
+    <api>1.3.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-06-10</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>- Added support for the shutdown of FSMs.
+- Added error handling with the PEAR_ErrorStack class.
+- Added STAGEHAND_FSM_EVENT_END constant.</notes>
+  </release>
   <release>
    <version>
     <release>1.2.0</release>
