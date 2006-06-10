@@ -34,7 +34,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
  * @link       http://iteman.typepad.jp/piece/
- * @since      File available since Release 0.1.0
+ * @since      File available since Release 1.3.0
  */
 
 require_once 'PEAR/ErrorStack.php';
@@ -58,7 +58,7 @@ define('STAGEHAND_FSM_ERROR_INVALID_OPERATION', -1);
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
  * @link       http://iteman.typepad.jp/piece/
- * @since      Class available since Release 0.1.0
+ * @since      File available since Release 1.3.0
  */
 class Stagehand_FSM_Error
 {
