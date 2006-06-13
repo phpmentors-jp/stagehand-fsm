@@ -38,9 +38,8 @@
  * @since      File available since Release 0.1.0
  */
 
-require_once 'Stagehand/FSM/State.php';
-
 require_once 'PHPUnit.php';
+require_once 'Stagehand/FSM/State.php';
 require_once 'GateKeeper.php';
 
 // {{{ Stagehand_FSM_StateTestCase
