@@ -38,9 +38,8 @@
  * @since      File available since Release 0.1.0
  */
 
-require_once 'Stagehand/FSM/Event.php';
-
 require_once 'PHPUnit.php';
+require_once 'Stagehand/FSM/Event.php';
 
 // {{{ Stagehand_FSM_EventTestCase
 
