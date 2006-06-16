@@ -214,7 +214,7 @@ class Stagehand_FSM_Event
     /**
      * Evaluates the guard.
      *
-     * @param Stagehand_FSM $fsm
+     * @param Stagehand_FSM &$fsm
      * @return boolean
      */
     function evaluateGuard(&$fsm)
@@ -235,7 +235,7 @@ class Stagehand_FSM_Event
     /**
      * Invokes the action.
      *
-     * @param Stagehand_FSM $fsm
+     * @param Stagehand_FSM &$fsm
      */
     function invokeAction(&$fsm)
     {

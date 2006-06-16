@@ -80,7 +80,7 @@ class Stagehand_FSM_FSMState extends Stagehand_FSM
     /**
      * Wraps a Stagehand_FSM object up with a Stagehand_FSM_FSMState object.
      *
-     * @param Stagehand_FSM $fsm
+     * @param Stagehand_FSM &$fsm
      * @return Stagehand_FSM_FSMState
      * @static
      */
@@ -133,7 +133,7 @@ class Stagehand_FSM_FSMState extends Stagehand_FSM
     /**
      * Constructor
      *
-     * @param Stagehand_FSM $fsm
+     * @param Stagehand_FSM &$fsm
      */
     function Stagehand_FSM_FSMState(&$fsm)
     {

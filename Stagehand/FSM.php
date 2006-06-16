@@ -397,7 +397,7 @@ class Stagehand_FSM
     /**
      * Adds a Stagehand_FSM object to the FSM.
      *
-     * @param Stagehand_FSM $fsm
+     * @param Stagehand_FSM &$fsm
      * @return Stagehand_FSM_FSMState
      */
     function &addFSM(&$fsm)
@@ -430,7 +430,7 @@ class Stagehand_FSM
     /**
      * Sets the given payload.
      *
-     * @param mixed $payload
+     * @param mixed &$payload
      */
     function setPayload(&$payload)
     {
