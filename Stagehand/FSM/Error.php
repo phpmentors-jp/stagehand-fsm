@@ -88,7 +88,7 @@ class Stagehand_FSM_Error
     /**
      * Returns a single error stack for the package.
      *
-     * @param string  $package
+     * @param string $package
      * @return PEAR_ErrorStack
      */
     function &getErrorStack($package = 'Stagehand_FSM')
