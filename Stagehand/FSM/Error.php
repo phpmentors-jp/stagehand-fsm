@@ -110,12 +110,12 @@ class Stagehand_FSM_Error
      * @param array   $backtrace
      * @return PEAR_ErrorStack
      */
-    function &raiseError($code,
-                         $message = false,
-                         $params = array(),
-                         $package = 'Stagehand_FSM',
-                         $backtrace = false
-                         )
+    function raiseError($code,
+                        $message = false,
+                        $params = array(),
+                        $package = 'Stagehand_FSM',
+                        $backtrace = false
+                        )
     {
         if (!$backtrace) {
             $backtrace = debug_backtrace();
