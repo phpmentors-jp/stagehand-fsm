@@ -213,9 +213,9 @@ class Stagehand_FSM
         if ($this->_currentState->getName() == STAGEHAND_FSM_STATE_FINAL
             && !$this->_isSpecialEvent($eventName)
             ) {
-            $error = &Stagehand_FSM_Error::raiseError(STAGEHAND_FSM_ERROR_INVALID_OPERATION,
-                                                      'The FSM was already shutdown.'
-                                                      );
+            $error = Stagehand_FSM_Error::raiseError(STAGEHAND_FSM_ERROR_INVALID_OPERATION,
+                                                     'The FSM was already shutdown.'
+                                                     );
             return $error;
         }
 
