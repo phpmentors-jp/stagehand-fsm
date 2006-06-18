@@ -151,6 +151,8 @@ class Stagehand_FSM
 
     /**
      * Starts the Finite State Machine.
+     *
+     * @throws STAGEHAND_FSM_ERROR_INVALID_OPERATION
      */
     function start()
     {
