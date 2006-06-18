@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!-- $Id$ -->
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
 <package version="1.0" packagerversion="1.4.9">
  <name>Stagehand_FSM</name>
@@ -22,13 +23,15 @@ o User defined payload
   </maintainer>
   </maintainers>
  <release>
-  <version>1.3.0</version>
-  <date>2006-06-10</date>
+  <version>1.4.0</version>
+  <date>2006-06-18</date>
   <license>BSD License (revised)</license>
   <state>stable</state>
-  <notes>- Added support for the shutdown of FSMs.
-- Added error handling with the PEAR_ErrorStack class.
-- Added STAGEHAND_FSM_EVENT_END constant.
+  <notes>This release includes some interface changes in Stagehand_FSM_Error class.
+
+- Changed the method name from raiseError() to push() and added an argument to push() method for error levels.
+- Added pushCallback(), popCallback(), hasErrors(), pop(), and clearErrors() methods to avoid using PEAR_ErrorStack class directly.
+- Removed getErrorStack() and isError() methods.
   </notes>
   <deps>
    <dep type="php" rel="ge" version="4.2.0" optional="no"/>
@@ -94,6 +97,15 @@ o User defined payload
   </filelist>
  </release>
  <changelog>
+   <release>
+    <version>1.4.0</version>
+    <date>2006-06-18</date>
+    <license>BSD License (revised)</license>
+    <state>stable</state>
+    <notes>- Changed the method name from raiseError() to push() and added an argument to push() method for error levels.
+- Added pushCallback(), popCallback(), and hasErrors() methods to avoid using PEAR_ErrorStack class directly.
+    </notes>
+   </release>
    <release>
     <version>1.3.0</version>
     <date>2006-06-10</date>

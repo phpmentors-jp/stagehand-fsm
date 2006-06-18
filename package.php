@@ -40,10 +40,13 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.3.0';
-$notes = '- Added support for the shutdown of FSMs.
-- Added error handling with the PEAR_ErrorStack class.
-- Added STAGEHAND_FSM_EVENT_END constant.';
+$version = '1.4.0';
+$notes = 'This release includes some interface changes in Stagehand_FSM_Error class.
+
+- Changed the method name from raiseError() to push() and added an argument to push() method for error levels.
+- Added pushCallback(), popCallback(), hasErrors(), pop(), and clearErrors() methods to avoid using PEAR_ErrorStack class directly.
+- Removed getErrorStack() and isError() methods.
+';
 
 $package = new PEAR_PackageFileManager2();
 $result = $package->setOptions(array('filelistgenerator' => 'svn',
@@ -75,7 +78,7 @@ $package->setChannel('pear.hatotech.org');
 $package->setLicense('BSD License (revised)',
                      'http://www.opensource.org/licenses/bsd-license.php'
                      );
-$package->setAPIVersion('1.3.0');
+$package->setAPIVersion('1.4.0');
 $package->setAPIStability('stable');
 $package->setReleaseVersion($version);
 $package->setReleaseStability('stable');

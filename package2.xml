@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
 <package packagerversion="1.4.9" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
@@ -21,20 +22,23 @@ o User defined payload</description>
   <email>iteman2002@yahoo.co.jp</email>
   <active>yes</active>
  </lead>
- <date>2006-06-10</date>
- <time>10:24:48</time>
+ <date>2006-06-18</date>
+ <time>07:17:47</time>
  <version>
-  <release>1.3.0</release>
-  <api>1.3.0</api>
+  <release>1.4.0</release>
+  <api>1.4.0</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
- <notes>- Added support for the shutdown of FSMs.
-- Added error handling with the PEAR_ErrorStack class.
-- Added STAGEHAND_FSM_EVENT_END constant.</notes>
+ <notes>This release includes some interface changes in Stagehand_FSM_Error class.
+
+- Changed the method name from raiseError() to push() and added an argument to push() method for error levels.
+- Added pushCallback(), popCallback(), hasErrors(), pop(), and clearErrors() methods to avoid using PEAR_ErrorStack class directly.
+- Removed getErrorStack() and isError() methods.
+ </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -112,6 +116,20 @@ o User defined payload</description>
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>1.4.0</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-06-18</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>- Changed the method name from raiseError() to push() and added an argument to push() method for error levels.
+- Added pushCallback(), popCallback(), and hasErrors() methods to avoid using PEAR_ErrorStack class directly.</notes>
+  </release>
   <release>
    <version>
     <release>1.3.0</release>
