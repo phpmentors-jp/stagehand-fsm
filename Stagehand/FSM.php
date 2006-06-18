@@ -206,17 +206,18 @@ class Stagehand_FSM
      * @param string  $eventName
      * @param boolean $transitionToHistoryMarker
      * @return Stagehand_FSM_State
-     * @throws PEAR_ErrorStack
+     * @throws STAGEHAND_FSM_ERROR_INVALID_OPERATION
      */
     function &triggerEvent($eventName, $transitionToHistoryMarker = false)
     {
         if ($this->_currentState->getName() == STAGEHAND_FSM_STATE_FINAL
             && !$this->_isSpecialEvent($eventName)
             ) {
-            $error = Stagehand_FSM_Error::raiseError(STAGEHAND_FSM_ERROR_INVALID_OPERATION,
-                                                     'The FSM was already shutdown.'
-                                                     );
-            return $error;
+            Stagehand_FSM_Error::push(STAGEHAND_FSM_ERROR_INVALID_OPERATION,
+                                      'The FSM was already shutdown.'
+                                      );
+            $return = null;
+            return $return;
         }
 
         $event = &$this->_currentState->getEvent($eventName);
