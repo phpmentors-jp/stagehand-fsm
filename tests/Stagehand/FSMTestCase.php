@@ -89,14 +89,13 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
     function setUp()
     {
         Stagehand_FSM_Error::pushCallback(create_function('$error', 'var_dump($error); return ' . PEAR_ERRORSTACK_DIE . ';'));
-        $this->_keeper = new GateKeeper();
+        $this->_keeper = &new GateKeeper();
     }
 
     function tearDown()
     {
         $this->_keeper = null;
-        $stack = &Stagehand_FSM_Error::getErrorStack();
-        $stack->getErrors(true);
+        Stagehand_FSM_Error::clearErrors();
         Stagehand_FSM_Error::popCallback();
      }
 
@@ -504,12 +503,10 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $fsm->triggerEvent(STAGEHAND_FSM_EVENT_END);
 
         $this->assertTrue($GLOBALS['finalizeCalled']);
-        $this->assertFalse(PEAR_ErrorStack::staticHasErrors());
+        $this->assertFalse(Stagehand_FSM_Error::hasErrors('exception'));
 
         $fsm->triggerEvent('foo');
-
-        $stack = &Stagehand_FSM_Error::getErrorStack();
-        $error = $stack->pop();
+        $error = Stagehand_FSM_Error::pop();
 
         $this->assertEquals(STAGEHAND_FSM_ERROR_INVALID_OPERATION, $error['code']);
 
