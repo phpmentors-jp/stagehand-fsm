@@ -158,6 +158,9 @@ class Stagehand_FSM_Error
         return PEAR_ErrorStack::staticHasErrors('Stagehand_FSM', $level);
     }
 
+    // }}}
+    // {{{ pop()
+
     /**
      * Pops an error off of the error stack for the package. This method is a
      * wrapper for PEAR_ErrorStack::pop() method.
@@ -171,6 +174,9 @@ class Stagehand_FSM_Error
         $stack = &PEAR_ErrorStack::singleton('Stagehand_FSM');
         return $stack->pop();
     }
+
+    // }}}
+    // {{{ clearErrors()
 
     /**
      * Clears the error stack for the package.
