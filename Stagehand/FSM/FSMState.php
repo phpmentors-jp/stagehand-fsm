@@ -4,7 +4,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2006, KUBO Atsuhiro <iteman2002@yahoo.co.jp>
+ * Copyright (c) 2006, KUBO Atsuhiro <iteman@users.sourceforge.net>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,8 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @author     KUBO Atsuhiro <iteman2002@yahoo.co.jp>
- * @copyright  2006 KUBO Atsuhiro <iteman2002@yahoo.co.jp>
+ * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
  * @since      File available since Release 0.1.0
@@ -45,8 +45,8 @@ require_once 'Stagehand/FSM/State.php';
  * A sub-class of FSM which has capability of Stagehand_FSM_State.
  *
  * @package    Stagehand_FSM
- * @author     KUBO Atsuhiro <iteman2002@yahoo.co.jp>
- * @copyright  2006 KUBO Atsuhiro <iteman2002@yahoo.co.jp>
+ * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
