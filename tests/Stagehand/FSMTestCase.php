@@ -519,6 +519,19 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $GLOBALS['finalizeCalled'] = true;
     }
 
+    function testProtectedEvents()
+    {
+        $fsm = &new Stagehand_FSM();
+
+        $this->assertTrue($fsm->isProtectedEvent(STAGEHAND_FSM_EVENT_ENTRY));
+        $this->assertTrue($fsm->isProtectedEvent(STAGEHAND_FSM_EVENT_EXIT));
+        $this->assertTrue($fsm->isProtectedEvent(STAGEHAND_FSM_EVENT_START));
+        $this->assertTrue($fsm->isProtectedEvent(STAGEHAND_FSM_EVENT_END));
+        $this->assertTrue($fsm->isProtectedEvent(STAGEHAND_FSM_EVENT_DO));
+
+        $this->assertFalse($fsm->isProtectedEvent('foo'));
+    }
+
     /**#@-*/
 
     /**#@+
