@@ -440,6 +440,23 @@ class Stagehand_FSM
         $this->_payload = &$payload;
     }
 
+    // }}}
+    // {{{ isProtectedEvent()
+
+    /**
+     * Returns whether an event is a protected event such as the special
+     * events and so on.
+     *
+     * @param string $event
+     * @return boolean
+     */
+    function isProtectedEvent($event)
+    {
+        return $this->_isSpecialEvent($event)
+            || $event == STAGEHAND_FSM_EVENT_START
+            || $event == STAGEHAND_FSM_EVENT_END;
+    }
+
     /**#@-*/
 
     /**#@+
