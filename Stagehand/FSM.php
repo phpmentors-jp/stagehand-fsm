@@ -449,6 +449,7 @@ class Stagehand_FSM
      *
      * @param string $event
      * @return boolean
+     * @since Method available since Release 1.5.0
      */
     function isProtectedEvent($event)
     {
@@ -466,6 +467,7 @@ class Stagehand_FSM
      *
      * @param string $state
      * @return boolean
+     * @since Method available since Release 1.5.0
      */
     function isProtectedState($state)
     {
