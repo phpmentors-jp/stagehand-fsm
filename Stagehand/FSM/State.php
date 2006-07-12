@@ -44,11 +44,11 @@ require_once 'Stagehand/FSM/Event.php';
 /*
  * Constants for special events.
  */
-define('STAGEHAND_FSM_EVENT_ENTRY', '_entry');
-define('STAGEHAND_FSM_EVENT_EXIT', '_exit');
-define('STAGEHAND_FSM_EVENT_START', '_start');
-define('STAGEHAND_FSM_EVENT_END', '_end');
-define('STAGEHAND_FSM_EVENT_DO', '_do');
+define('STAGEHAND_FSM_EVENT_ENTRY', '_Stagehand_FSM_Event_Entry');
+define('STAGEHAND_FSM_EVENT_EXIT', '_Stagehand_FSM_Event_Exit');
+define('STAGEHAND_FSM_EVENT_START', '_Stagehand_FSM_Event_Start');
+define('STAGEHAND_FSM_EVENT_END', '_Stagehand_FSM_Event_End');
+define('STAGEHAND_FSM_EVENT_DO', '_Stagehand_FSM_Event_Do');
 
 // }}}
 // {{{ Stagehand_FSM_State
