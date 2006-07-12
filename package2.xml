@@ -22,10 +22,10 @@ o User defined payload</description>
   <email>iteman@users.sourceforge.net</email>
   <active>yes</active>
  </lead>
- <date>2006-06-18</date>
- <time>07:17:47</time>
+ <date>2006-07-12</date>
+ <time>04:03:40</time>
  <version>
-  <release>1.4.0</release>
+  <release>1.5.0</release>
   <api>1.4.0</api>
  </version>
  <stability>
@@ -33,12 +33,13 @@ o User defined payload</description>
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
- <notes>This release includes some interface changes in Stagehand_FSM_Error class.
+ <notes>This release includes a few enhancements as follows:
 
-- Changed the method name from raiseError() to push() and added an argument to push() method for error levels.
-- Added pushCallback(), popCallback(), hasErrors(), pop(), and clearErrors() methods to avoid using PEAR_ErrorStack class directly.
-- Removed getErrorStack() and isError() methods.
- </notes>
+Enhancements:
+
+* Stagehand_FSM
+- Added isProtectedEvent() method for checking whether an event is a protected event such as the special events and so on.
+- Added isProtectedState() method for checking whether a state is a protected state such as the pseudo states and so on.</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -114,8 +115,39 @@ o User defined payload</description>
    </package>
   </optional>
  </dependencies>
- <phprelease />
+ <phprelease>
+  <filelist>
+   <install as="LICENSE" name="docs/LICENSE" />
+   <install as="AllTestRunner.php" name="tests/AllTestRunner.php" />
+   <install as="GateKeeper.php" name="tests/GateKeeper.php" />
+   <install as="Stagehand/FSM/EventTestCase.php" name="tests/Stagehand/FSM/EventTestCase.php" />
+   <install as="Stagehand/FSM/FSMStateTestCase.php" name="tests/Stagehand/FSM/FSMStateTestCase.php" />
+   <install as="Stagehand/FSM/StateTestCase.php" name="tests/Stagehand/FSM/StateTestCase.php" />
+   <install as="Stagehand/FSM/TestRunner.php" name="tests/Stagehand/FSM/TestRunner.php" />
+   <install as="Stagehand/FSMTestCase.php" name="tests/Stagehand/FSMTestCase.php" />
+   <install as="Stagehand/TestRunner.php" name="tests/Stagehand/TestRunner.php" />
+  </filelist>
+ </phprelease>
  <changelog>
+  <release>
+   <version>
+    <release>1.5.0</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-07-12</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>This release includes a few enhancements as follows:
+
+Enhancements:
+
+* Stagehand_FSM
+- Added isProtectedEvent() method for checking whether an event is a protected event such as the special events and so on.
+- Added isProtectedState() method for checking whether a state is a protected state such as the pseudo states and so on.</notes>
+  </release>
   <release>
    <version>
     <release>1.4.0</release>

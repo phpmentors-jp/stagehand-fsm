@@ -40,12 +40,14 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.4.0';
-$notes = 'This release includes some interface changes in Stagehand_FSM_Error class.
+$version = '1.5.0';
+$notes = 'This release includes a few enhancements as follows:
 
-- Changed the method name from raiseError() to push() and added an argument to push() method for error levels.
-- Added pushCallback(), popCallback(), hasErrors(), pop(), and clearErrors() methods to avoid using PEAR_ErrorStack class directly.
-- Removed getErrorStack() and isError() methods.
+Enhancements:
+
+* Stagehand_FSM
+- Added isProtectedEvent() method for checking whether an event is a protected event such as the special events and so on.
+- Added isProtectedState() method for checking whether a state is a protected state such as the pseudo states and so on.
 ';
 
 $package = new PEAR_PackageFileManager2();

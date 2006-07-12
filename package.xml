@@ -23,15 +23,17 @@ o User defined payload
   </maintainer>
   </maintainers>
  <release>
-  <version>1.4.0</version>
-  <date>2006-06-18</date>
+  <version>1.5.0</version>
+  <date>2006-07-12</date>
   <license>BSD License (revised)</license>
   <state>stable</state>
-  <notes>This release includes some interface changes in Stagehand_FSM_Error class.
+  <notes>This release includes a few enhancements as follows:
 
-- Changed the method name from raiseError() to push() and added an argument to push() method for error levels.
-- Added pushCallback(), popCallback(), hasErrors(), pop(), and clearErrors() methods to avoid using PEAR_ErrorStack class directly.
-- Removed getErrorStack() and isError() methods.
+Enhancements:
+
+* Stagehand_FSM
+- Added isProtectedEvent() method for checking whether an event is a protected event such as the special events and so on.
+- Added isProtectedState() method for checking whether a state is a protected state such as the pseudo states and so on.
   </notes>
   <deps>
    <dep type="php" rel="ge" version="4.2.0" optional="no"/>
@@ -40,7 +42,7 @@ o User defined payload
   <filelist>
    <dir name="/" baseinstalldir="/">
     <dir name="docs">
-     <file role="doc" name="LICENSE">
+     <file role="doc" name="LICENSE" install-as="LICENSE">
       <replace from="@package_version@" to="version" type="package-info"/>
      </file>
     </dir> <!-- /docs -->
@@ -66,30 +68,30 @@ o User defined payload
     <dir name="tests">
      <dir name="Stagehand">
       <dir name="FSM">
-       <file role="test" name="EventTestCase.php">
+       <file role="test" name="EventTestCase.php" install-as="Stagehand/FSM/EventTestCase.php">
         <replace from="@package_version@" to="version" type="package-info"/>
        </file>
-       <file role="test" name="FSMStateTestCase.php">
+       <file role="test" name="FSMStateTestCase.php" install-as="Stagehand/FSM/FSMStateTestCase.php">
         <replace from="@package_version@" to="version" type="package-info"/>
        </file>
-       <file role="test" name="StateTestCase.php">
+       <file role="test" name="StateTestCase.php" install-as="Stagehand/FSM/StateTestCase.php">
         <replace from="@package_version@" to="version" type="package-info"/>
        </file>
-       <file role="test" name="TestRunner.php">
+       <file role="test" name="TestRunner.php" install-as="Stagehand/FSM/TestRunner.php">
         <replace from="@package_version@" to="version" type="package-info"/>
        </file>
       </dir> <!-- /tests/Stagehand/FSM -->
-      <file role="test" name="FSMTestCase.php">
+      <file role="test" name="FSMTestCase.php" install-as="Stagehand/FSMTestCase.php">
        <replace from="@package_version@" to="version" type="package-info"/>
       </file>
-      <file role="test" name="TestRunner.php">
+      <file role="test" name="TestRunner.php" install-as="Stagehand/TestRunner.php">
        <replace from="@package_version@" to="version" type="package-info"/>
       </file>
      </dir> <!-- /tests/Stagehand -->
-     <file role="test" name="AllTestRunner.php">
+     <file role="test" name="AllTestRunner.php" install-as="AllTestRunner.php">
       <replace from="@package_version@" to="version" type="package-info"/>
      </file>
-     <file role="test" name="GateKeeper.php">
+     <file role="test" name="GateKeeper.php" install-as="GateKeeper.php">
       <replace from="@package_version@" to="version" type="package-info"/>
      </file>
     </dir> <!-- /tests -->
@@ -97,6 +99,20 @@ o User defined payload
   </filelist>
  </release>
  <changelog>
+   <release>
+    <version>1.5.0</version>
+    <date>2006-07-12</date>
+    <license>BSD License (revised)</license>
+    <state>stable</state>
+    <notes>This release includes a few enhancements as follows:
+
+Enhancements:
+
+* Stagehand_FSM
+- Added isProtectedEvent() method for checking whether an event is a protected event such as the special events and so on.
+- Added isProtectedState() method for checking whether a state is a protected state such as the pseudo states and so on.
+    </notes>
+   </release>
    <release>
     <version>1.4.0</version>
     <date>2006-06-18</date>
