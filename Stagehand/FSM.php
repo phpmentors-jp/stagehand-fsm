@@ -54,8 +54,8 @@ require_once 'Stagehand/FSM/Error.php';
 /*
  * Constants for pseudo states.
  */
-define('STAGEHAND_FSM_STATE_INITIAL', '_initial');
-define('STAGEHAND_FSM_STATE_FINAL', '_final');
+define('STAGEHAND_FSM_STATE_INITIAL', '_Stagehand_FSM_State_Initial');
+define('STAGEHAND_FSM_STATE_FINAL', '_Stagehand_FSM_State_Final');
 
 // }}}
 // {{{ Stagehand_FSM
@@ -455,6 +455,22 @@ class Stagehand_FSM
         return $this->_isSpecialEvent($event)
             || $event == STAGEHAND_FSM_EVENT_START
             || $event == STAGEHAND_FSM_EVENT_END;
+    }
+
+    // }}}
+    // {{{ isProtectedState()
+
+    /**
+     * Returns whether a state is a protected event such as the pseudo states
+     * and so on.
+     *
+     * @param string $state
+     * @return boolean
+     */
+    function isProtectedState($state)
+    {
+        return $state == STAGEHAND_FSM_STATE_INITIAL
+            || $state == STAGEHAND_FSM_STATE_FINAL;
     }
 
     /**#@-*/
