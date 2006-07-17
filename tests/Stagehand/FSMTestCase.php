@@ -508,7 +508,7 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $fsm->triggerEvent('foo');
         $error = Stagehand_FSM_Error::pop();
 
-        $this->assertEquals(STAGEHAND_FSM_ERROR_INVALID_OPERATION, $error['code']);
+        $this->assertEquals(STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN, $error['code']);
 
         unset($GLOBALS['finalizeCalled']);
         Stagehand_FSM_Error::popCallback();

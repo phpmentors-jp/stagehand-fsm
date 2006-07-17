@@ -152,7 +152,7 @@ class Stagehand_FSM
     /**
      * Starts the Finite State Machine.
      *
-     * @throws STAGEHAND_FSM_ERROR_INVALID_OPERATION
+     * @throws STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN
      */
     function start()
     {
@@ -208,14 +208,14 @@ class Stagehand_FSM
      * @param string  $eventName
      * @param boolean $transitionToHistoryMarker
      * @return Stagehand_FSM_State
-     * @throws STAGEHAND_FSM_ERROR_INVALID_OPERATION
+     * @throws STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN
      */
     function &triggerEvent($eventName, $transitionToHistoryMarker = false)
     {
         if ($this->_currentState->getName() == STAGEHAND_FSM_STATE_FINAL
             && !$this->_isSpecialEvent($eventName)
             ) {
-            Stagehand_FSM_Error::push(STAGEHAND_FSM_ERROR_INVALID_OPERATION,
+            Stagehand_FSM_Error::push(STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN,
                                       'The FSM was already shutdown.'
                                       );
             $return = null;
