@@ -104,6 +104,9 @@ class Stagehand_FSM_StateTestCase extends PHPUnit_TestCase
         $this->assertEquals('bar', $bar->getName());
     }
 
+    /**
+     * @since Method available since Release 1.6.0
+     */
     function testCheckingWhetherStateHasEvent()
     {
         $state = &new Stagehand_FSM_State('foo');
