@@ -129,6 +129,16 @@ class Stagehand_FSM_FSMStateTestCase extends PHPUnit_TestCase
         $this->assertEquals('bar', $bar->getName());
     }
 
+    function testCheckingWhetherStateHasEvent()
+    {
+        $foo = &$this->_fsmState->addEvent('foo');
+        $bar = &$this->_fsmState->addEvent('bar');
+
+        $this->assertTrue($this->_fsmState->hasEvent('foo'));
+        $this->assertTrue($this->_fsmState->hasEvent('bar'));
+        $this->assertFalse($this->_fsmState->hasEvent('baz'));
+    }
+
     /**#@-*/
 
     /**#@+
