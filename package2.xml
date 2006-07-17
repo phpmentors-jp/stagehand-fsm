@@ -22,10 +22,10 @@ o User defined payload</description>
   <email>iteman@users.sourceforge.net</email>
   <active>yes</active>
  </lead>
- <date>2006-07-12</date>
- <time>04:03:40</time>
+ <date>2006-07-17</date>
+ <time>11:36:27</time>
  <version>
-  <release>1.5.0</release>
+  <release>1.6.0</release>
   <api>1.4.0</api>
  </version>
  <stability>
@@ -33,13 +33,12 @@ o User defined payload</description>
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
- <notes>This release includes a few enhancements as follows:
+ <notes>This release includes one enhancement as follows:
 
-Enhancements:
+&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
 
 * Stagehand_FSM
-- Added isProtectedEvent() method for checking whether an event is a protected event such as the special events and so on.
-- Added isProtectedState() method for checking whether a state is a protected state such as the pseudo states and so on.</notes>
+- Added hasEvent() method for checking whether the current state has an event.</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -129,6 +128,24 @@ Enhancements:
   </filelist>
  </phprelease>
  <changelog>
+  <release>
+   <version>
+    <release>1.6.0</release>
+    <api>1.4.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-07-17</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>This release includes one enhancement as follows:
+
+&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+
+* Stagehand_FSM
+- Added hasEvent() method for checking whether the current state has an event.</notes>
+  </release>
   <release>
    <version>
     <release>1.5.0</release>

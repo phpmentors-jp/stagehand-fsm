@@ -23,17 +23,16 @@ o User defined payload
   </maintainer>
   </maintainers>
  <release>
-  <version>1.5.0</version>
-  <date>2006-07-12</date>
+  <version>1.6.0</version>
+  <date>2006-07-17</date>
   <license>BSD License (revised)</license>
   <state>stable</state>
-  <notes>This release includes a few enhancements as follows:
+  <notes>This release includes one enhancement as follows:
 
-Enhancements:
+&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
 
 * Stagehand_FSM
-- Added isProtectedEvent() method for checking whether an event is a protected event such as the special events and so on.
-- Added isProtectedState() method for checking whether a state is a protected state such as the pseudo states and so on.
+- Added hasEvent() method for checking whether the current state has an event.
   </notes>
   <deps>
    <dep type="php" rel="ge" version="4.2.0" optional="no"/>
@@ -99,6 +98,19 @@ Enhancements:
   </filelist>
  </release>
  <changelog>
+   <release>
+    <version>1.6.0</version>
+    <date>2006-07-16</date>
+    <license>BSD License (revised)</license>
+    <state>stable</state>
+    <notes>This release includes one enhancement as follows:
+
+&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+
+* Stagehand_FSM
+- Added hasEvent() method for checking whether the current state has an event.
+    </notes>
+   </release>
    <release>
     <version>1.5.0</version>
     <date>2006-07-12</date>

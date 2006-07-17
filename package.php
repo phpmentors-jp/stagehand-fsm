@@ -40,15 +40,13 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.5.0';
-$notes = 'This release includes a few enhancements as follows:
+$version = '1.6.0';
+$notes = 'This release includes one enhancement as follows:
 
-Enhancements:
+<<< Enhancements >>>
 
 * Stagehand_FSM
-- Added isProtectedEvent() method for checking whether an event is a protected event such as the special events and so on.
-- Added isProtectedState() method for checking whether a state is a protected state such as the pseudo states and so on.
-';
+- Added hasEvent() method for checking whether the current state has an event.';
 
 $package = new PEAR_PackageFileManager2();
 $result = $package->setOptions(array('filelistgenerator' => 'svn',
