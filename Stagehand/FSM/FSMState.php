@@ -121,6 +121,20 @@ class Stagehand_FSM_FSMState extends Stagehand_FSM
         return $event;
     }
 
+    // }}}
+    // {{{ hasEvent()
+
+    /**
+     * Returns whether the state has an event with a given name.
+     *
+     * @param string $name
+     * @return boolean
+     */
+    function hasEvent($name)
+    {
+        return $this->_state->hasEvent($name);
+    }
+
     /**#@-*/
 
     /**#@+

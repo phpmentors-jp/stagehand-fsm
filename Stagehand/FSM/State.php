@@ -153,6 +153,20 @@ class Stagehand_FSM_State
         return $this->_name;
     }
 
+    // }}}
+    // {{{ hasEvent()
+
+    /**
+     * Returns whether the state has an event with a given name.
+     *
+     * @param string $name
+     * @return boolean
+     */
+    function hasEvent($name)
+    {
+        return array_key_exists($name, $this->_events);
+    }
+
     /**#@-*/
 
     /**#@+
