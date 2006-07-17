@@ -44,7 +44,7 @@ require_once 'PEAR/ErrorStack.php';
 /*
  * Error codes
  */
-define('STAGEHAND_FSM_ERROR_INVALID_OPERATION', -1);
+define('STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN', -1);
 
 // }}}
 // {{{ Stagehand_FSM_Error
