@@ -117,7 +117,7 @@ class Stagehand_FSM_State
      */
     function &getEvent($event)
     {
-        if (!array_key_exists($event, $this->_events)) {
+        if (!$this->hasEvent($event)) {
             $return = null;
             return $return;
         }
