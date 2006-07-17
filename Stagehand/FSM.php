@@ -475,6 +475,21 @@ class Stagehand_FSM
             || $state == STAGEHAND_FSM_STATE_FINAL;
     }
 
+    // }}}
+    // {{{ hasEvent()
+
+    /**
+     * Returns whether the current state has an event with a given name.
+     *
+     * @param string $name
+     * @return boolean
+     * @since Method available since Release 1.6.0
+     */
+    function hasEvent($name)
+    {
+        return $this->_currentState->hasEvent($name);
+    }
+
     /**#@-*/
 
     /**#@+
