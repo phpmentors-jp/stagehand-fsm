@@ -129,6 +129,7 @@ class Stagehand_FSM_FSMState extends Stagehand_FSM
      *
      * @param string $name
      * @return boolean
+     * @since Method available since Release 1.6.0
      */
     function hasEvent($name)
     {
