@@ -548,6 +548,30 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $this->assertFalse($fsm->isProtectedState('foo'));
     }
 
+    /**
+     * @since Method available since Release 1.6.0
+     */
+    function testCheckingWhetherCurrentStateHasEvent()
+    {
+        $fsm = &new Stagehand_FSM();
+        $fsm->setFirstState('Stop');
+        $fsm->addTransition('Stop', 'play', 'Playing');
+        $fsm->addTransition('Playing', 'stop', 'Stop');
+        $fsm->start();
+
+        $currentState = &$fsm->getCurrentState();
+
+        $this->assertEquals('Stop', $currentState->getName());
+        $this->assertTrue($fsm->hasEvent('play'));
+        $this->assertFalse($fsm->hasEvent('stop'));
+
+        $currentState = &$fsm->triggerEvent('play');
+
+        $this->assertEquals('Playing', $currentState->getName());
+        $this->assertTrue($fsm->hasEvent('stop'));
+        $this->assertFalse($fsm->hasEvent('play'));
+    }
+
     /**#@-*/
 
     /**#@+
