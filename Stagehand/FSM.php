@@ -223,7 +223,8 @@ class Stagehand_FSM
             $event = array_shift($this->_eventQueue);
             $this->_processEvent($event['event'], $event['transitionToHistoryMarker']);
             if (Stagehand_FSM_Error::hasErrors('exception')) {
-                return;
+                $return = null;
+                return $return;
             }
         }
     }
@@ -606,7 +607,8 @@ class Stagehand_FSM
             ) {
             $this->_currentState->start();
             if (Stagehand_FSM_Error::hasErrors('exception')) {
-                return;
+                $return = null;
+                return $return;
             }
         }
 
