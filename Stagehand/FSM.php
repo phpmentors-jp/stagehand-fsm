@@ -237,6 +237,7 @@ class Stagehand_FSM
      *
      * @param string  $eventName
      * @param boolean $transitionToHistoryMarker
+     * @since Method available since Release 1.7.0
      */
     function queueEvent($eventName, $transitionToHistoryMarker = false)
     {        
@@ -567,6 +568,7 @@ class Stagehand_FSM
      * @param boolean $transitionToHistoryMarker
      * @return Stagehand_FSM_State
      * @throws STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN
+     * @since Method available since Release 1.7.0
      */
     function &_processEvent($eventName, $transitionToHistoryMarker = false)
     {
