@@ -23,16 +23,20 @@ o User defined payload
   </maintainer>
   </maintainers>
  <release>
-  <version>1.6.0</version>
-  <date>2006-07-17</date>
+  <version>1.7.0</version>
+  <date>2006-07-21</date>
   <license>BSD License (revised)</license>
   <state>stable</state>
-  <notes>This release includes one enhancement as follows:
+  <notes>This release includes fixing a critical problem and an enhancement as follows:
+
+&lt;&lt;&lt; Defect fixes &gt;&gt;&gt;
+
+- Fixed the problem that an activity is invoked twice unexpectedly.
 
 &lt;&lt;&lt; Enhancements &gt;&gt;&gt;
 
 * Stagehand_FSM
-- Added hasEvent() method for checking whether the current state has an event.
+- Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.
   </notes>
   <deps>
    <dep type="php" rel="ge" version="4.2.0" optional="no"/>
@@ -98,6 +102,23 @@ o User defined payload
   </filelist>
  </release>
  <changelog>
+   <release>
+    <version>1.7.0</version>
+    <date>2006-07-21</date>
+    <license>BSD License (revised)</license>
+    <state>stable</state>
+    <notes>This release includes fixing a critical problem and an enhancement as follows:
+
+&lt;&lt;&lt; Defect fixes &gt;&gt;&gt;
+
+- Fixed the problem that an activity is invoked twice unexpectedly.
+
+&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+
+* Stagehand_FSM
+- Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.
+    </notes>
+   </release>
    <release>
     <version>1.6.0</version>
     <date>2006-07-16</date>

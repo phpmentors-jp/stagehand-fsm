@@ -22,23 +22,27 @@ o User defined payload</description>
   <email>iteman@users.sourceforge.net</email>
   <active>yes</active>
  </lead>
- <date>2006-07-17</date>
- <time>11:36:27</time>
+ <date>2006-07-21</date>
+ <time>04:08:00</time>
  <version>
-  <release>1.6.0</release>
-  <api>1.4.0</api>
+  <release>1.7.0</release>
+  <api>1.7.0</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
- <notes>This release includes one enhancement as follows:
+ <notes>This release includes fixing a critical problem and an enhancement as follows:
+
+&lt;&lt;&lt; Defect fixes &gt;&gt;&gt;
+
+- Fixed the problem that an activity is invoked twice unexpectedly.
 
 &lt;&lt;&lt; Enhancements &gt;&gt;&gt;
 
 * Stagehand_FSM
-- Added hasEvent() method for checking whether the current state has an event.</notes>
+- Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -128,6 +132,28 @@ o User defined payload</description>
   </filelist>
  </phprelease>
  <changelog>
+  <release>
+   <version>
+    <release>1.7.0</release>
+    <api>1.7.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-07-21</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>This release includes fixing a critical problem and an enhancement as follows:
+
+&lt;&lt;&lt; Defect fixes &gt;&gt;&gt;
+
+- Fixed the problem that an activity is invoked twice unexpectedly.
+
+&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+
+* Stagehand_FSM
+- Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.</notes>
+  </release>
   <release>
    <version>
     <release>1.6.0</release>

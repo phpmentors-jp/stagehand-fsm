@@ -40,13 +40,18 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.6.0';
-$notes = 'This release includes one enhancement as follows:
+$version = '1.7.0';
+$apiVersion = '1.7.0';
+$notes = 'This release includes fixing a critical problem and an enhancement as follows:
+
+<<< Defect fixes >>>
+
+- Fixed the problem that an activity is invoked twice unexpectedly.
 
 <<< Enhancements >>>
 
 * Stagehand_FSM
-- Added hasEvent() method for checking whether the current state has an event.';
+- Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.'
 
 $package = new PEAR_PackageFileManager2();
 $result = $package->setOptions(array('filelistgenerator' => 'svn',
@@ -78,7 +83,7 @@ $package->setChannel('pear.hatotech.org');
 $package->setLicense('BSD License (revised)',
                      'http://www.opensource.org/licenses/bsd-license.php'
                      );
-$package->setAPIVersion('1.4.0');
+$package->setAPIVersion($apiVersion);
 $package->setAPIStability('stable');
 $package->setReleaseVersion($version);
 $package->setReleaseStability('stable');
