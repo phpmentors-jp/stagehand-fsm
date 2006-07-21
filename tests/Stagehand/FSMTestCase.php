@@ -572,6 +572,61 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $this->assertFalse($fsm->hasEvent('play'));
     }
 
+    /**
+     * @since Method available since Release 1.7.0
+     */
+    function testProblemThatActivityIsInvokedTwiceUnexpectedly()
+    {
+        $this->_setupFormProblemThatActivityIsInvokedTwiceCalled = 0;
+        $this->_validateProblemThatActivityIsInvokedTwiceCalled = 0;
+        $this->_setupConfirmationProblemThatActivityIsInvokedTwiceCalled = 0;
+
+        $fsm = &new Stagehand_FSM();
+        $fsm->setFirstState('DisplayForm');
+        $fsm->setActivity('DisplayForm', array(&$this, 'setupFormProblemThatActivityIsInvokedTwiceUnexpectedly'));
+        $fsm->addTransition('DisplayForm', 'confirmForm', 'processConfirmForm', array(&$this, 'validateProblemThatActivityIsInvokedTwiceUnexpectedly'));
+        $fsm->addTransition('processConfirmForm', 'goDisplayConfirmation', 'DisplayConfirmation');
+        $fsm->setActivity('DisplayConfirmation', array(&$this, 'setupConfirmationProblemThatActivityIsInvokedTwiceUnexpectedly'));
+        $fsm->start();
+
+        $this->assertEquals(1, $this->_setupFormProblemThatActivityIsInvokedTwiceCalled);
+
+        $fsm->triggerEvent('confirmForm');
+
+        $this->assertEquals(1, $this->_setupFormProblemThatActivityIsInvokedTwiceCalled);
+        $this->assertEquals(1, $this->_validateProblemThatActivityIsInvokedTwiceCalled);
+        $this->assertEquals(1, $this->_setupConfirmationProblemThatActivityIsInvokedTwiceCalled);
+
+        unset($this->_setupFormProblemThatActivityIsInvokedTwiceCalled);
+        unset($this->_validateProblemThatActivityIsInvokedTwiceCalled);
+        unset($this->_setupConfirmationProblemThatActivityIsInvokedTwiceCalled);
+    }
+
+    /**
+     * @since Method available since Release 1.7.0
+     */
+    function setupFormProblemThatActivityIsInvokedTwiceUnexpectedly(&$fsm, &$event, &$payload)
+    {
+        ++$this->_setupFormProblemThatActivityIsInvokedTwiceCalled;
+    }
+
+    /**
+     * @since Method available since Release 1.7.0
+     */
+    function validateProblemThatActivityIsInvokedTwiceUnexpectedly(&$fsm, &$event, &$payload)
+    {
+        ++$this->_validateProblemThatActivityIsInvokedTwiceCalled;
+        $fsm->queueEvent('goDisplayConfirmation');
+    }
+
+    /**
+     * @since Method available since Release 1.7.0
+     */
+    function setupConfirmationProblemThatActivityIsInvokedTwiceUnexpectedly(&$fsm, &$event, &$payload)
+    {
+        ++$this->_setupConfirmationProblemThatActivityIsInvokedTwiceCalled;
+    }
+
     /**#@-*/
 
     /**#@+
