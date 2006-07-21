@@ -109,6 +109,7 @@ class Stagehand_FSM
     var $_states = array();
     var $_name;
     var $_payload;
+    var $_eventQueue = array();
 
     /**#@-*/
 
@@ -203,7 +204,8 @@ class Stagehand_FSM
     // {{{ triggerEvent()
 
     /**
-     * Triggers the given state.
+     * Triggers the given event in the current state.
+     * <i>Note: Do not call this method directly from actions.</i>
      *
      * @param string  $eventName
      * @param boolean $transitionToHistoryMarker
@@ -212,57 +214,34 @@ class Stagehand_FSM
      */
     function &triggerEvent($eventName, $transitionToHistoryMarker = false)
     {
-        if ($this->_currentState->getName() == STAGEHAND_FSM_STATE_FINAL
-            && !$this->_isSpecialEvent($eventName)
-            ) {
-            Stagehand_FSM_Error::push(STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN,
-                                      'The FSM was already shutdown.'
-                                      );
-            $return = null;
-            return $return;
+        $this->queueEvent($eventName, $transitionToHistoryMarker);
+        while (true) {
+            if (!count($this->_eventQueue)) {
+                return $this->_currentState;
+            }
+
+            $event = array_shift($this->_eventQueue);
+            $this->_processEvent($event['event'], $event['transitionToHistoryMarker']);
+            if (Stagehand_FSM_Error::hasErrors('exception')) {
+                return;
+            }
         }
+    }
 
-        $event = &$this->_currentState->getEvent($eventName);
+    // }}}
+    // {{{ queueEvent()
 
-        if (is_null($event)
-            || !$this->_isSpecialEvent($eventName)
-            && !$event->evaluateGuard($this)
-            ) {
-            $eventName = STAGEHAND_FSM_EVENT_DO;
-            $event = &$this->_currentState->getEvent(STAGEHAND_FSM_EVENT_DO);
-        }
-
-        if (!$this->_isSpecialEvent($eventName)) {
-            $this->triggerEvent(STAGEHAND_FSM_EVENT_EXIT);
-        }
-
-        if (!$this->_isSpecialEvent($eventName)) {
-            $nextStateName = $event->getNextState();
-            $this->_transition($nextStateName);
-        }
-
-        $event->invokeAction($this);
-
-        if ($this->_isEntryEvent($eventName)
-            && is_a($this->_currentState, __CLASS__)
-            && !$transitionToHistoryMarker
-            ) {
-            $this->_currentState->start();
-        }
-
-        if (!$this->_isSpecialEvent($eventName)) {
-            $this->triggerEvent(STAGEHAND_FSM_EVENT_ENTRY,
-                                $event->getTransitionToHistoryMarker()
-                                );
-        }
-
-        if (!$this->_isSpecialEvent($eventName)) {
-            $this->triggerEvent(STAGEHAND_FSM_EVENT_DO,
-                                $event->getTransitionToHistoryMarker()
-                                );
-        }
-
-        return $this->_currentState;
+    /**
+     * Queues an event to the event queue.
+     *
+     * @param string  $eventName
+     * @param boolean $transitionToHistoryMarker
+     */
+    function queueEvent($eventName, $transitionToHistoryMarker = false)
+    {        
+        array_push($this->_eventQueue,
+                   array('event' => $eventName, 'transitionToHistoryMarker' => $transitionToHistoryMarker)
+                   );
     }
 
     // }}}
@@ -575,6 +554,71 @@ class Stagehand_FSM
         if (is_null($this->_currentState)) {
             $this->_currentState = &$this->addState(STAGEHAND_FSM_STATE_INITIAL);
         }
+    }
+
+    // }}}
+    // {{{ _processEvent()
+
+    /**
+     * Processes an event.
+     *
+     * @param string  $eventName
+     * @param boolean $transitionToHistoryMarker
+     * @return Stagehand_FSM_State
+     * @throws STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN
+     */
+    function &_processEvent($eventName, $transitionToHistoryMarker = false)
+    {
+        if ($this->_currentState->getName() == STAGEHAND_FSM_STATE_FINAL
+            && !$this->_isSpecialEvent($eventName)
+            ) {
+            Stagehand_FSM_Error::push(STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN,
+                                      'The FSM was already shutdown.'
+                                      );
+            $return = null;
+            return $return;
+        }
+
+        $event = &$this->_currentState->getEvent($eventName);
+
+        if (is_null($event)
+            || !$this->_isSpecialEvent($eventName)
+            && !$event->evaluateGuard($this)
+            ) {
+            $eventName = STAGEHAND_FSM_EVENT_DO;
+            $event = &$this->_currentState->getEvent(STAGEHAND_FSM_EVENT_DO);
+        }
+
+        if (!$this->_isSpecialEvent($eventName)) {
+            $this->_processEvent(STAGEHAND_FSM_EVENT_EXIT, $transitionToHistoryMarker);
+        }
+
+        if (!$this->_isSpecialEvent($eventName)) {
+            $nextStateName = $event->getNextState();
+            $this->_transition($nextStateName);
+        }
+
+        $event->invokeAction($this);
+
+        if ($this->_isEntryEvent($eventName)
+            && is_a($this->_currentState, __CLASS__)
+            && !$transitionToHistoryMarker
+            ) {
+            $this->_currentState->start();
+            if (Stagehand_FSM_Error::hasErrors('exception')) {
+                return;
+            }
+        }
+
+        if (!$this->_isSpecialEvent($eventName)) {
+            $this->_processEvent(STAGEHAND_FSM_EVENT_ENTRY, $event->getTransitionToHistoryMarker());
+        }
+
+        if (!$this->_isSpecialEvent($eventName)) {
+            $this->_processEvent(STAGEHAND_FSM_EVENT_DO, $event->getTransitionToHistoryMarker());
+        }
+
+        return $this->_currentState;
     }
 
     /**#@-*/
