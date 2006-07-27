@@ -240,10 +240,10 @@ class Stagehand_FSM
      * @since Method available since Release 1.7.0
      */
     function queueEvent($eventName, $transitionToHistoryMarker = false)
-    {        
-        array_push($this->_eventQueue,
-                   array('event' => $eventName, 'transitionToHistoryMarker' => $transitionToHistoryMarker)
-                   );
+    {
+        $this->_eventQueue[] = array('event' => $eventName,
+                                     'transitionToHistoryMarker' => $transitionToHistoryMarker
+                                     );
     }
 
     // }}}
