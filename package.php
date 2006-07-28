@@ -34,7 +34,7 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
  * @link       http://iteman.typepad.jp/stagehand/
- * @see        Stagehand_TestRunner_PHPUnitTestRunner::runAll()
+ * @see        PEAR_PackageFileManager2
  * @since      File available since Release 0.1.0
  */
 
