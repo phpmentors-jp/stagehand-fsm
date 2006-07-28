@@ -22,10 +22,10 @@ o User defined payload</description>
   <email>iteman@users.sourceforge.net</email>
   <active>yes</active>
  </lead>
- <date>2006-07-21</date>
+ <date>2006-07-28</date>
  <time>04:08:00</time>
  <version>
-  <release>1.7.0</release>
+  <release>1.7.1</release>
   <api>1.7.0</api>
  </version>
  <stability>
@@ -33,16 +33,12 @@ o User defined payload</description>
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
- <notes>This release includes fixing a critical problem and an enhancement as follows:
-
-&lt;&lt;&lt; Defect fixes &gt;&gt;&gt;
-
-- Fixed the problem that an activity is invoked twice unexpectedly.
+ <notes>This release includes an enhancement as follows:
 
 &lt;&lt;&lt; Enhancements &gt;&gt;&gt;
 
 * Stagehand_FSM
-- Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.</notes>
+- Changed the code so as to use $array[] = $value instead of array_push($array, $value).</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -132,6 +128,24 @@ o User defined payload</description>
   </filelist>
  </phprelease>
  <changelog>
+  <release>
+   <version>
+    <release>1.7.1</release>
+    <api>1.7.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-07-28</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>This release includes an enhancement as follows:
+
+&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+
+* Stagehand_FSM
+- Changed the code so as to use $array[] = $value instead of array_push($array, $value).</notes>
+  </release>
   <release>
    <version>
     <release>1.7.0</release>

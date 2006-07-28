@@ -23,20 +23,16 @@ o User defined payload
   </maintainer>
   </maintainers>
  <release>
-  <version>1.7.0</version>
-  <date>2006-07-21</date>
+  <version>1.7.1</version>
+  <date>2006-07-28</date>
   <license>BSD License (revised)</license>
   <state>stable</state>
-  <notes>This release includes fixing a critical problem and an enhancement as follows:
-
-&lt;&lt;&lt; Defect fixes &gt;&gt;&gt;
-
-- Fixed the problem that an activity is invoked twice unexpectedly.
+  <notes>This release includes an enhancement as follows:
 
 &lt;&lt;&lt; Enhancements &gt;&gt;&gt;
 
 * Stagehand_FSM
-- Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.
+- Changed the code so as to use $array[] = $value instead of array_push($array, $value).
   </notes>
   <deps>
    <dep type="php" rel="ge" version="4.2.0" optional="no"/>
@@ -102,6 +98,19 @@ o User defined payload
   </filelist>
  </release>
  <changelog>
+   <release>
+    <version>1.7.1</version>
+    <date>2006-07-28</date>
+    <license>BSD License (revised)</license>
+    <state>stable</state>
+    <notes>This release includes an enhancement as follows:
+
+&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+
+* Stagehand_FSM
+- Changed the code so as to use $array[] = $value instead of array_push($array, $value).
+    </notes>
+   </release>
    <release>
     <version>1.7.0</version>
     <date>2006-07-21</date>

@@ -40,18 +40,14 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.7.0';
+$version = '1.7.1';
 $apiVersion = '1.7.0';
-$notes = 'This release includes fixing a critical problem and an enhancement as follows:
-
-<<< Defect fixes >>>
-
-- Fixed the problem that an activity is invoked twice unexpectedly.
+$notes = 'This release includes an enhancement as follows:
 
 <<< Enhancements >>>
 
 * Stagehand_FSM
-- Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.'
+- Changed the code so as to use $array[] = $value instead of array_push($array, $value).'
 
 $package = new PEAR_PackageFileManager2();
 $result = $package->setOptions(array('filelistgenerator' => 'svn',
