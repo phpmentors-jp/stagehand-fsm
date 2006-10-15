@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<package packagerversion="1.4.9" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.5.0a1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
  <name>Stagehand_FSM</name>
- <channel>pear.hatotech.org</channel>
+ <channel>pear.piece-framework.com</channel>
  <summary>A Finite State Machine.</summary>
  <description>Stagehand_FSM provides a self configuring Finite State Machine(FSM).
 The following is a list of features of Stagehand_FSM.
@@ -22,10 +22,10 @@ o User defined payload</description>
   <email>iteman@users.sourceforge.net</email>
   <active>yes</active>
  </lead>
- <date>2006-07-28</date>
- <time>04:08:00</time>
+ <date>2006-10-15</date>
+ <time>10:28:55</time>
  <version>
-  <release>1.7.1</release>
+  <release>1.8.0</release>
   <api>1.7.0</api>
  </version>
  <stability>
@@ -33,12 +33,7 @@ o User defined payload</description>
   <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
- <notes>This release includes an enhancement as follows:
-
-&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
-
-* Stagehand_FSM
-- Changed the code so as to use $array[] = $value instead of array_push($array, $value).</notes>
+ <notes>This is the first release with the new PEAR Channel Server pear.piece-framework.com. There are no changes from the previous release except the PEAR Channel Server is changed.</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -109,8 +104,8 @@ o User defined payload</description>
   <optional>
    <package>
     <name>Stagehand_TestRunner</name>
-    <channel>pear.hatotech.org</channel>
-    <min>0.3.0</min>
+    <channel>pear.piece-framework.com</channel>
+    <min>0.4.0</min>
    </package>
   </optional>
  </dependencies>
@@ -130,6 +125,19 @@ o User defined payload</description>
  <changelog>
   <release>
    <version>
+    <release>1.8.0</release>
+    <api>1.7.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-10-15</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
+   <notes>This is the first release with the new PEAR Channel Server pear.piece-framework.com. There are no changes from the previous release except the PEAR Channel Server is changed.</notes>
+  </release>
+  <release>
+   <version>
     <release>1.7.1</release>
     <api>1.7.0</api>
    </version>
@@ -141,7 +149,7 @@ o User defined payload</description>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
    <notes>This release includes an enhancement as follows:
 
-&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+## Enhancements ##
 
 * Stagehand_FSM
 - Changed the code so as to use $array[] = $value instead of array_push($array, $value).</notes>
@@ -159,11 +167,11 @@ o User defined payload</description>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
    <notes>This release includes fixing a critical problem and an enhancement as follows:
 
-&lt;&lt;&lt; Defect fixes &gt;&gt;&gt;
+## Defect fixes ##
 
 - Fixed the problem that an activity is invoked twice unexpectedly.
 
-&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+## Enhancements ##
 
 * Stagehand_FSM
 - Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.</notes>
@@ -181,7 +189,7 @@ o User defined payload</description>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
    <notes>This release includes one enhancement as follows:
 
-&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+## Enhancements ##
 
 * Stagehand_FSM
 - Added hasEvent() method for checking whether the current state has an event.</notes>

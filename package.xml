@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0" packagerversion="1.4.9">
+<package version="1.0" packagerversion="1.5.0a1">
  <name>Stagehand_FSM</name>
  <summary>A Finite State Machine.</summary>
  <description>Stagehand_FSM provides a self configuring Finite State Machine(FSM).
@@ -23,20 +23,15 @@ o User defined payload
   </maintainer>
   </maintainers>
  <release>
-  <version>1.7.1</version>
-  <date>2006-07-28</date>
+  <version>1.8.0</version>
+  <date>2006-10-15</date>
   <license>BSD License (revised)</license>
   <state>stable</state>
-  <notes>This release includes an enhancement as follows:
-
-&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
-
-* Stagehand_FSM
-- Changed the code so as to use $array[] = $value instead of array_push($array, $value).
+  <notes>This is the first release with the new PEAR Channel Server pear.piece-framework.com. There are no changes from the previous release except the PEAR Channel Server is changed.
   </notes>
   <deps>
    <dep type="php" rel="ge" version="4.2.0" optional="no"/>
-   <dep type="pkg" rel="ge" version="0.3.0" optional="yes">Stagehand_TestRunner</dep>
+   <dep type="pkg" rel="ge" version="0.4.0" optional="yes">Stagehand_TestRunner</dep>
   </deps>
   <filelist>
    <dir name="/" baseinstalldir="/">
@@ -99,13 +94,21 @@ o User defined payload
  </release>
  <changelog>
    <release>
+    <version>1.8.0</version>
+    <date>2006-10-15</date>
+    <license>BSD License (revised)</license>
+    <state>stable</state>
+    <notes>This is the first release with the new PEAR Channel Server pear.piece-framework.com. There are no changes from the previous release except the PEAR Channel Server is changed.
+    </notes>
+   </release>
+   <release>
     <version>1.7.1</version>
     <date>2006-07-28</date>
     <license>BSD License (revised)</license>
     <state>stable</state>
     <notes>This release includes an enhancement as follows:
 
-&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+## Enhancements ##
 
 * Stagehand_FSM
 - Changed the code so as to use $array[] = $value instead of array_push($array, $value).
@@ -118,11 +121,11 @@ o User defined payload
     <state>stable</state>
     <notes>This release includes fixing a critical problem and an enhancement as follows:
 
-&lt;&lt;&lt; Defect fixes &gt;&gt;&gt;
+## Defect fixes ##
 
 - Fixed the problem that an activity is invoked twice unexpectedly.
 
-&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+## Enhancements ##
 
 * Stagehand_FSM
 - Added queueEvent() method for actions. Do not use triggerEvent() method directly from actions, use queueEvent() method instead.
@@ -130,12 +133,12 @@ o User defined payload
    </release>
    <release>
     <version>1.6.0</version>
-    <date>2006-07-16</date>
+    <date>2006-07-17</date>
     <license>BSD License (revised)</license>
     <state>stable</state>
     <notes>This release includes one enhancement as follows:
 
-&lt;&lt;&lt; Enhancements &gt;&gt;&gt;
+## Enhancements ##
 
 * Stagehand_FSM
 - Added hasEvent() method for checking whether the current state has an event.

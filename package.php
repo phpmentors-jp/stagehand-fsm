@@ -40,14 +40,10 @@
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.7.1';
+$version = '1.8.0';
 $apiVersion = '1.7.0';
-$notes = 'This release includes an enhancement as follows:
-
-<<< Enhancements >>>
-
-* Stagehand_FSM
-- Changed the code so as to use $array[] = $value instead of array_push($array, $value).'
+$releaseStability = 'stable';
+$notes = 'This is the first release with the new PEAR Channel Server pear.piece-framework.com. There are no changes from the previous release except the PEAR Channel Server is changed.';
 
 $package = new PEAR_PackageFileManager2();
 $result = $package->setOptions(array('filelistgenerator' => 'svn',
@@ -55,7 +51,9 @@ $result = $package->setOptions(array('filelistgenerator' => 'svn',
                                      'simpleoutput'      => true,
                                      'baseinstalldir'    => '/',
                                      'packagefile'       => 'package2.xml',
-                                     'packagedirectory'  => '.')
+                                     'packagedirectory'  => '.',
+                                     'dir_roles'         => array('tests' => 'test',
+                                                                  'docs' => 'doc'))
                                );
 
 if (PEAR::isError($result)) {
@@ -75,14 +73,14 @@ o Nested FSM
 o History Marker
 o Activity
 o User defined payload');
-$package->setChannel('pear.hatotech.org');
+$package->setChannel('pear.piece-framework.com');
 $package->setLicense('BSD License (revised)',
                      'http://www.opensource.org/licenses/bsd-license.php'
                      );
 $package->setAPIVersion($apiVersion);
 $package->setAPIStability('stable');
 $package->setReleaseVersion($version);
-$package->setReleaseStability('stable');
+$package->setReleaseStability($releaseStability);
 $package->setNotes($notes);
 $package->setPhpDep('4.2.0');
 $package->setPearinstallerDep('1.4.3');
