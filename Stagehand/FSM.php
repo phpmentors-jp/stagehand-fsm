@@ -4,7 +4,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2006, KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * Copyright (c) 2006 KUBO Atsuhiro <iteman@users.sourceforge.net>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@
  * @copyright  2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
- * @link       http://iteman.typepad.jp/stagehand/
+ * @link       http://piece-framework.com/
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/FSMExample.html
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/
@@ -79,7 +79,7 @@ define('STAGEHAND_FSM_STATE_FINAL', '_Stagehand_FSM_State_Final');
  * @copyright  2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
- * @link       http://iteman.typepad.jp/stagehand/
+ * @link       http://piece-framework.com/
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/FSMExample.html
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/

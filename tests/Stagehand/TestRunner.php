@@ -5,7 +5,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2006, KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * Copyright (c) 2006 KUBO Atsuhiro <iteman@users.sourceforge.net>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@
  * @copyright  2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
- * @link       http://iteman.typepad.jp/stagehand/
+ * @link       http://piece-framework.com/
  * @see        Stagehand_TestRunner_PHPUnitTestRunner::run()
  * @since      File available since Release 0.1.0
  */
