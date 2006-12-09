@@ -40,7 +40,7 @@
 
 require_once 'PHPUnit.php';
 require_once 'Stagehand/FSM/State.php';
-require_once 'GateKeeper.php';
+require_once dirname(__FILE__) . '/../FSMTestCase/GateKeeper.php';
 
 // {{{ Stagehand_FSM_StateTestCase
 
