@@ -104,8 +104,7 @@ class Stagehand_FSM_FSMState extends Stagehand_FSM
      */
     function &getEvent($eventName)
     {
-        $event = &$this->_state->getEvent($eventName);
-        return $event;
+        return $this->_state->getEvent($eventName);
     }
 
     // }}}
@@ -119,8 +118,7 @@ class Stagehand_FSM_FSMState extends Stagehand_FSM
      */
     function &addEvent($eventName)
     {
-        $event = &$this->_state->addEvent($eventName);
-        return $event;
+        return $this->_state->addEvent($eventName);
     }
 
     // }}}
