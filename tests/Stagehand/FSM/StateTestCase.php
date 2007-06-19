@@ -29,12 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
- * @link       http://piece-framework.com/
- * @see        Stagehand_FSM_State
  * @since      File available since Release 0.1.0
  */
 
@@ -48,12 +45,9 @@ require_once dirname(__FILE__) . '/../FSMTestCase/GateKeeper.php';
  * TestCase for Stagehand_FSM_State
  *
  * @package    Stagehand_FSM
- * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @copyright  2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
- * @link       http://piece-framework.com/
- * @see        Stagehand_FSM_State
  * @since      Class available since Release 0.1.0
  */
 class Stagehand_FSM_StateTestCase extends PHPUnit_TestCase

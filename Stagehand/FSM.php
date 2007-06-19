@@ -29,12 +29,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @author     MIYAI Fumihiko <fumichz@yahoo.co.jp>
  * @copyright  2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
- * @link       http://piece-framework.com/
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/FSMExample.html
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/
@@ -74,12 +71,9 @@ define('STAGEHAND_FSM_STATE_FINAL', '_Stagehand_FSM_State_Final');
  * o User defined payload
  *
  * @package    Stagehand_FSM
- * @author     KUBO Atsuhiro <iteman@users.sourceforge.net>
- * @author     MIYAI Fumihiko <fumichz@yahoo.co.jp>
  * @copyright  2006 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
- * @link       http://piece-framework.com/
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/FSMExample.html
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/
