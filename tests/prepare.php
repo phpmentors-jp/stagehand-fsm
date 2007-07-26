@@ -1,4 +1,3 @@
-#!env php
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
@@ -33,35 +32,12 @@
  * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
- * @see        Stagehand_TestRunner_PHPUnitTestRunner::run()
- * @since      File available since Release 0.1.0
+ * @since      File available since Release 1.9.0
  */
 
-error_reporting(E_ALL);
-set_include_path(dirname(__FILE__) . '/../../..' . PATH_SEPARATOR . get_include_path());
-
-require_once 'Stagehand/TestRunner/PHPUnitTestRunner.php';
-
-$result = Stagehand_TestRunner_PHPUnitTestRunner::run(dirname(__FILE__));
-
-$runs = $result->runCount();
-$passes = count($result->passedTests());
-$failures = $runs - $passes;
-
-printf('### Results ###
-%s
-Runs     : %d
-Passes   : %d (%d%%)
-Failures : %d (%d%%), %d errors, %d failures
-',
-       $result->toString(),
-       $runs,
-       $passes, $runs ? $passes / $runs * 100 : 0,
-       $failures, $runs ? $failures / $runs * 100 : 0,
-       $result->errorCount(), $result->failureCount()
-       );
-
-exit();
+if (file_exists(dirname(__FILE__) . '/../Stagehand/FSM.php')) {
+    set_include_path(realpath(dirname(__FILE__) . '/..') . PATH_SEPARATOR . get_include_path());
+}
 
 /*
  * Local Variables:
