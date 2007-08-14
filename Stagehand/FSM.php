@@ -465,6 +465,17 @@ class Stagehand_FSM
         return $this->_currentState->hasEvent($name);
     }
 
+    // }}}
+    // {{{ clearPayload()
+
+    /**
+     * Removes the payload from the property.
+     */
+    function clearPayload()
+    {
+        unset($this->_payload);
+    }
+
     /**#@-*/
 
     /**#@+
