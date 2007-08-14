@@ -148,6 +148,7 @@ class Stagehand_FSM
      * Starts the Finite State Machine.
      *
      * @throws STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN
+     * @throws STAGEHAND_FSM_ERROR_NOT_CALLABLE
      */
     function start()
     {
@@ -205,6 +206,7 @@ class Stagehand_FSM
      * @param boolean $transitionToHistoryMarker
      * @return Stagehand_FSM_State
      * @throws STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN
+     * @throws STAGEHAND_FSM_ERROR_NOT_CALLABLE
      */
     function &triggerEvent($eventName, $transitionToHistoryMarker = false)
     {
@@ -573,6 +575,7 @@ class Stagehand_FSM
      * @param boolean $transitionToHistoryMarker
      * @return Stagehand_FSM_State
      * @throws STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN
+     * @throws STAGEHAND_FSM_ERROR_NOT_CALLABLE
      * @since Method available since Release 1.7.0
      */
     function &_processEvent($eventName, $transitionToHistoryMarker = false)
@@ -588,17 +591,30 @@ class Stagehand_FSM
         }
 
         $event = &$this->_currentState->getEvent($eventName);
+        if (!is_null($event)) {
+            if (!$this->_isSpecialEvent($eventName)) {
+                $result = $event->evaluateGuard($this);
+                if (Stagehand_FSM_Error::hasErrors('exception')) {
+                    $return = null;
+                    return $return;
+                }
 
-        if (is_null($event)
-            || !$this->_isSpecialEvent($eventName)
-            && !$event->evaluateGuard($this)
-            ) {
+                if (!$result) {
+                    $eventName = STAGEHAND_FSM_EVENT_DO;
+                    $event = &$this->_currentState->getEvent(STAGEHAND_FSM_EVENT_DO);
+                }
+            }
+        } else {
             $eventName = STAGEHAND_FSM_EVENT_DO;
             $event = &$this->_currentState->getEvent(STAGEHAND_FSM_EVENT_DO);
         }
 
         if (!$this->_isSpecialEvent($eventName)) {
             $this->_processEvent(STAGEHAND_FSM_EVENT_EXIT, $transitionToHistoryMarker);
+            if (Stagehand_FSM_Error::hasErrors('exception')) {
+                $return = null;
+                return $return;
+            }
         }
 
         if (!$this->_isSpecialEvent($eventName)) {
@@ -607,6 +623,10 @@ class Stagehand_FSM
         }
 
         $event->invokeAction($this);
+        if (Stagehand_FSM_Error::hasErrors('exception')) {
+            $return = null;
+            return $return;
+        }
 
         if ($this->_isEntryEvent($eventName)
             && is_a($this->_currentState, __CLASS__)
@@ -621,10 +641,18 @@ class Stagehand_FSM
 
         if (!$this->_isSpecialEvent($eventName)) {
             $this->_processEvent(STAGEHAND_FSM_EVENT_ENTRY, $event->getTransitionToHistoryMarker());
+            if (Stagehand_FSM_Error::hasErrors('exception')) {
+                $return = null;
+                return $return;
+            }
         }
 
         if (!$this->_isSpecialEvent($eventName)) {
             $this->_processEvent(STAGEHAND_FSM_EVENT_DO, $event->getTransitionToHistoryMarker());
+            if (Stagehand_FSM_Error::hasErrors('exception')) {
+                $return = null;
+                return $return;
+            }
         }
 
         return $this->_currentState;

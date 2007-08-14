@@ -43,6 +43,7 @@ require_once 'PEAR/ErrorStack.php';
  * Error codes
  */
 define('STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN', -1);
+define('STAGEHAND_FSM_ERROR_NOT_CALLABLE',     -2);
 
 // }}}
 // {{{ Stagehand_FSM_Error

@@ -482,6 +482,8 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $fsm->triggerEvent('w');
     }
 
+    function triggerEventInTransitionAction(&$fsm, &$event, &$payload) {}
+
     function testShutdown()
     {
         Stagehand_FSM_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));

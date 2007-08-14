@@ -212,11 +212,19 @@ class Stagehand_FSM_Event
      *
      * @param Stagehand_FSM &$fsm
      * @return boolean
+     * @throws STAGEHAND_FSM_ERROR_NOT_CALLABLE
      */
     function evaluateGuard(&$fsm)
     {
-        if (!is_callable($this->_guard)) {
+        if (is_null($this->_guard)) {
             return true;
+        }
+
+        if (!is_callable($this->_guard)) {
+            Stagehand_FSM_Error::push(STAGEHAND_FSM_ERROR_NOT_CALLABLE,
+                                      'The guard is not callable.'
+                                      );
+            return;
         }
 
         $payload = &$fsm->getPayload();
@@ -232,10 +240,18 @@ class Stagehand_FSM_Event
      * Invokes the action.
      *
      * @param Stagehand_FSM &$fsm
+     * @throws STAGEHAND_FSM_ERROR_NOT_CALLABLE
      */
     function invokeAction(&$fsm)
     {
+        if (is_null($this->_action)) {
+            return;
+        }
+
         if (!is_callable($this->_action)) {
+            Stagehand_FSM_Error::push(STAGEHAND_FSM_ERROR_NOT_CALLABLE,
+                                      'The action is not callable.'
+                                      );
             return;
         }
 
