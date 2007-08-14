@@ -472,6 +472,8 @@ class Stagehand_FSM
 
     /**
      * Removes the payload from the property.
+     *
+     * @since Method available since Release 1.9.0
      */
     function clearPayload()
     {
