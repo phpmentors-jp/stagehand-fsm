@@ -32,74 +32,70 @@
  * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
- * @see        PEAR_PackageFileManager2
  * @since      File available since Release 0.1.0
  */
 
 require_once 'PEAR/PackageFileManager2.php';
 
-$version = '1.8.0';
-$apiVersion = '1.7.0';
+PEAR::staticPushErrorHandling(PEAR_ERROR_CALLBACK, create_function('$error', 'var_dump($error); exit();'));
+
+$releaseVersion = '1.9.0';
 $releaseStability = 'stable';
-$notes = 'This is the first release with the new PEAR Channel Server pear.piece-framework.com. There are no changes from the previous release except the PEAR Channel Server is changed.';
+$apiVersion = '1.7.0';
+$apiStability = 'stable';
+$notes = 'A new release of Stagehand_FSM is now available.
+
+What\'s New in Stagehand_FSM 1.9.0
+
+ * A few Enhancements: clearPayload(), and error handling for invalid callbacks are added.
+
+See the following release notes for details.
+
+Enhancements
+============
+
+- Added clearPayload() to remove the payload from the property. (Stagehand_FSM)
+- Added error handling for invalid callbacks.';
 
 $package = new PEAR_PackageFileManager2();
-$result = $package->setOptions(array('filelistgenerator' => 'svn',
-                                     'changelogoldtonew' => false,
-                                     'simpleoutput'      => true,
-                                     'baseinstalldir'    => '/',
-                                     'packagefile'       => 'package2.xml',
-                                     'packagedirectory'  => '.',
-                                     'dir_roles'         => array('tests' => 'test',
-                                                                  'docs' => 'doc'))
-                               );
-
-if (PEAR::isError($result)) {
-    print $result->getMessage();
-    exit();
-}
+$package->setOptions(array('filelistgenerator' => 'svn',
+                           'changelogoldtonew' => false,
+                           'simpleoutput'      => true,
+                           'baseinstalldir'    => '/',
+                           'packagefile'       => 'package.xml',
+                           'packagedirectory'  => '.',
+                           'dir_roles'         => array('data' => 'data',
+                                                        'tests' => 'test',
+                                                        'docs' => 'doc'),
+                           'ignore'            => array('package.php', 'package.xml'))
+                     );
 
 $package->setPackage('Stagehand_FSM');
 $package->setPackageType('php');
-$package->setSummary('A Finite State Machine.');
-$package->setDescription('Stagehand_FSM provides a self configuring Finite State Machine(FSM).
-The following is a list of features of Stagehand_FSM.
-o Transition action
-o Entry and Exit state actions
-o Initial and Final pseudo states
-o Nested FSM
-o History Marker
-o Activity
-o User defined payload');
+$package->setSummary('A finite state machine');
+$package->setDescription('Stagehand_FSM is a finite state machine.
+
+Using Stagehand_FSM with applications, frameworks, and toolkits, it can make to simplify complex state management code in them. And also, it can be used as an engine of event-driven architecture.');
 $package->setChannel('pear.piece-framework.com');
-$package->setLicense('BSD License (revised)',
-                     'http://www.opensource.org/licenses/bsd-license.php'
-                     );
+$package->setLicense('BSD License (revised)', 'http://www.opensource.org/licenses/bsd-license.php');
 $package->setAPIVersion($apiVersion);
-$package->setAPIStability('stable');
-$package->setReleaseVersion($version);
+$package->setAPIStability($apiStability);
+$package->setReleaseVersion($releaseVersion);
 $package->setReleaseStability($releaseStability);
 $package->setNotes($notes);
-$package->setPhpDep('4.2.0');
+$package->setPhpDep('4.3.0');
 $package->setPearinstallerDep('1.4.3');
+$package->addPackageDepWithChannel('required', 'PEAR', 'pear.php.net', '1.4.3');
+$package->addPackageDepWithChannel('optional', 'Stagehand_TestRunner', 'pear.piece-framework.com', '0.5.0');
+$package->addPackageDepWithChannel('optional', 'PHPUnit', 'pear.phpunit.de', '1.3.2');
 $package->addMaintainer('lead', 'iteman', 'KUBO Atsuhiro', 'iteman@users.sourceforge.net');
-$package->addIgnore(array('package.php', 'package.xml', 'package2.xml'));
 $package->addGlobalReplacement('package-info', '@package_version@', 'version');
 $package->generateContents();
-$package1 = &$package->exportCompatiblePackageFile1();
 
-if (array_key_exists(1, $_SERVER['argv'])
-    && $_SERVER['argv'][1] == 'make'
-    ) {
-    $result = $package->writePackageFile();
-    $result = $package1->writePackageFile();
+if (array_key_exists(1, $_SERVER['argv']) && $_SERVER['argv'][1] == 'make') {
+    $package->writePackageFile();
 } else {
-    $result = $package->debugPackageFile();
-    $result = $package1->debugPackageFile();
-}
-
-if (PEAR::isError($result)) {
-    print $result->getMessage();
+    $package->debugPackageFile();
 }
 
 exit();
