@@ -81,7 +81,7 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
 
     function setUp()
     {
-        Stagehand_FSM_Error::pushCallback(create_function('$error', 'var_dump($error); return ' . PEAR_ERRORSTACK_DIE . ';'));
+        PEAR_ErrorStack::setDefaultCallback(create_function('$error', 'var_dump($error); return ' . PEAR_ERRORSTACK_DIE . ';'));
         $this->_keeper = &new GateKeeper();
     }
 
@@ -89,7 +89,6 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
     {
         $this->_keeper = null;
         Stagehand_FSM_Error::clearErrors();
-        Stagehand_FSM_Error::popCallback();
      }
 
     function testAddingState()
@@ -486,7 +485,7 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
 
     function testShutdown()
     {
-        Stagehand_FSM_Error::pushCallback(create_function('$error', 'return ' . PEAR_ERRORSTACK_PUSHANDLOG . ';'));
+        Stagehand_FSM_Error::disableCallback();
         $GLOBALS['finalizeCalled'] = false;
 
         $fsm = &new Stagehand_FSM();
@@ -498,7 +497,7 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $fsm->triggerEvent(STAGEHAND_FSM_EVENT_END);
 
         $this->assertTrue($GLOBALS['finalizeCalled']);
-        $this->assertFalse(Stagehand_FSM_Error::hasErrors('exception'));
+        $this->assertFalse(Stagehand_FSM_Error::hasErrors());
 
         $fsm->triggerEvent('foo');
         $error = Stagehand_FSM_Error::pop();
@@ -506,7 +505,7 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $this->assertEquals(STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN, $error['code']);
 
         unset($GLOBALS['finalizeCalled']);
-        Stagehand_FSM_Error::popCallback();
+        Stagehand_FSM_Error::enableCallback();
     }
 
     function finalize()

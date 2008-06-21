@@ -4,7 +4,7 @@
 /**
  * PHP versions 4 and 5
  *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    SVN: $Id$
  * @since      File available since Release 1.3.0
@@ -52,7 +52,7 @@ define('STAGEHAND_FSM_ERROR_NOT_CALLABLE',     -2);
  * An error class for Stagehand_FSM package.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
  * @since      Class available since Release 1.3.0
@@ -95,47 +95,56 @@ class Stagehand_FSM_Error
      * @see PEAR_ErrorStack::staticPush()
      * @since Method available since Release 1.4.0
      */
-    function push($code, $message = false, $level = 'exception',
-                  $params = array(), $repackage = false, $backtrace = false
+    function push($code,
+                  $message = false,
+                  $level = 'exception',
+                  $params = array(),
+                  $repackage = false,
+                  $backtrace = false
                   )
     {
         if (!$backtrace) {
             $backtrace = debug_backtrace();
         }
 
-        PEAR_ErrorStack::staticPush('Stagehand_FSM', $code, $level, $params, $message, $repackage, $backtrace);
+        PEAR_ErrorStack::staticPush('Stagehand_FSM',
+                                    $code,
+                                    'exception',
+                                    $params,
+                                    $message,
+                                    $repackage,
+                                    $backtrace
+                                    );
     }
 
     // }}}
     // {{{ pushCallback()
 
     /**
-     * Pushes a callback. This method is a wrapper for
-     * PEAR_ErrorStack::staticPushCallback() method.
+     * Pushes a callback for this package.
      *
      * @param callback $callback
-     * @see PEAR_ErrorStack::staticPushCallback()
      * @since Method available since Release 1.4.0
      */
     function pushCallback($callback)
     {
-        PEAR_ErrorStack::staticPushCallback($callback);
+        $errorStack = &PEAR_ErrorStack::singleton('Stagehand_FSM');
+        $errorStack->pushCallback($callback);
     }
 
     // }}}
     // {{{ popCallback()
 
     /**
-     * Pops a callback. This method is a wrapper for
-     * PEAR_ErrorStack::staticPopCallback() method.
+     * Pops a callback for this package.
      *
      * @return callback
-     * @see PEAR_ErrorStack::staticPopCallback()
      * @since Method available since Release 1.4.0
      */
     function popCallback()
     {
-        return PEAR_ErrorStack::staticPopCallback();
+        $errorStack = &PEAR_ErrorStack::singleton('Stagehand_FSM');
+        $errorStack->popCallback();
     }
 
     // }}}
@@ -145,14 +154,13 @@ class Stagehand_FSM_Error
      * Returns whether the stack has errors or not. This method is a wrapper
      * for PEAR_ErrorStack::staticHasErrors() method.
      *
-     * @param string $level
      * @return boolean
      * @see PEAR_ErrorStack::staticHasErrors()
      * @since Method available since Release 1.4.0
      */
-    function hasErrors($level = false)
+    function hasErrors()
     {
-        return PEAR_ErrorStack::staticHasErrors('Stagehand_FSM', $level);
+        return PEAR_ErrorStack::staticHasErrors('Stagehand_FSM', 'exception');
     }
 
     // }}}
@@ -168,8 +176,7 @@ class Stagehand_FSM_Error
      */
     function pop()
     {
-        $stack = &PEAR_ErrorStack::singleton('Stagehand_FSM');
-        return $stack->pop();
+        return PEAR_ErrorStack::staticPop('Stagehand_FSM');
     }
 
     // }}}
@@ -185,6 +192,45 @@ class Stagehand_FSM_Error
     {
         $stack = &PEAR_ErrorStack::singleton('Stagehand_FSM');
         $stack->getErrors(true);
+    }
+
+    // }}}
+    // {{{ disableCallback()
+
+    /**
+     * Disables the last callback.
+     *
+     * @since Method available since Release 1.10.0
+     */
+    function disableCallback()
+    {
+        Stagehand_FSM_Error::pushCallback(array(__CLASS__, 'handleError'));
+    }
+
+    // }}}
+    // {{{ disableCallback()
+
+    /**
+     * Enables the last  callback.
+     *
+     * @since Method available since Release 1.10.0
+     */
+    function enableCallback()
+    {
+        Stagehand_FSM_Error::popCallback();
+    }
+
+    // }}}
+    // {{{ handleError()
+
+    /**
+     * An error handler for this package.
+     *
+     * @since Method available since Release 1.10.0
+     */
+    function handleError()
+    {
+        return PEAR_ERRORSTACK_PUSHANDLOG;
     }
 
     /**#@+
