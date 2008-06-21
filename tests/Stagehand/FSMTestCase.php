@@ -40,11 +40,12 @@ require_once 'PHPUnit.php';
 require_once 'Stagehand/FSM.php';
 require_once 'Stagehand/FSM/Error.php';
 require_once dirname(__FILE__) . '/FSMTestCase/GateKeeper.php';
+require_once 'PEAR/ErrorStack.php';
 
 // {{{ Stagehand_FSMTestCase
 
 /**
- * TestCase for Stagehand_FSM
+ * Some tests for Stagehand_FSM.
  *
  * @package    Stagehand_FSM
  * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
