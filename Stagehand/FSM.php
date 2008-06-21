@@ -671,4 +671,3 @@ class Stagehand_FSM
  * indent-tabs-mode: nil
  * End:
  */
-?>

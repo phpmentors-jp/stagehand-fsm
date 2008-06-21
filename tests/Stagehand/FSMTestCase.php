@@ -664,4 +664,3 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
  * indent-tabs-mode: nil
  * End:
  */
-?>

@@ -49,4 +49,3 @@ if (file_exists(dirname(__FILE__) . '/../Stagehand/FSM.php')) {
  * indent-tabs-mode: nil
  * End:
  */
-?>

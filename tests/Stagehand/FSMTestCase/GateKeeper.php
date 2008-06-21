@@ -139,4 +139,3 @@ class GateKeeper
  * indent-tabs-mode: nil
  * End:
  */
-?>

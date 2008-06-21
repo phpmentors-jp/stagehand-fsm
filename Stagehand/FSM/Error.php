@@ -254,4 +254,3 @@ class Stagehand_FSM_Error
  * indent-tabs-mode: nil
  * End:
  */
-?>

@@ -205,4 +205,3 @@ class Stagehand_FSM_EventTestCaseMockFSM
  * indent-tabs-mode: nil
  * End:
  */
-?>

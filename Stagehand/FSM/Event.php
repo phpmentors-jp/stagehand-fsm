@@ -284,4 +284,3 @@ class Stagehand_FSM_Event
  * indent-tabs-mode: nil
  * End:
  */
-?>
