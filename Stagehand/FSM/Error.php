@@ -49,7 +49,7 @@ define('STAGEHAND_FSM_ERROR_NOT_CALLABLE',     -2);
 // {{{ Stagehand_FSM_Error
 
 /**
- * An error class for Stagehand_FSM package.
+ * The error class for the Stagehand_FSM package.
  *
  * @package    Stagehand_FSM
  * @copyright  2006-2008 KUBO Atsuhiro <iteman@users.sourceforge.net>
@@ -208,10 +208,10 @@ class Stagehand_FSM_Error
     }
 
     // }}}
-    // {{{ disableCallback()
+    // {{{ enableCallback()
 
     /**
-     * Enables the last  callback.
+     * Enables the last callback.
      *
      * @since Method available since Release 1.10.0
      */
