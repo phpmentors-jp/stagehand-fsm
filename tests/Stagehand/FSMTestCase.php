@@ -486,7 +486,6 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
 
     function testShutdown()
     {
-        Stagehand_FSM_Error::disableCallback();
         $GLOBALS['finalizeCalled'] = false;
 
         $fsm = &new Stagehand_FSM();
@@ -495,18 +494,21 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
         $fsm->setEntryAction(STAGEHAND_FSM_STATE_FINAL, array(&$this, 'finalize'));
         $fsm->start();
 
+        Stagehand_FSM_Error::disableCallback();
         $fsm->triggerEvent(STAGEHAND_FSM_EVENT_END);
+        Stagehand_FSM_Error::enableCallback();
 
         $this->assertTrue($GLOBALS['finalizeCalled']);
         $this->assertFalse(Stagehand_FSM_Error::hasErrors());
 
+        Stagehand_FSM_Error::disableCallback();
         $fsm->triggerEvent('foo');
+        Stagehand_FSM_Error::enableCallback();
         $error = Stagehand_FSM_Error::pop();
 
         $this->assertEquals(STAGEHAND_FSM_ERROR_ALREADY_SHUTDOWN, $error['code']);
 
         unset($GLOBALS['finalizeCalled']);
-        Stagehand_FSM_Error::enableCallback();
     }
 
     function finalize()
