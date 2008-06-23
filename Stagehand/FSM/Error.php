@@ -171,7 +171,6 @@ class Stagehand_FSM_Error
      * wrapper for PEAR_ErrorStack::pop() method.
      *
      * @return array
-     * @see PEAR_ErrorStack::pop()
      * @since Method available since Release 1.4.0
      */
     function pop()
