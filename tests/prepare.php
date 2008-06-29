@@ -41,6 +41,10 @@ if (file_exists(dirname(__FILE__) . '/../Stagehand/FSM.php')) {
     set_include_path(realpath(dirname(__FILE__) . '/..') . PATH_SEPARATOR . get_include_path());
 }
 
+require_once 'PEAR/ErrorStack.php';
+
+PEAR_ErrorStack::setDefaultCallback(create_function('$error', 'var_dump($error); return ' . PEAR_ERRORSTACK_DIE . ';'));
+
 /*
  * Local Variables:
  * mode: php

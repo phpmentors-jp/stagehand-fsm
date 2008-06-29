@@ -40,7 +40,6 @@ require_once 'PHPUnit.php';
 require_once 'Stagehand/FSM.php';
 require_once 'Stagehand/FSM/Error.php';
 require_once dirname(__FILE__) . '/FSMTestCase/GateKeeper.php';
-require_once 'PEAR/ErrorStack.php';
 
 // {{{ Stagehand_FSMTestCase
 
@@ -82,7 +81,6 @@ class Stagehand_FSMTestCase extends PHPUnit_TestCase
 
     function setUp()
     {
-        PEAR_ErrorStack::setDefaultCallback(create_function('$error', 'var_dump($error); return ' . PEAR_ERRORSTACK_DIE . ';'));
         $this->_keeper = &new GateKeeper();
     }
 
