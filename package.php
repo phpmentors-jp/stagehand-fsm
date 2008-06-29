@@ -36,8 +36,9 @@
  */
 
 require_once 'PEAR/PackageFileManager2.php';
+require_once 'PEAR.php';
 
-PEAR_ErrorStack::setDefaultCallback(create_function('$error', 'var_dump($error); return ' . PEAR_ERRORSTACK_DIE . ';'));
+PEAR::staticPushErrorHandling(PEAR_ERROR_CALLBACK, create_function('$error', 'var_dump($error); exit();'));
 
 $releaseVersion = '1.10.0';
 $releaseStability = 'stable';
