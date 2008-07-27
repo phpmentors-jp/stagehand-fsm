@@ -46,7 +46,9 @@ $apiVersion = '1.7.0';
 $apiStability = 'stable';
 $notes = 'A new release of Stagehand_FSM is now available.
 
-What\'s New in Stagehand_FSM 1.10.0';
+What\'s New in Stagehand_FSM 1.10.0
+
+ * Improved error handling: The behavior of internal error handling has been changed so as to handle only own and "exception" level errors.';
 
 $package = new PEAR_PackageFileManager2();
 $package->setOptions(array('filelistgenerator' => 'file',

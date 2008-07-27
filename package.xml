@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.7.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -15,8 +15,8 @@ Using Stagehand_FSM with applications, frameworks, and toolkits, it can make to 
   <email>iteman@users.sourceforge.net</email>
   <active>yes</active>
  </lead>
- <date>2008-06-22</date>
- <time>02:14:31</time>
+ <date>2008-07-27</date>
+ <time>17:43:19</time>
  <version>
   <release>1.10.0</release>
   <api>1.7.0</api>
@@ -28,7 +28,9 @@ Using Stagehand_FSM with applications, frameworks, and toolkits, it can make to 
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
  <notes>A new release of Stagehand_FSM is now available.
 
-What&apos;s New in Stagehand_FSM 1.10.0</notes>
+What&apos;s New in Stagehand_FSM 1.10.0
+
+ * Improved error handling: The behavior of internal error handling has been changed so as to handle only own and &quot;exception&quot; level errors.</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <dir name="docs">
@@ -109,11 +111,13 @@ What&apos;s New in Stagehand_FSM 1.10.0</notes>
     <release>stable</release>
     <api>stable</api>
    </stability>
-   <date>2008-06-22</date>
+   <date>2008-07-27</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License (revised)</license>
    <notes>A new release of Stagehand_FSM is now available.
 
-What&apos;s New in Stagehand_FSM 1.10.0</notes>
+What&apos;s New in Stagehand_FSM 1.10.0
+
+ * Improved error handling: The behavior of internal error handling has been changed so as to handle only own and &quot;exception&quot; level errors.</notes>
   </release>
   <release>
    <version>
