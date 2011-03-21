@@ -2,9 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
- * PHP versions 4 and 5
- *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,102 +27,71 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
- * @version    SVN: $Id$
+ * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
  */
 
-require_once realpath(dirname(__FILE__) . '/../../prepare.php');
-require_once 'PHPUnit.php';
-require_once 'Stagehand/FSM/State.php';
-require_once dirname(__FILE__) . '/../FSMTestCase/GateKeeper.php';
-
-// {{{ Stagehand_FSM_StateTestCase
+namespace Stagehand\FSM;
 
 /**
- * TestCase for Stagehand_FSM_State
- *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
-class Stagehand_FSM_StateTestCase extends PHPUnit_TestCase
+class StateTest extends \PHPUnit_Framework_TestCase
 {
-
-    // {{{ properties
-
-    /**#@+
-     * @access public
+    /**
+     * @test
      */
-
-    /**#@-*/
-
-    /**#@+
-     * @access private
-     */
-
-    /**#@-*/
-
-    /**#@+
-     * @access public
-     */
-
-    function testCreatingSpecialEventsInConstructor()
+    public function createsSpecialEventsInTheConstructor()
     {
-        $state = &new Stagehand_FSM_State('foo');
-        $entry = &$state->getEvent(STAGEHAND_FSM_EVENT_ENTRY);
-        $exit  = &$state->getEvent(STAGEHAND_FSM_EVENT_EXIT);
-        $do  = &$state->getEvent(STAGEHAND_FSM_EVENT_DO);
+        $state = new State('foo');
+        $entry = $state->getEvent(Event::EVENT_ENTRY);
+        $this->assertInstanceOf('\Stagehand\FSM\Event', $entry);
+        $this->assertEquals(Event::EVENT_ENTRY, $entry->getName());
 
-        $this->assertTrue(is_a($entry, 'STAGEHAND_FSM_EVENT'));
-        $this->assertEquals(STAGEHAND_FSM_EVENT_ENTRY, $entry->getName());
-        $this->assertTrue(is_a($exit, 'STAGEHAND_FSM_EVENT'));
-        $this->assertEquals(STAGEHAND_FSM_EVENT_EXIT, $exit->getName());
-        $this->assertTrue(is_a($do, 'STAGEHAND_FSM_EVENT'));
-        $this->assertEquals(STAGEHAND_FSM_EVENT_DO, $do->getName());
+        $exit = $state->getEvent(Event::EVENT_EXIT);
+        $this->assertInstanceOf('\Stagehand\FSM\Event', $exit);
+        $this->assertEquals(Event::EVENT_EXIT, $exit->getName());
+
+        $do = $state->getEvent(Event::EVENT_DO);
+        $this->assertInstanceOf('\Stagehand\FSM\Event', $do);
+        $this->assertEquals(Event::EVENT_DO, $do->getName());
     }
 
-    function testAddingEvent()
+    /**
+     * @test
+     */
+    public function addsAnEvent()
     {
-        $state = &new Stagehand_FSM_State('foo');
-        $foo = &$state->addEvent('foo');
-        $bar = &$state->addEvent('bar');
-
-        $this->assertTrue(is_a($foo, 'STAGEHAND_FSM_EVENT'));
+        $state = new State('foo');
+        $foo = $state->addEvent('foo');
+        $this->assertInstanceOf('\Stagehand\FSM\Event', $foo);
         $this->assertEquals('foo', $foo->getName());
-        $this->assertTrue(is_a($bar, 'STAGEHAND_FSM_EVENT'));
+
+        $bar = $state->addEvent('bar');
+        $this->assertInstanceOf('\Stagehand\FSM\Event', $bar);
         $this->assertEquals('bar', $bar->getName());
     }
 
     /**
+     * @test
      * @since Method available since Release 1.6.0
      */
-    function testCheckingWhetherStateHasEvent()
+    public function checksWhetherTheStateHasTheGivenEvent()
     {
-        $state = &new Stagehand_FSM_State('foo');
-        $foo = &$state->addEvent('foo');
-        $bar = &$state->addEvent('bar');
-
+        $state = new State('foo');
+        $state->addEvent('foo');
         $this->assertTrue($state->hasEvent('foo'));
+        $state->addEvent('bar');
         $this->assertTrue($state->hasEvent('bar'));
         $this->assertFalse($state->hasEvent('baz'));
     }
-
-    /**#@-*/
-
-    /**#@+
-     * @access private
-     */
-
-    /**#@-*/
-
-    // }}}
 }
-
-// }}}
 
 /*
  * Local Variables:

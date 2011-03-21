@@ -2,9 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
- * PHP versions 4 and 5
- *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,128 +27,59 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
- * @version    SVN: $Id$
+ * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
  */
 
-require_once 'Stagehand/FSM/Event.php';
-
-// {{{ constants
-
-/*
- * Constants for special events.
- */
-define('STAGEHAND_FSM_EVENT_ENTRY', '_Stagehand_FSM_Event_Entry');
-define('STAGEHAND_FSM_EVENT_EXIT', '_Stagehand_FSM_Event_Exit');
-define('STAGEHAND_FSM_EVENT_START', '_Stagehand_FSM_Event_Start');
-define('STAGEHAND_FSM_EVENT_END', '_Stagehand_FSM_Event_End');
-define('STAGEHAND_FSM_EVENT_DO', '_Stagehand_FSM_Event_Do');
-
-// }}}
-// {{{ Stagehand_FSM_State
+namespace Stagehand\FSM;
 
 /**
- * A state class which builds initial structure of the state which consists
- * entry/exit actions and an activity, and behaves as event holder of the
- * state.
+ * A sub-class of the FSM class that has capability of the State class.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
-class Stagehand_FSM_State
+class FSMState extends FSM
 {
-
-    // {{{ properties
-
-    /**#@+
-     * @access public
-     */
-
-    /**#@-*/
-
-    /**#@+
-     * @access private
-     */
-
-    var $_name;
-    var $_events;
-
-    /**#@-*/
-
-    /**#@+
-     * @access public
-     */
-
-    // }}}
-    // {{{ constructor
+    protected $state;
 
     /**
-     * Constructor
+     * Wraps a FSM object up with a FSMState object.
      *
-     * @param string $name
+     * @param \Stagehand\FSM\FSM $fsm
+     * @return \Stagehand\FSM\FSMState
      */
-    function Stagehand_FSM_State($name)
+    public static function wrap($fsm)
     {
-        $this->_name = $name;
-        $this->addEvent(STAGEHAND_FSM_EVENT_ENTRY);
-        $this->addEvent(STAGEHAND_FSM_EVENT_EXIT);
-        $this->addEvent(STAGEHAND_FSM_EVENT_DO);
+        return new self($fsm);
     }
-
-    // }}}
-    // {{{ getEvent()
 
     /**
      * Finds and returns the event with the given name.
      *
-     * @param string $event
+     * @param string $eventName
      * @return mixed
      */
-    function &getEvent($event)
+    public function getEvent($eventName)
     {
-        if (!$this->hasEvent($event)) {
-            $return = null;
-            return $return;
-        }
-
-        return $this->_events[$event];
+        return $this->state->getEvent($eventName);
     }
-
-    // }}}
-    // {{{ addEvent()
 
     /**
      * Adds the event with the given name.
      *
-     * @param string $event
-     * @return Stagehand_FSM_Event
+     * @param string $eventName
+     * @return \Stagehand\FSM\Event
      */
-    function &addEvent($event)
+    public function addEvent($eventName)
     {
-        $this->_events[$event] = &new Stagehand_FSM_Event($event);
-        return $this->_events[$event];
+        return $this->state->addEvent($eventName);
     }
-
-    // }}}
-    // {{{ getName()
-
-    /**
-     * Gets the name of the state.
-     *
-     * @return string
-     */
-    function getName()
-    {
-        return $this->_name;
-    }
-
-    // }}}
-    // {{{ hasEvent()
 
     /**
      * Returns whether the state has an event with a given name.
@@ -159,23 +88,26 @@ class Stagehand_FSM_State
      * @return boolean
      * @since Method available since Release 1.6.0
      */
-    function hasEvent($name)
+    public function hasEvent($name)
     {
-        return array_key_exists($name, $this->_events);
+        return $this->state->hasEvent($name);
     }
 
-    /**#@-*/
-
-    /**#@+
-     * @access private
+    /**
+     * Constructor
+     *
+     * @param \Stagehand\FSM\FSM $fsm
      */
-
-    /**#@-*/
-
-    // }}}
+    public function __construct($fsm)
+    {
+        $this->currentState = $fsm->currentState;
+        $this->previousState = $fsm->previousState;
+        $this->states = $fsm->states;
+        $this->name = $fsm->name;
+        $this->payload = &$fsm->payload;
+        $this->state = new State($fsm->name);
+    }
 }
-
-// }}}
 
 /*
  * Local Variables:

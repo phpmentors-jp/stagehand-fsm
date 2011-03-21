@@ -2,9 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
- * PHP versions 4 and 5
- *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,250 +27,182 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
- * @version    SVN: $Id$
+ * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
  */
 
-// {{{ Stagehand_FSM_Event
+namespace Stagehand\FSM;
 
 /**
  * An event class which manages an event such as a event which triggers
  * transition and entry/exit/do special events.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
-class Stagehand_FSM_Event
+class Event
 {
-
-    // {{{ properties
-
-    /**#@+
-     * @access public
+    /*
+     * Constants for special events.
      */
+    const EVENT_ENTRY = 'EVENT_ENTRY';
+    const EVENT_EXIT = 'EVENT_EXIT';
+    const EVENT_START = 'EVENT_START';
+    const EVENT_END = 'EVENT_END';
+    const EVENT_DO = 'EVENT_DO';
 
-    /**#@-*/
-
-    /**#@+
-     * @access private
-     */
-
-    var $_name;
-    var $_nextState;
-    var $_action;
-    var $_guard;
-    var $_transitionToHistoryMarker = false;
-
-    /**#@-*/
-
-    /**#@+
-     * @access public
-     */
-
-    // }}}
-    // {{{ constructor
+    protected $name;
+    protected $nextState;
+    protected $action;
+    protected $guard;
+    protected $transitionToHistoryMarker = false;
 
     /**
      * Constructor
      *
      * @param string $name
      */
-    function Stagehand_FSM_Event($name)
+    public function __construct($name)
     {
-        $this->_name = $name;
+        $this->name = $name;
     }
-
-    // }}}
-    // {{{ setNextState()
 
     /**
      * Sets the next state of the event.
      *
      * @param string $state
      */
-    function setNextState($state)
+    public function setNextState($state)
     {
-        $this->_nextState = $state;
+        $this->nextState = $state;
     }
-
-    // }}}
-    // {{{ setAction()
 
     /**
      * Sets the action the event.
      *
      * @param callback $action
      */
-    function setAction($action)
+    public function setAction($action)
     {
-        $this->_action = $action;
+        $this->action = $action;
     }
-
-    // }}}
-    // {{{ setGuard()
 
     /**
      * Sets the guard the event.
      *
      * @param callback $guard
      */
-    function setGuard($guard)
+    public function setGuard($guard)
     {
-        $this->_guard = $guard;
+        $this->guard = $guard;
     }
-
-    // }}}
-    // {{{ setTransitionToHistoryMarker()
 
     /**
      * Sets whether the event transitions to the history marker or not.
      *
      * @param boolean $transitionToHistoryMarker
      */
-    function setTransitionToHistoryMarker($transitionToHistoryMarker)
+    public function setTransitionToHistoryMarker($transitionToHistoryMarker)
     {
-        $this->_transitionToHistoryMarker = $transitionToHistoryMarker;
+        $this->transitionToHistoryMarker = $transitionToHistoryMarker;
     }
-
-    // }}}
-    // {{{ getName()
 
     /**
      * Gets the name of the event.
      *
      * @return string
      */
-    function getName()
+    public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
-
-    // }}}
-    // {{{ getNextState()
 
     /**
      * Gets the next state of the event.
      *
      * @return string
      */
-    function getNextState()
+    public function getNextState()
     {
-        return $this->_nextState;
+        return $this->nextState;
     }
-
-    // }}}
-    // {{{ getAction()
 
     /**
      * Gets the action the event.
      *
      * @return callback
      */
-    function getAction()
+    public function getAction()
     {
-        return $this->_action;
+        return $this->action;
     }
-
-    // }}}
-    // {{{ getGuard()
 
     /**
      * Gets the guard the event.
      *
      * @return callback
      */
-    function getGuard()
+    public function getGuard()
     {
-        return $this->_guard;
+        return $this->guard;
     }
-
-    // }}}
-    // {{{ getTransitionToHistoryMarker()
 
     /**
      * Returns whether the event transitions to the history marker or not.
      *
      * @return boolean
      */
-    function getTransitionToHistoryMarker()
+    public function getTransitionToHistoryMarker()
     {
-        return $this->_transitionToHistoryMarker;
+        return $this->transitionToHistoryMarker;
     }
-
-    // }}}
-    // {{{ evaluateGuard()
 
     /**
      * Evaluates the guard.
      *
-     * @param Stagehand_FSM &$fsm
+     * @param \Stagehand\FSM\FSM $fsm
      * @return boolean
-     * @throws STAGEHAND_FSM_ERROR_NOT_CALLABLE
+     * @throws \Stagehand\FSM\NotCallableException
      */
-    function evaluateGuard(&$fsm)
+    public function evaluateGuard(FSM $fsm)
     {
-        if (is_null($this->_guard)) {
+        if (is_null($this->guard)) {
             return true;
         }
 
-        if (!is_callable($this->_guard)) {
-            Stagehand_FSM_Error::push(STAGEHAND_FSM_ERROR_NOT_CALLABLE,
-                                      'The guard is not callable.'
-                                      );
-            return;
+        if (!is_callable($this->guard)) {
+            throw new NotCallableException('The guard is not callable.');
         }
 
         $payload = &$fsm->getPayload();
-        return call_user_func_array($this->_guard,
-                                    array(&$fsm, &$this, &$payload)
-                                    );
+        return call_user_func_array($this->guard, array($fsm, $this, &$payload));
     }
-
-    // }}}
-    // {{{ invokeAction()
 
     /**
      * Invokes the action.
      *
-     * @param Stagehand_FSM &$fsm
-     * @throws STAGEHAND_FSM_ERROR_NOT_CALLABLE
+     * @param \Stagehand\FSM\FSM $fsm
+     * @throws \Stagehand\FSM\NotCallableException
      */
-    function invokeAction(&$fsm)
+    public function invokeAction(FSM $fsm)
     {
-        if (is_null($this->_action)) {
+        if (is_null($this->action)) {
             return;
         }
 
-        if (!is_callable($this->_action)) {
-            Stagehand_FSM_Error::push(STAGEHAND_FSM_ERROR_NOT_CALLABLE,
-                                      'The action is not callable.'
-                                      );
-            return;
+        if (!is_callable($this->action)) {
+            throw new NotCallableException('The action is not callable.');
         }
 
         $payload = &$fsm->getPayload();
-        call_user_func_array($this->_action,
-                             array(&$fsm, &$this, &$payload)
-                             );
+        call_user_func_array($this->action, array($fsm, $this, &$payload));
     }
-
-    /**#@-*/
-
-    /**#@+
-     * @access private
-     */
-
-    /**#@-*/
-
-    // }}}
 }
-
-// }}}
 
 /*
  * Local Variables:

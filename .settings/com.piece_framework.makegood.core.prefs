@@ -1,0 +1,10 @@
+#Sun Mar 27 22:26:45 JST 2011
+cakephp_app_path=
+cakephp_core_path=
+ciunit_config_file=
+ciunit_path=
+eclipse.preferences.version=1
+phpunit_config_file=
+preload_script=/stagehand-fsm/test/prepare.php
+test_folders=/stagehand-fsm/test
+testing_framework=PHPUnit

@@ -2,9 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
- * PHP versions 4 and 5
- *
- * Copyright (c) 2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>,
+ * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,169 +27,125 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
- * @version    SVN: $Id$
+ * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
  */
 
-require_once realpath(dirname(__FILE__) . '/../../prepare.php');
-require_once 'PHPUnit.php';
-require_once 'Stagehand/FSM/Event.php';
-
-// {{{ Stagehand_FSM_EventTestCase
+namespace Stagehand\FSM;
 
 /**
- * TestCase for Stagehand_FSM_Event
- *
  * @package    Stagehand_FSM
- * @copyright  2006-2007 KUBO Atsuhiro <iteman@users.sourceforge.net>
+ * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
-class Stagehand_FSM_EventTestCase extends PHPUnit_TestCase
+class EventTest extends \PHPUnit_Framework_TestCase
 {
-
-    // {{{ properties
-
-    /**#@+
-     * @access public
+    /**
+     * @test
      */
-
-    /**#@-*/
-
-    /**#@+
-     * @access private
-     */
-
-    /**#@-*/
-
-    /**#@+
-     * @access public
-     */
-
-    function testGettingName()
+    public function getsTheName()
     {
-        $event = &new Stagehand_FSM_Event('foo');
-
+        $event = new Event('foo');
         $this->assertEquals('foo', $event->getName());
     }
 
-    function testSettingNextState()
+    /**
+     * @test
+     */
+    public function setsTheNextState()
     {
-        $event = &new Stagehand_FSM_Event('foo');
+        $event = new Event('foo');
         $event->setNextState('foo');
-
         $this->assertEquals('foo', $event->getNextState());
     }
 
-    function testSettingAction()
+    /**
+     * @test
+     */
+    public function setsTheAction()
     {
-        $event = &new Stagehand_FSM_Event('foo');
+        $event = new Event('foo');
         $event->setAction('foo');
-
         $this->assertEquals('foo', $event->getAction());
     }
 
-    function testSettingGuard()
+    /**
+     * @test
+     */
+    public function setsTheGuard()
     {
-        $event = &new Stagehand_FSM_Event('foo');
+        $event = new Event('foo');
         $event->setGuard('foo');
-
         $this->assertEquals('foo', $event->getGuard());
     }
 
-    function testEvaluatingGuard()
-    {
-        $fsm = &new Stagehand_FSM_EventTestCaseMockFSM();
-        $fsm->name = 'bar';
-        $fsm->payload = &new stdClass();
-        $fsm->payload->name = 'baz';
-        $event = &new Stagehand_FSM_Event('foo');
-        $event->setGuard(array(&$this, 'returnTrue'));
-
-        $this->assertTrue($event->evaluateGuard($fsm));
-
-        $event->setGuard(array(&$this, 'returnFalse'));
-
-        $this->assertFalse($event->evaluateGuard($fsm));
-
-        $event->setGuard(array(&$this, 'assertValidArgs'));
-
-        $this->assertTrue($event->evaluateGuard($fsm));
-    }
-
-    function testInvokingAction()
-    {
-        $fsm = &new Stagehand_FSM_EventTestCaseMockFSM();
-        $fsm->name = 'bar';
-        $fsm->payload = &new stdClass();
-        $fsm->payload->name = 'baz';
-        $event = &new Stagehand_FSM_Event('foo');
-        $event->setAction(array(&$this, 'bar'));
-        $event->invokeAction($fsm);
-
-        $this->assertTrue($this->_barInvoked);
-
-        $event->setAction(array(&$this, 'assertValidArgs'));
-        $event->invokeAction($fsm);
-
-        unset($this->_barInvoked);
-    }
-
-    function returnTrue()
-    {
-        return true;
-    }
-
-    function returnFalse()
-    {
-        return false;
-    }
-
-    function bar()
-    {
-        $this->_barInvoked = true;
-    }
-
-    function assertValidArgs(&$fsm, &$event, &$payload)
-    {
-        $this->assertEquals('bar', $fsm->name);
-        $this->assertEquals('foo', $event->getName());
-        $this->assertEquals('baz', $payload->name);
-
-        return true;
-    }
-
-    function testSettingTransitionToHistoryMarker()
-    {
-        $event = &new Stagehand_FSM_Event('foo');
-        $event->setTransitionToHistoryMarker(true);
-
-        $this->assertTrue($event->getTransitionToHistoryMarker());
-    }
-
-    /**#@-*/
-
-    /**#@+
-     * @access private
+    /**
+     * @test
      */
-
-    /**#@-*/
-
-    // }}}
-}
-
-// }}}
-
-class Stagehand_FSM_EventTestCaseMockFSM
-{
-    var $name;
-    var $payload;
-    function &getPayload()
+    public function evaluatesTheGuard()
     {
-        return $this->payload;
+        $fsm = new FSM();
+        $fsm->setName('bar');
+        $payload = new \stdClass();
+        $payload->name = 'baz';
+        $fsm->setPayload($payload);
+        $event = new Event('foo');
+        $event->setGuard(function (FSM $fsm, $event, &$payload) { return true; });
+        $this->assertTrue($event->evaluateGuard($fsm));
+        $event->setGuard(function (FSM $fsm, $event, &$payload) { return false; });
+        $this->assertFalse($event->evaluateGuard($fsm));
+        $test = $this;
+        $event->setGuard(function (FSM $fsm, $event, &$payload) use ($test)
+        {
+            $test->assertEquals('bar', $fsm->getName());
+            $test->assertEquals('foo', $event->getName());
+            $test->assertEquals('baz', $payload->name);
+            return true;
+        });
+        $this->assertTrue($event->evaluateGuard($fsm));
+    }
+
+    /**
+     * @test
+     */
+    public function invokesTheAction()
+    {
+        $barInvoked = false;
+        $fsm = new FSM();
+        $fsm->setName('bar');
+        $payload = new \stdClass();
+        $payload->name = 'baz';
+        $fsm->setPayload($payload);
+        $event = new Event('foo');
+        $event->setAction(function (FSM $fsm, $event, &$payload) use (&$barInvoked)
+        {
+            $barInvoked = true;
+        });
+        $event->invokeAction($fsm);
+        $this->assertTrue($barInvoked);
+        $test = $this;
+        $event->setAction(function (FSM $fsm, $event, &$payload) use ($test)
+        {
+            $test->assertEquals('bar', $fsm->getName());
+            $test->assertEquals('foo', $event->getName());
+            $test->assertEquals('baz', $payload->name);
+            return true;
+        });
+        $event->invokeAction($fsm);
+    }
+
+    /**
+     * @test
+     */
+    public function setsTransitionToHistoryMarker()
+    {
+        $event = new Event('foo');
+        $event->setTransitionToHistoryMarker(true);
+        $this->assertTrue($event->getTransitionToHistoryMarker());
     }
 }
 
