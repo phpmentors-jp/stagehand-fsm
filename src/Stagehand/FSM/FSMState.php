@@ -100,6 +100,7 @@ class FSMState extends FSM
      */
     public function __construct($fsm)
     {
+        parent::__construct();
         $this->currentState = $fsm->currentState;
         $this->previousState = $fsm->previousState;
         $this->states = $fsm->states;
