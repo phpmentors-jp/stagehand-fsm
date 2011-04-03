@@ -51,11 +51,11 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     {
         $fsm = new FSM('locked');
         $foo = $fsm->addState('foo');
-        $this->assertInstanceOf('\Stagehand\FSM\State', $foo);
+        $this->assertInstanceOf('\Stagehand\FSM\IState', $foo);
         $this->assertEquals('foo', $foo->getName());
 
         $bar = $fsm->addState('bar');
-        $this->assertInstanceOf('\Stagehand\FSM\State', $bar);
+        $this->assertInstanceOf('\Stagehand\FSM\IState', $bar);
         $this->assertEquals('bar', $bar->getName());
     }
 
@@ -286,13 +286,13 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $fsm->addTransition('Rinsing', 'r', 'Spinning');
         $fsm->start();
         $state = $fsm->getPreviousState();
-        $this->assertInstanceOf('\Stagehand\FSM\State', $state);
+        $this->assertInstanceOf('\Stagehand\FSM\IState', $state);
         $this->assertEquals(State::STATE_INITIAL, $state->getName());
 
         $fsm->triggerEvent('w');
         $state = $fsm->getPreviousState();
 
-        $this->assertInstanceOf('\Stagehand\FSM\State', $state);
+        $this->assertInstanceOf('\Stagehand\FSM\IState', $state);
         $this->assertEquals('Washing', $state->getName());
     }
 

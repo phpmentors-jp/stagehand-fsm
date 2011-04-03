@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
- * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,8 +27,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
  */
@@ -36,51 +36,21 @@
 namespace Stagehand\FSM;
 
 /**
- * A state class which builds initial structure of the state which consists
- * entry/exit actions and an activity, and behaves as event holder of the
- * state.
- *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
+ * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
-class State implements IState
+interface IState
 {
-    /*
-     * Constants for pseudo states.
-     */
-    const STATE_INITIAL = 'STATE_INITIAL';
-    const STATE_FINAL = 'STATE_FINAL';
-
-    protected $name;
-    protected $events;
-
-    /**
-     * Constructor
-     *
-     * @param string $name
-     */
-    public function __construct($name)
-    {
-        $this->name = $name;
-        $this->addEvent(Event::EVENT_ENTRY);
-        $this->addEvent(Event::EVENT_EXIT);
-        $this->addEvent(Event::EVENT_DO);
-    }
-
     /**
      * Finds and returns the event with the given name.
      *
      * @param string $event
      * @return \Stagehand\FSM\Event
      */
-    public function getEvent($event)
-    {
-        if (!$this->hasEvent($event)) return;
-        return $this->events[$event];
-    }
+    public function getEvent($event);
 
     /**
      * Adds the event with the given name.
@@ -88,21 +58,14 @@ class State implements IState
      * @param string $event
      * @return \Stagehand\FSM\Event
      */
-    public function addEvent($event)
-    {
-        $this->events[$event] = new Event($event);
-        return $this->events[$event];
-    }
+    public function addEvent($event);
 
     /**
      * Gets the name of the state.
      *
      * @return string
      */
-    public function getName()
-    {
-        return $this->name;
-    }
+    public function getName();
 
     /**
      * Returns whether the state has an event with a given name.
@@ -111,10 +74,7 @@ class State implements IState
      * @return boolean
      * @since Method available since Release 1.6.0
      */
-    public function hasEvent($name)
-    {
-        return array_key_exists($name, $this->events);
-    }
+    public function hasEvent($name);
 }
 
 /*

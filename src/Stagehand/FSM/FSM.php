@@ -71,12 +71,12 @@ namespace Stagehand\FSM;
 class FSM
 {
     /**
-     * @var \Stagehand\FSM\State
+     * @var \Stagehand\FSM\IState
      */
     protected $currentState;
 
     /**
-     * @var \Stagehand\FSM\State
+     * @var \Stagehand\FSM\IState
      */
     protected $previousState;
 
@@ -134,7 +134,7 @@ class FSM
     /**
      * Gets the current state.
      *
-     * @return \Stagehand\FSM\State
+     * @return \Stagehand\FSM\IState
      */
     public function getCurrentState()
     {
@@ -144,7 +144,7 @@ class FSM
     /**
      * Gets the previous state.
      *
-     * @return \Stagehand\FSM\State
+     * @return \Stagehand\FSM\IState
      */
     public function getPreviousState()
     {
@@ -167,7 +167,7 @@ class FSM
      *
      * @param string  $eventName
      * @param boolean $transitionToHistoryMarker
-     * @return \Stagehand\FSM\State
+     * @return \Stagehand\FSM\IState
      */
     public function triggerEvent($eventName, $transitionToHistoryMarker = false)
     {
@@ -277,7 +277,7 @@ class FSM
      * Adds the state with the given name.
      *
      * @param string $state
-     * @return \Stagehand\FSM\State
+     * @return \Stagehand\FSM\IState
      */
     public function addState($state)
     {
@@ -455,7 +455,7 @@ class FSM
      *
      * @param string  $eventName
      * @param boolean $transitionToHistoryMarker
-     * @return \Stagehand\FSM\State
+     * @return \Stagehand\FSM\IState
      * @throws \Stagehand\FSM\AlreadyShutdownException
      * @since Method available since Release 1.7.0
      */

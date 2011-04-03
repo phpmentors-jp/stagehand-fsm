@@ -61,7 +61,7 @@ class FSMStateTest extends \PHPUnit_Framework_TestCase
      */
     public function wrapsAFsmWithAState()
     {
-        $this->assertInstanceOf('\Stagehand\FSM\FSMState', $this->fsmState);
+        $this->assertInstanceOf('\Stagehand\FSM\IState', $this->fsmState);
         $this->assertEquals('play', $this->fsmState->getName());
         $this->assertNull($this->fsmState->getCurrentState());
     }
