@@ -48,12 +48,11 @@ class FSMStateTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $fsm = new FSM();
-        $fsm->setName('play');
-        $fsm->setFirstState('playing');
-        $fsm->addTransition('playing', 'pause', 'paused');
-        $fsm->addTransition('paused', 'play', 'playing');
-        $this->fsmState = FSMState::wrap($fsm);
+        $builder = new FSMBuilder('play');
+        $builder->setFirstState('playing');
+        $builder->addTransition('playing', 'pause', 'paused');
+        $builder->addTransition('paused', 'play', 'playing');
+        $this->fsmState = FSMState::wrap($builder->getFSM());
     }
 
     /**
@@ -89,13 +88,11 @@ class FSMStateTest extends \PHPUnit_Framework_TestCase
      */
     public function addsAnEvent()
     {
-        $foo = $this->fsmState->addEvent('foo');
-        $this->assertInstanceOf('\Stagehand\FSM\Event', $foo);
-        $this->assertEquals('foo', $foo->getName());
+        $this->fsmState->addEvent(new Event('foo'));
+        $this->assertTrue($this->fsmState->hasEvent('foo'));
 
-        $bar = $this->fsmState->addEvent('bar');
-        $this->assertInstanceOf('\Stagehand\FSM\Event', $bar);
-        $this->assertEquals('bar', $bar->getName());
+        $this->fsmState->addEvent(new Event('bar'));
+        $this->assertTrue($this->fsmState->hasEvent('bar'));
     }
 
     /**
@@ -104,8 +101,8 @@ class FSMStateTest extends \PHPUnit_Framework_TestCase
      */
     public function checksWhetherTheStateHasTheGivenEvent()
     {
-        $foo = $this->fsmState->addEvent('foo');
-        $bar = $this->fsmState->addEvent('bar');
+        $this->fsmState->addEvent(new Event('foo'));
+        $this->fsmState->addEvent(new Event('bar'));
         $this->assertTrue($this->fsmState->hasEvent('foo'));
         $this->assertTrue($this->fsmState->hasEvent('bar'));
         $this->assertFalse($this->fsmState->hasEvent('baz'));

@@ -101,25 +101,11 @@ class FSM
     protected $eventQueue = array();
 
     /**
-     * Constructor
-     *
-     * @param string $state
+     * @param string $name
      */
-    public function __construct($state = null)
+    public function __construct($name = null)
     {
-        if (!is_null($state)) {
-            $this->setFirstState($state);
-        }
-    }
-
-    /**
-     * Sets the given state as the first state.
-     *
-     * @param string $state
-     */
-    public function setFirstState($state)
-    {
-        $this->addTransition(State::STATE_INITIAL, Event::EVENT_START, $state);
+        $this->name = $name;
     }
 
     /**
@@ -165,89 +151,29 @@ class FSM
      * Triggers the given event in the current state.
      * <i>Note: Do not call this method directly from actions.</i>
      *
-     * @param string  $eventName
-     * @param boolean $transitionToHistoryMarker
+     * @param string $eventName
      * @return \Stagehand\FSM\IState
      */
-    public function triggerEvent($eventName, $transitionToHistoryMarker = false)
+    public function triggerEvent($eventName)
     {
-        $this->queueEvent($eventName, $transitionToHistoryMarker);
+        $this->queueEvent($eventName);
         while (true) {
             if (!count($this->eventQueue)) {
                 return $this->currentState;
             }
-
-            $event = array_shift($this->eventQueue);
-            $this->processEvent($event['event'], $event['transitionToHistoryMarker']);
+            $this->processEvent(array_shift($this->eventQueue));
         }
     }
 
     /**
      * Queues an event to the event queue.
      *
-     * @param string  $eventName
-     * @param boolean $transitionToHistoryMarker
+     * @param string $eventName
      * @since Method available since Release 1.7.0
      */
-    public function queueEvent($eventName, $transitionToHistoryMarker = false)
+    public function queueEvent($eventName)
     {
-        $this->eventQueue[] = array('event' => $eventName, 'transitionToHistoryMarker' => $transitionToHistoryMarker);
-    }
-
-    /**
-     * Adds the state transition.
-     *
-     * @param string   $stateName
-     * @param string   $eventName
-     * @param string   $nextStateName
-     * @param callback $action
-     * @param callback $guard
-     * @param boolean  $transitionToHistoryMarker
-     */
-    public function addTransition(
-        $stateName,
-        $eventName,
-        $nextStateName,
-        $action = null,
-        $guard = null,
-        $transitionToHistoryMarker = false)
-    {
-        $state = $this->findState($stateName);
-        if (is_null($state)) {
-            $state = $this->addState($stateName);
-        }
-
-        $event = $state->getEvent($eventName);
-        if (is_null($event)) {
-            $event = $state->addEvent($eventName);
-        }
-
-        $event->setNextState($nextStateName);
-        $event->setAction($action);
-        $event->setGuard($guard);
-        $event->setTransitionToHistoryMarker($transitionToHistoryMarker);
-    }
-
-    /**
-     * Sets the exit action to the state.
-     *
-     * @param string   $state
-     * @param callback $action
-     */
-    public function setExitAction($state, $action)
-    {
-        $this->addTransition($state, Event::EVENT_EXIT, null, $action);
-    }
-
-    /**
-     * Sets the entry action to the state.
-     *
-     * @param string   $state
-     * @param callback $action
-     */
-    public function setEntryAction($state, $action)
-    {
-        $this->addTransition($state, Event::EVENT_ENTRY, null, $action);
+        $this->eventQueue[] = $eventName;
     }
 
     /**
@@ -259,40 +185,27 @@ class FSM
      */
     public function getState($stateName)
     {
-        $state = $this->findState($stateName);
-        if (is_null($state)) {
-            foreach ($this->states as $value) {
-                if ($value instanceof FSM) {
-                    if (!is_null($value->getState($stateName))) {
-                        return $value;
+        if (array_key_exists($stateName, $this->states)) {
+            return $this->states[$stateName];
+        } else {
+            foreach ($this->states as $state) {
+                if ($state instanceof FSM) {
+                    if (!is_null($state->getState($stateName))) {
+                        return $state;
                     }
                 }
             }
         }
-
-        return $state;
     }
 
     /**
      * Adds the state with the given name.
      *
-     * @param string $state
-     * @return \Stagehand\FSM\IState
+     * @param \Stagehand\FSM\IState $state
      */
-    public function addState($state)
+    public function addState(IState $state)
     {
-        $this->states[$state] = new State($state);
-        return $this->states[$state];
-    }
-
-    /**
-     * Sets the name of the FSM.
-     *
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+        $this->states[ $state->getName() ] = $state;
     }
 
     /**
@@ -303,33 +216,6 @@ class FSM
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Adds a Stagehand_FSM object to the FSM.
-     *
-     * @param \Stagehand\FSM\FSM $fsm
-     * @return \Stagehand\FSM\FSMState
-     */
-    public function addFSM(FSM $fsm)
-    {
-        if (is_null($fsm->getPayload())) {
-            $fsm->setPayload($this->payload);
-        }
-        $name = $fsm->getName();
-        $this->states[$name] = FSMState::wrap($fsm);
-        return $this->states[$name];
-    }
-
-    /**
-     * Sets the activity to the state.
-     *
-     * @param string   $state
-     * @param callback $activity
-     */
-    public function setActivity($state, $activity)
-    {
-        $this->addTransition($state, EVENT::EVENT_DO, null, $activity);
     }
 
     /**
@@ -365,7 +251,7 @@ class FSM
      */
     public function isProtectedState($state)
     {
-        return $state == State::STATE_INITIAL || $state == State::STATE_FINAL;
+        return $state == IState::STATE_INITIAL || $state == IState::STATE_FINAL;
     }
 
     /**
@@ -411,21 +297,10 @@ class FSM
         $this->previousState = $this->currentState;
         $state = $this->getState($stateName);
         if (is_null($state)) {
-            $state = $this->addState($stateName);
+            $state = new State($stateName);
+            $this->addState($state);
         }
         $this->currentState = $state;
-    }
-
-    /**
-     * Finds and returns the state with the given name in the FSM.
-     *
-     * @param string $name
-     * @return mixed
-     */
-    protected function findState($name)
-    {
-        if (!array_key_exists($name, $this->states)) return;
-        return $this->states[$name];
     }
 
     /**
@@ -444,9 +319,11 @@ class FSM
      */
     protected function initialize()
     {
-        $this->currentState = $this->findState(State::STATE_INITIAL);
+        $this->currentState = $this->getState(IState::STATE_INITIAL);
         if (is_null($this->currentState)) {
-            $this->currentState = $this->addState(State::STATE_INITIAL);
+            $state = new State(IState::STATE_INITIAL);
+            $this->addState($state);
+            $this->currentState = $state;
         }
     }
 
@@ -454,14 +331,14 @@ class FSM
      * Processes an event.
      *
      * @param string  $eventName
-     * @param boolean $transitionToHistoryMarker
+     * @param boolean $usesHistoryMarker
      * @return \Stagehand\FSM\IState
      * @throws \Stagehand\FSM\AlreadyShutdownException
      * @since Method available since Release 1.7.0
      */
-    protected function processEvent($eventName, $transitionToHistoryMarker = false)
+    protected function processEvent($eventName, $usesHistoryMarker = false)
     {
-        if ($this->currentState->getName() == State::STATE_FINAL && !$this->isSpecialEvent($eventName)) {
+        if ($this->currentState->getName() == IState::STATE_FINAL && !$this->isSpecialEvent($eventName)) {
             throw new AlreadyShutdownException('The FSM was already shutdown.');
         }
 
@@ -480,7 +357,7 @@ class FSM
         }
 
         if (!$this->isSpecialEvent($eventName)) {
-            $this->processEvent(Event::EVENT_EXIT, $transitionToHistoryMarker);
+            $this->processEvent(Event::EVENT_EXIT, $usesHistoryMarker);
         }
 
         if (!$this->isSpecialEvent($eventName)) {
@@ -490,16 +367,16 @@ class FSM
 
         $event->invokeAction($this);
 
-        if ($this->isEntryEvent($eventName) && $this->currentState instanceof FSM && !$transitionToHistoryMarker) {
+        if ($this->isEntryEvent($eventName) && $this->currentState instanceof FSM && !$usesHistoryMarker) {
             $this->currentState->start();
         }
 
         if (!$this->isSpecialEvent($eventName)) {
-            $this->processEvent(Event::EVENT_ENTRY, $event->getTransitionToHistoryMarker());
+            $this->processEvent(Event::EVENT_ENTRY, $event->usesHistoryMarker());
         }
 
         if (!$this->isSpecialEvent($eventName)) {
-            $this->processEvent(Event::EVENT_DO, $event->getTransitionToHistoryMarker());
+            $this->processEvent(Event::EVENT_DO, $event->usesHistoryMarker());
         }
 
         return $this->currentState;

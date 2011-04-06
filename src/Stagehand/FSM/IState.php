@@ -30,7 +30,7 @@
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
- * @since      File available since Release 0.1.0
+ * @since      File available since Release 2.0.0
  */
 
 namespace Stagehand\FSM;
@@ -40,10 +40,16 @@ namespace Stagehand\FSM;
  * @copyright  2010 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
- * @since      Class available since Release 0.1.0
+ * @since      Class available since Release 2.0.0
  */
 interface IState
 {
+    /*
+     * Constants for pseudo states.
+     */
+    const STATE_INITIAL = 'STATE_INITIAL';
+    const STATE_FINAL = 'STATE_FINAL';
+
     /**
      * Finds and returns the event with the given name.
      *
@@ -55,10 +61,9 @@ interface IState
     /**
      * Adds the event with the given name.
      *
-     * @param string $event
-     * @return \Stagehand\FSM\Event
+     * @param \Stagehand\FSM\Event $event
      */
-    public function addEvent($event);
+    public function addEvent(Event $event);
 
     /**
      * Gets the name of the state.
@@ -72,7 +77,6 @@ interface IState
      *
      * @param string $name
      * @return boolean
-     * @since Method available since Release 1.6.0
      */
     public function hasEvent($name);
 }

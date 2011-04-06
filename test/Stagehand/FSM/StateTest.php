@@ -69,13 +69,11 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function addsAnEvent()
     {
         $state = new State('foo');
-        $foo = $state->addEvent('foo');
-        $this->assertInstanceOf('\Stagehand\FSM\Event', $foo);
-        $this->assertEquals('foo', $foo->getName());
+        $state->addEvent(new Event('foo'));
+        $this->assertTrue($state->hasEvent('foo'));
 
-        $bar = $state->addEvent('bar');
-        $this->assertInstanceOf('\Stagehand\FSM\Event', $bar);
-        $this->assertEquals('bar', $bar->getName());
+        $state->addEvent(new Event('bar'));
+        $this->assertTrue($state->hasEvent('bar'));
     }
 
     /**
@@ -85,9 +83,9 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function checksWhetherTheStateHasTheGivenEvent()
     {
         $state = new State('foo');
-        $state->addEvent('foo');
+        $state->addEvent(new Event('foo'));
         $this->assertTrue($state->hasEvent('foo'));
-        $state->addEvent('bar');
+        $state->addEvent(new Event('bar'));
         $this->assertTrue($state->hasEvent('bar'));
         $this->assertFalse($state->hasEvent('baz'));
     }

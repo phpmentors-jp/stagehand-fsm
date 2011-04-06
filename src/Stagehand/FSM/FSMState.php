@@ -73,12 +73,11 @@ class FSMState extends FSM implements IState
     /**
      * Adds the event with the given name.
      *
-     * @param string $eventName
-     * @return \Stagehand\FSM\Event
+     * @param \Stagehand\FSM\Event $event
      */
-    public function addEvent($eventName)
+    public function addEvent(Event $event)
     {
-        return $this->state->addEvent($eventName);
+        $this->state->addEvent($event);
     }
 
     /**

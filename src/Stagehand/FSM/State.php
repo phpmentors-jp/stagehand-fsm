@@ -48,12 +48,6 @@ namespace Stagehand\FSM;
  */
 class State implements IState
 {
-    /*
-     * Constants for pseudo states.
-     */
-    const STATE_INITIAL = 'STATE_INITIAL';
-    const STATE_FINAL = 'STATE_FINAL';
-
     protected $name;
     protected $events;
 
@@ -65,9 +59,9 @@ class State implements IState
     public function __construct($name)
     {
         $this->name = $name;
-        $this->addEvent(Event::EVENT_ENTRY);
-        $this->addEvent(Event::EVENT_EXIT);
-        $this->addEvent(Event::EVENT_DO);
+        $this->addEvent(new Event(Event::EVENT_ENTRY));
+        $this->addEvent(new Event(Event::EVENT_EXIT));
+        $this->addEvent(new Event(Event::EVENT_DO));
     }
 
     /**
@@ -85,13 +79,12 @@ class State implements IState
     /**
      * Adds the event with the given name.
      *
-     * @param string $event
+     * @param \Stagehand\FSM\Event $event
      * @return \Stagehand\FSM\Event
      */
-    public function addEvent($event)
+    public function addEvent(Event $event)
     {
-        $this->events[$event] = new Event($event);
-        return $this->events[$event];
+        $this->events[ $event->getName() ] = $event;
     }
 
     /**

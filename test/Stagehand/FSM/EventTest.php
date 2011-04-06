@@ -88,8 +88,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function evaluatesTheGuard()
     {
-        $fsm = new FSM();
-        $fsm->setName('bar');
+        $fsm = new FSM('bar');
         $payload = new \stdClass();
         $payload->name = 'baz';
         $fsm->setPayload($payload);
@@ -115,8 +114,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     public function invokesTheAction()
     {
         $barInvoked = false;
-        $fsm = new FSM();
-        $fsm->setName('bar');
+        $fsm = new FSM('bar');
         $payload = new \stdClass();
         $payload->name = 'baz';
         $fsm->setPayload($payload);
@@ -141,11 +139,11 @@ class EventTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function setsTransitionToHistoryMarker()
+    public function setsUsesHistoryMarker()
     {
         $event = new Event('foo');
-        $event->setTransitionToHistoryMarker(true);
-        $this->assertTrue($event->getTransitionToHistoryMarker());
+        $event->setUsesHistoryMarker(true);
+        $this->assertTrue($event->usesHistoryMarker());
     }
 }
 

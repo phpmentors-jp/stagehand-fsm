@@ -60,7 +60,7 @@ class Event
     protected $nextState;
     protected $action;
     protected $guard;
-    protected $transitionToHistoryMarker = false;
+    protected $usesHistoryMarker = false;
 
     /**
      * Constructor
@@ -105,11 +105,11 @@ class Event
     /**
      * Sets whether the event transitions to the history marker or not.
      *
-     * @param boolean $transitionToHistoryMarker
+     * @param boolean $usesHistoryMarker
      */
-    public function setTransitionToHistoryMarker($transitionToHistoryMarker)
+    public function setUsesHistoryMarker($usesHistoryMarker)
     {
-        $this->transitionToHistoryMarker = $transitionToHistoryMarker;
+        $this->usesHistoryMarker = $usesHistoryMarker;
     }
 
     /**
@@ -157,9 +157,9 @@ class Event
      *
      * @return boolean
      */
-    public function getTransitionToHistoryMarker()
+    public function usesHistoryMarker()
     {
-        return $this->transitionToHistoryMarker;
+        return $this->usesHistoryMarker;
     }
 
     /**
