@@ -415,7 +415,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Stagehand\FSM\AlreadyShutdownException
+     * @expectedException \Stagehand\FSM\FSMAlreadyShutdownException
      */
     public function shutdownsTheFsmWhenTheStateReachesTheFinalState()
     {
