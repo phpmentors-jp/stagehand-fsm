@@ -1,0 +1,25 @@
+{
+    "name": "piece/stagehand-fsm",
+    "type": "library",
+    "description": "A finite state machine",
+    "keywords": ["fsm", "state machine"],
+    "homepage": "http://piece-framework.com/projects/stagehand-fsm",
+    "license": "BSD-2",
+    "authors": [
+        {
+            "name": "KUBO Atsuhiro",
+            "email": "kubo@iteman.jp"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": { "Stagehand\\FSM": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}
