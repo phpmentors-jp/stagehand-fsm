@@ -28,7 +28,7 @@
  *
  * @package    Stagehand_FSM
  * @copyright  2006-2008, 2011 KUBO Atsuhiro <kubo@iteman.jp>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/FSMExample.html
@@ -57,7 +57,7 @@ namespace Stagehand\FSM;
  *
  * @package    Stagehand_FSM
  * @copyright  2006-2008, 2011 KUBO Atsuhiro <kubo@iteman.jp>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
  * @link       http://www.isd.mel.nist.gov/projects/omacapi/Software/FiniteStateMachine/doc/FSMExample.html

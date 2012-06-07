@@ -30,7 +30,7 @@
  *
  * @package    Stagehand_FSM
  * @copyright  2006-2008 KUBO Atsuhiro <kubo@iteman.jp>
- * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License (revised)
+ * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    SVN: $Id$
  * @since      File available since Release 0.1.0
  */
@@ -67,7 +67,7 @@ $package->setDescription('Stagehand_FSM is a finite state machine.
 
 Using Stagehand_FSM with applications, frameworks, and toolkits, it can make to simplify complex state management code in them. And also, it can be used as an engine of event-driven architecture.');
 $package->setChannel('pear.piece-framework.com');
-$package->setLicense('BSD License (revised)', 'http://www.opensource.org/licenses/bsd-license.php');
+$package->setLicense('New BSD License', 'http://www.opensource.org/licenses/bsd-license.php');
 $package->setAPIVersion($apiVersion);
 $package->setAPIStability($apiStability);
 $package->setReleaseVersion($releaseVersion);
