@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
- * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -40,7 +40,7 @@ namespace Stagehand\FSM;
  * transition and entry/exit/do special events.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
@@ -50,11 +50,11 @@ class Event
     /*
      * Constants for special events.
      */
-    const EVENT_ENTRY = 'EVENT_ENTRY';
-    const EVENT_EXIT = 'EVENT_EXIT';
-    const EVENT_START = 'EVENT_START';
-    const EVENT_END = 'EVENT_END';
-    const EVENT_DO = 'EVENT_DO';
+    const EVENT_ENTRY = '__entry';
+    const EVENT_EXIT = '__exit';
+    const EVENT_START = '__start';
+    const EVENT_END = '__end';
+    const EVENT_DO = '__do';
 
     protected $name;
     protected $nextState;
