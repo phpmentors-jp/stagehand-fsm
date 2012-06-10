@@ -86,9 +86,15 @@ class Event
      * Sets the action the event.
      *
      * @param callback $action
+     * @throws \Stagehand\FSM\ObjectNotCallableException
      */
     public function setAction($action)
     {
+        if (is_null($action)) return;
+        if (!is_callable($action)) {
+            throw new ObjectNotCallableException('The action is not callable.');
+        }
+
         $this->action = $action;
     }
 
@@ -96,9 +102,15 @@ class Event
      * Sets the guard the event.
      *
      * @param callback $guard
+     * @throws \Stagehand\FSM\ObjectNotCallableException
      */
     public function setGuard($guard)
     {
+        if (is_null($guard)) return;
+        if (!is_callable($guard)) {
+            throw new ObjectNotCallableException('The guard is not callable.');
+        }
+
         $this->guard = $guard;
     }
 
@@ -167,16 +179,11 @@ class Event
      *
      * @param \Stagehand\FSM\FSM $fsm
      * @return boolean
-     * @throws \Stagehand\FSM\ObjectNotCallableException
      */
     public function evaluateGuard(FSM $fsm)
     {
         if (is_null($this->guard)) {
             return true;
-        }
-
-        if (!is_callable($this->guard)) {
-            throw new ObjectNotCallableException('The guard is not callable.');
         }
 
         $payload = &$fsm->getPayload();
@@ -187,16 +194,11 @@ class Event
      * Invokes the action.
      *
      * @param \Stagehand\FSM\FSM $fsm
-     * @throws \Stagehand\FSM\ObjectNotCallableException
      */
     public function invokeAction(FSM $fsm)
     {
         if (is_null($this->action)) {
             return;
-        }
-
-        if (!is_callable($this->action)) {
-            throw new ObjectNotCallableException('The action is not callable.');
         }
 
         $payload = &$fsm->getPayload();

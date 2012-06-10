@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
 
 /**
- * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -37,7 +37,7 @@ namespace Stagehand\FSM;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
@@ -68,9 +68,21 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function setsTheAction()
     {
+        $action = function () {};
+        $event = new Event('foo');
+        $event->setAction($action);
+        $this->assertSame($action, $event->getAction());
+    }
+
+    /**
+     * @test
+     * @expectedException \Stagehand\FSM\ObjectNotCallableException
+     * @since Method available since Release 2.0.0
+     */
+    public function raisesAnExceptionWhenANonCallableActionIsSpecified()
+    {
         $event = new Event('foo');
         $event->setAction('foo');
-        $this->assertEquals('foo', $event->getAction());
     }
 
     /**
@@ -78,9 +90,21 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function setsTheGuard()
     {
+        $guard = function () {};
+        $event = new Event('foo');
+        $event->setGuard($guard);
+        $this->assertSame($guard, $event->getGuard());
+    }
+
+    /**
+     * @test
+     * @expectedException \Stagehand\FSM\ObjectNotCallableException
+     * @since Method available since Release 2.0.0
+     */
+    public function raisesAnExceptionWhenANonCallableGuardIsSpecified()
+    {
         $event = new Event('foo');
         $event->setGuard('foo');
-        $this->assertEquals('foo', $event->getGuard());
     }
 
     /**
