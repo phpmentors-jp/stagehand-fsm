@@ -44,7 +44,7 @@ namespace Stagehand\FSM;
  * @version    Release: @package_version@
  * @since      Class available since Release 2.0.0
  */
-class ObjectNotCallableException extends \UnexpectedValueException
+class ObjectNotCallableException extends \InvalidArgumentException
 {
 }
 
