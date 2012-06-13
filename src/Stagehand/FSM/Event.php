@@ -188,8 +188,7 @@ class Event
             return true;
         }
 
-        $payload = &$fsm->getPayload();
-        return call_user_func_array($this->guard, array($fsm, $this, &$payload));
+        return call_user_func($this->guard, $fsm, $this, $fsm->getPayload());
     }
 
     /**
@@ -203,8 +202,7 @@ class Event
             return;
         }
 
-        $payload = &$fsm->getPayload();
-        call_user_func_array($this->action, array($fsm, $this, &$payload));
+        call_user_func($this->action, $fsm, $this, $fsm->getPayload());
     }
 }
 

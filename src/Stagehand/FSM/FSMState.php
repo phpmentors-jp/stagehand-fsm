@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -41,7 +41,7 @@ namespace Stagehand\FSM;
  * A sub-class of the FSM class that has capability of the State class.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
@@ -106,7 +106,7 @@ class FSMState extends FSM implements IState
         $this->previousState = $fsm->previousState;
         $this->states = $fsm->states;
         $this->name = $fsm->name;
-        $this->payload = &$fsm->payload;
+        $this->payload = $fsm->payload;
         $this->state = new State($fsm->name);
     }
 }

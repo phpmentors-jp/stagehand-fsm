@@ -144,7 +144,7 @@ class FSM
      *
      * @return mixed $payload
      */
-    public function &getPayload()
+    public function getPayload()
     {
         return $this->payload;
     }
@@ -233,11 +233,11 @@ class FSM
     /**
      * Sets the given payload.
      *
-     * @param mixed &$payload
+     * @param mixed $payload
      */
-    public function setPayload(&$payload)
+    public function setPayload($payload)
     {
-        $this->payload = &$payload;
+        $this->payload = $payload;
     }
 
     /**
