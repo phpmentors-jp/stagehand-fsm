@@ -49,10 +49,10 @@ class EventTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function getsTheName()
+    public function getsTheId()
     {
         $event = new Event('foo');
-        $this->assertEquals('foo', $event->getName());
+        $this->assertEquals('foo', $event->getID());
     }
 
     /**
@@ -126,8 +126,8 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $test = $this;
         $event->setGuard(function (FSM $fsm, $event, $payload) use ($test)
         {
-            $test->assertEquals('bar', $fsm->getName());
-            $test->assertEquals('foo', $event->getName());
+            $test->assertEquals('bar', $fsm->getID());
+            $test->assertEquals('foo', $event->getID());
             $test->assertEquals('baz', $payload->name);
             return true;
         });
@@ -154,8 +154,8 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $test = $this;
         $event->setAction(function (FSM $fsm, $event, $payload) use ($test)
         {
-            $test->assertEquals('bar', $fsm->getName());
-            $test->assertEquals('foo', $event->getName());
+            $test->assertEquals('bar', $fsm->getID());
+            $test->assertEquals('foo', $event->getID());
             $test->assertEquals('baz', $payload->name);
             return true;
         });

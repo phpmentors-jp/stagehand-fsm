@@ -53,34 +53,34 @@ interface IState
     const STATE_FINAL = '__final';
 
     /**
-     * Finds and returns the event with the given name.
+     * Finds and returns the event with the given ID.
      *
-     * @param string $event
+     * @param string $eventID
      * @return \Stagehand\FSM\Event
      */
-    public function getEvent($event);
+    public function getEvent($eventID);
 
     /**
-     * Adds the event with the given name.
+     * Adds the event with the given ID.
      *
      * @param \Stagehand\FSM\Event $event
      */
     public function addEvent(Event $event);
 
     /**
-     * Gets the name of the state.
+     * Gets the ID of the state.
      *
      * @return string
      */
-    public function getName();
+    public function getID();
 
     /**
-     * Returns whether the state has an event with a given name.
+     * Returns whether the state has an event with a given ID.
      *
-     * @param string $name
+     * @param string $eventID
      * @return boolean
      */
-    public function hasEvent($name);
+    public function hasEvent($eventID);
 }
 
 /*

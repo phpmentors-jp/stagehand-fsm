@@ -62,18 +62,18 @@ class FSMState extends FSM implements IState
     }
 
     /**
-     * Finds and returns the event with the given name.
+     * Finds and returns the event with the given ID.
      *
-     * @param string $eventName
+     * @param string $eventID
      * @return mixed
      */
-    public function getEvent($eventName)
+    public function getEvent($eventID)
     {
-        return $this->state->getEvent($eventName);
+        return $this->state->getEvent($eventID);
     }
 
     /**
-     * Adds the event with the given name.
+     * Adds the event with the given ID.
      *
      * @param \Stagehand\FSM\Event $event
      */
@@ -83,15 +83,15 @@ class FSMState extends FSM implements IState
     }
 
     /**
-     * Returns whether the state has an event with a given name.
+     * Returns whether the state has an event with a given ID.
      *
-     * @param string $name
+     * @param string $eventID
      * @return boolean
      * @since Method available since Release 1.6.0
      */
-    public function hasEvent($name)
+    public function hasEvent($eventID)
     {
-        return $this->state->hasEvent($name);
+        return $this->state->hasEvent($eventID);
     }
 
     /**
@@ -105,9 +105,9 @@ class FSMState extends FSM implements IState
         $this->currentState = $fsm->currentState;
         $this->previousState = $fsm->previousState;
         $this->states = $fsm->states;
-        $this->name = $fsm->name;
+        $this->id = $fsm->id;
         $this->payload = $fsm->payload;
-        $this->state = new State($fsm->name);
+        $this->state = new State($fsm->id);
     }
 }
 

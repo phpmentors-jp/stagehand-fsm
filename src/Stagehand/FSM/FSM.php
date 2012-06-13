@@ -90,7 +90,7 @@ class FSM
     /**
      * @var string
      */
-    protected $name;
+    protected $id;
 
     /**
      * @var mixed
@@ -103,11 +103,11 @@ class FSM
     protected $eventQueue = array();
 
     /**
-     * @param string $name
+     * @param string $id
      */
-    public function __construct($name = null)
+    public function __construct($id = null)
     {
-        $this->setName($name);
+        $this->setID($id);
     }
 
     /**
@@ -153,12 +153,12 @@ class FSM
      * Triggers the given event in the current state.
      * <i>Note: Do not call this method directly from actions.</i>
      *
-     * @param string $eventName
+     * @param string $eventID
      * @return \Stagehand\FSM\IState
      */
-    public function triggerEvent($eventName)
+    public function triggerEvent($eventID)
     {
-        $this->queueEvent($eventName);
+        $this->queueEvent($eventID);
         while (true) {
             if (!count($this->eventQueue)) {
                 return $this->currentState;
@@ -170,29 +170,29 @@ class FSM
     /**
      * Queues an event to the event queue.
      *
-     * @param string $eventName
+     * @param string $eventID
      * @since Method available since Release 1.7.0
      */
-    public function queueEvent($eventName)
+    public function queueEvent($eventID)
     {
-        $this->eventQueue[] = $eventName;
+        $this->eventQueue[] = $eventID;
     }
 
     /**
-     * Finds and returns the state with the given name. This method finds the
+     * Finds and returns the state with the given ID. This method finds the
      * state recursively if child FSMs exists.
      *
-     * @param string $stateName
+     * @param string $stateID
      * @return mixed
      */
-    public function getState($stateName)
+    public function getState($stateID)
     {
-        if (array_key_exists($stateName, $this->states)) {
-            return $this->states[$stateName];
+        if (array_key_exists($stateID, $this->states)) {
+            return $this->states[$stateID];
         } else {
             foreach ($this->states as $state) {
                 if ($state instanceof FSM) {
-                    if (!is_null($state->getState($stateName))) {
+                    if (!is_null($state->getState($stateID))) {
                         return $state;
                     }
                 }
@@ -201,33 +201,33 @@ class FSM
     }
 
     /**
-     * Adds the state with the given name.
+     * Adds the state with the given ID.
      *
      * @param \Stagehand\FSM\IState $state
      */
     public function addState(IState $state)
     {
-        $this->states[ $state->getName() ] = $state;
+        $this->states[ $state->getID() ] = $state;
     }
 
     /**
-     * Sets the name of the FSM.
+     * Sets the ID of the FSM.
      *
-     * @param string $name
+     * @param string $id
      */
-    public function setName($name)
+    public function setID($id)
     {
-        $this->name = $name;
+        $this->id = $id;
     }
 
     /**
-     * Gets the name of the FSM.
+     * Gets the ID of the FSM.
      *
      * @return string
      */
-    public function getName()
+    public function getID()
     {
-        return $this->name;
+        return $this->id;
     }
 
     /**
@@ -244,38 +244,38 @@ class FSM
      * Returns whether an event is a protected event such as the special
      * events and so on.
      *
-     * @param string $event
+     * @param string $eventID
      * @return boolean
      * @since Method available since Release 1.5.0
      */
-    public function isProtectedEvent($event)
+    public function isProtectedEvent($eventID)
     {
-        return $this->isSpecialEvent($event) || $event == Event::EVENT_START || $event == Event::EVENT_END;
+        return $this->isSpecialEvent($eventID) || $eventID == Event::EVENT_START || $eventID == Event::EVENT_END;
     }
 
     /**
      * Returns whether a state is a protected event such as the pseudo states
      * and so on.
      *
-     * @param string $state
+     * @param string $stateID
      * @return boolean
      * @since Method available since Release 1.5.0
      */
-    public function isProtectedState($state)
+    public function isProtectedState($stateID)
     {
-        return $state == IState::STATE_INITIAL || $state == IState::STATE_FINAL;
+        return $stateID == IState::STATE_INITIAL || $stateID == IState::STATE_FINAL;
     }
 
     /**
-     * Returns whether the current state has an event with a given name.
+     * Returns whether the current state has an event with a given ID.
      *
-     * @param string $name
+     * @param string $eventID
      * @return boolean
      * @since Method available since Release 1.6.0
      */
-    public function hasEvent($name)
+    public function hasEvent($eventID)
     {
-        return $this->currentState->hasEvent($name);
+        return $this->currentState->hasEvent($eventID);
     }
 
     /**
@@ -291,25 +291,25 @@ class FSM
     /**
      * Returns whether the event is special event or not.
      *
-     * @param string $event
+     * @param string $eventID
      * @return boolean
      */
-    protected function isSpecialEvent($event)
+    protected function isSpecialEvent($eventID)
     {
-        return $event == Event::EVENT_ENTRY || $event == Event::EVENT_EXIT || $event == Event::EVENT_DO;
+        return $eventID == Event::EVENT_ENTRY || $eventID == Event::EVENT_EXIT || $eventID == Event::EVENT_DO;
     }
 
     /**
      * Transitions to the next state.
      *
-     * @param string $stateName
+     * @param string $stateID
      */
-    protected function transition($stateName)
+    protected function transition($stateID)
     {
         $this->previousState = $this->currentState;
-        $state = $this->getState($stateName);
+        $state = $this->getState($stateID);
         if (is_null($state)) {
-            $state = new State($stateName);
+            $state = new State($stateID);
             $this->addState($state);
         }
         $this->currentState = $state;
@@ -318,12 +318,12 @@ class FSM
     /**
      * Returns whether the event is entry event or not.
      *
-     * @param string $event
+     * @param string $eventID
      * @return boolean
      */
-    protected function isEntryEvent($event)
+    protected function isEntryEvent($eventID)
     {
-        return $event == Event::EVENT_ENTRY;
+        return $eventID == Event::EVENT_ENTRY;
     }
 
     /**
@@ -342,52 +342,52 @@ class FSM
     /**
      * Processes an event.
      *
-     * @param string  $eventName
+     * @param string  $eventID
      * @param boolean $usesHistoryMarker
      * @return \Stagehand\FSM\IState
      * @throws \Stagehand\FSM\FSMAlreadyShutdownException
      * @since Method available since Release 1.7.0
      */
-    protected function processEvent($eventName, $usesHistoryMarker = false)
+    protected function processEvent($eventID, $usesHistoryMarker = false)
     {
-        if ($this->currentState->getName() == IState::STATE_FINAL && !$this->isSpecialEvent($eventName)) {
+        if ($this->currentState->getID() == IState::STATE_FINAL && !$this->isSpecialEvent($eventID)) {
             throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
         }
 
-        $event = $this->currentState->getEvent($eventName);
+        $event = $this->currentState->getEvent($eventID);
         if (!is_null($event)) {
-            if (!$this->isSpecialEvent($eventName)) {
+            if (!$this->isSpecialEvent($eventID)) {
                 $result = $event->evaluateGuard($this);
                 if (!$result) {
-                    $eventName = Event::EVENT_DO;
+                    $eventID = Event::EVENT_DO;
                     $event = $this->currentState->getEvent(Event::EVENT_DO);
                 }
             }
         } else {
-            $eventName = Event::EVENT_DO;
+            $eventID = Event::EVENT_DO;
             $event = $this->currentState->getEvent(Event::EVENT_DO);
         }
 
-        if (!$this->isSpecialEvent($eventName)) {
+        if (!$this->isSpecialEvent($eventID)) {
             $this->processEvent(Event::EVENT_EXIT, $usesHistoryMarker);
         }
 
-        if (!$this->isSpecialEvent($eventName)) {
-            $nextStateName = $event->getNextState();
-            $this->transition($nextStateName);
+        if (!$this->isSpecialEvent($eventID)) {
+            $nextStateID = $event->getNextState();
+            $this->transition($nextStateID);
         }
 
         $event->invokeAction($this);
 
-        if ($this->isEntryEvent($eventName) && $this->currentState instanceof FSM && !$usesHistoryMarker) {
+        if ($this->isEntryEvent($eventID) && $this->currentState instanceof FSM && !$usesHistoryMarker) {
             $this->currentState->start();
         }
 
-        if (!$this->isSpecialEvent($eventName)) {
+        if (!$this->isSpecialEvent($eventID)) {
             $this->processEvent(Event::EVENT_ENTRY, $event->usesHistoryMarker());
         }
 
-        if (!$this->isSpecialEvent($eventName)) {
+        if (!$this->isSpecialEvent($eventID)) {
             $this->processEvent(Event::EVENT_DO, $event->usesHistoryMarker());
         }
 

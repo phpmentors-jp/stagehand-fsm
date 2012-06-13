@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -43,72 +43,72 @@ namespace Stagehand\FSM;
  * state.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
 class State implements IState
 {
-    protected $name;
+    protected $id;
     protected $events;
 
     /**
      * Constructor
      *
-     * @param string $name
+     * @param string $id
      */
-    public function __construct($name)
+    public function __construct($id)
     {
-        $this->name = $name;
+        $this->id = $id;
         $this->addEvent(new Event(Event::EVENT_ENTRY));
         $this->addEvent(new Event(Event::EVENT_EXIT));
         $this->addEvent(new Event(Event::EVENT_DO));
     }
 
     /**
-     * Finds and returns the event with the given name.
+     * Finds and returns the event with the given ID.
      *
-     * @param string $event
+     * @param string $id
      * @return \Stagehand\FSM\Event
      */
-    public function getEvent($event)
+    public function getEvent($id)
     {
-        if (!$this->hasEvent($event)) return;
-        return $this->events[$event];
+        if (!$this->hasEvent($id)) return;
+        return $this->events[$id];
     }
 
     /**
-     * Adds the event with the given name.
+     * Adds the event with the given ID.
      *
      * @param \Stagehand\FSM\Event $event
      * @return \Stagehand\FSM\Event
      */
     public function addEvent(Event $event)
     {
-        $this->events[ $event->getName() ] = $event;
+        $this->events[ $event->getID() ] = $event;
     }
 
     /**
-     * Gets the name of the state.
+     * Gets the ID of the state.
      *
      * @return string
      */
-    public function getName()
+    public function getID()
     {
-        return $this->name;
+        return $this->id;
     }
 
     /**
-     * Returns whether the state has an event with a given name.
+     * Returns whether the state has an event with a given ID.
      *
-     * @param string $name
+     * @param string $id
      * @return boolean
      * @since Method available since Release 1.6.0
      */
-    public function hasEvent($name)
+    public function hasEvent($id)
     {
-        return array_key_exists($name, $this->events);
+        return array_key_exists($id, $this->events);
     }
 }
 

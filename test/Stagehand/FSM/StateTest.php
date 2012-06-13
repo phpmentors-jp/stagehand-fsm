@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -39,7 +39,7 @@ namespace Stagehand\FSM;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
@@ -54,15 +54,15 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $state = new State('foo');
         $entry = $state->getEvent(Event::EVENT_ENTRY);
         $this->assertInstanceOf('\Stagehand\FSM\Event', $entry);
-        $this->assertEquals(Event::EVENT_ENTRY, $entry->getName());
+        $this->assertEquals(Event::EVENT_ENTRY, $entry->getID());
 
         $exit = $state->getEvent(Event::EVENT_EXIT);
         $this->assertInstanceOf('\Stagehand\FSM\Event', $exit);
-        $this->assertEquals(Event::EVENT_EXIT, $exit->getName());
+        $this->assertEquals(Event::EVENT_EXIT, $exit->getID());
 
         $do = $state->getEvent(Event::EVENT_DO);
         $this->assertInstanceOf('\Stagehand\FSM\Event', $do);
-        $this->assertEquals(Event::EVENT_DO, $do->getName());
+        $this->assertEquals(Event::EVENT_DO, $do->getID());
     }
 
     /**

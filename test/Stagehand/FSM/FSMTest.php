@@ -57,9 +57,9 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $builder->addState('bar');
         $fsm = $builder->getFSM();
         $this->assertInstanceOf('\Stagehand\FSM\IState', $fsm->getState('foo'));
-        $this->assertEquals('foo', $fsm->getState('foo')->getName());
+        $this->assertEquals('foo', $fsm->getState('foo')->getID());
         $this->assertInstanceOf('\Stagehand\FSM\IState', $fsm->getState('bar'));
-        $this->assertEquals('bar', $fsm->getState('bar')->getName());
+        $this->assertEquals('bar', $fsm->getState('bar')->getID());
     }
 
     /**
@@ -67,18 +67,18 @@ class FSMTest extends \PHPUnit_Framework_TestCase
      */
     public function setsTheFirstState()
     {
-        $firstStateName = 'locked';
+        $firstStateID = 'locked';
         $builder = new FSMBuilder();
-        $builder->setFirstState($firstStateName);
+        $builder->setFirstState($firstStateID);
         $fsm = $builder->getFSM();
         $fsm->start();
-        $this->assertEquals($firstStateName, $fsm->getCurrentState()->getName());
+        $this->assertEquals($firstStateID, $fsm->getCurrentState()->getID());
 
         $builder = new FSMBuilder();
-        $builder->setFirstState($firstStateName);
+        $builder->setFirstState($firstStateID);
         $fsm = $builder->getFSM();
         $fsm->start();
-        $this->assertEquals($firstStateName, $fsm->getCurrentState()->getName());
+        $this->assertEquals($firstStateID, $fsm->getCurrentState()->getID());
     }
 
     /**
@@ -112,19 +112,19 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $fsm->start();
 
         $currentState = $fsm->triggerEvent('pass');
-        $this->assertEquals('locked', $currentState->getName());
+        $this->assertEquals('locked', $currentState->getID());
         $this->assertTrue($alarmCalled);
 
         $currentState = $fsm->triggerEvent('insertCoin');
-        $this->assertEquals('unlocked', $currentState->getName());
+        $this->assertEquals('unlocked', $currentState->getID());
         $this->assertTrue($unlockCalled);
 
         $currentState = $fsm->triggerEvent('insertCoin');
-        $this->assertEquals('unlocked', $currentState->getName());
+        $this->assertEquals('unlocked', $currentState->getID());
         $this->assertTrue($thankCalled);
 
         $currentState = $fsm->triggerEvent('pass');
-        $this->assertEquals('locked', $currentState->getName());
+        $this->assertEquals('locked', $currentState->getID());
         $this->assertTrue($lockCalled);
     }
 
@@ -147,7 +147,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $fsm = $builder->getFSM();
         $fsm->start();
         $currentState = $fsm->triggerEvent('insertCoin');
-        $this->assertEquals('locked', $currentState->getName());
+        $this->assertEquals('locked', $currentState->getID());
     }
 
     /**
@@ -172,16 +172,16 @@ class FSMTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($entryActionForInitialCalled);
         $this->assertTrue($entryActionForLockedCalled);
-        $this->assertEquals('locked', $fsm->getCurrentState()->getName());
+        $this->assertEquals('locked', $fsm->getCurrentState()->getID());
     }
 
     /**
      * @test
      */
-    public function setsTheName()
+    public function setsTheId()
     {
         $fsm = new FSM('foo');
-        $this->assertEquals('foo', $fsm->getName());
+        $this->assertEquals('foo', $fsm->getID());
     }
 
     /**
@@ -214,22 +214,22 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $parent = $parentBuilder->getFSM();
         $parent->start();
 
-        $this->assertEquals('stopped', $parent->getCurrentState()->getName());
+        $this->assertEquals('stopped', $parent->getCurrentState()->getID());
 
         $child = $parent->triggerEvent('start');
-        $this->assertEquals('play', $child->getName());
-        $this->assertEquals('playing', $child->getCurrentState()->getName());
+        $this->assertEquals('play', $child->getID());
+        $this->assertEquals('playing', $child->getCurrentState()->getID());
         $this->assertEquals(2, $payload->count);
 
         $currentStateOfChild = $child->triggerEvent('pause');
-        $this->assertEquals('paused', $currentStateOfChild->getName());
+        $this->assertEquals('paused', $currentStateOfChild->getID());
 
         $currentStateOfChild = $child->triggerEvent('play');
-        $this->assertEquals('playing', $currentStateOfChild->getName());
-        $this->assertEquals('play', $parent->getCurrentState('play')->getName());
+        $this->assertEquals('playing', $currentStateOfChild->getID());
+        $this->assertEquals('play', $parent->getCurrentState('play')->getID());
 
         $currentState = $parent->triggerEvent('stop');
-        $this->assertEquals('stopped', $currentState->getName());
+        $this->assertEquals('stopped', $currentState->getID());
     }
 
     /**
@@ -263,14 +263,14 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         });
         $parent = $parentBuilder->getFSM();
         $parent->start();
-        $this->assertEquals('A', $parent->getCurrentState()->getName());
+        $this->assertEquals('A', $parent->getCurrentState()->getID());
 
         $parent->triggerEvent('v');
-        $this->assertEquals('S', $parent->getCurrentState()->getName());
+        $this->assertEquals('S', $parent->getCurrentState()->getID());
         $this->assertTrue($entryActionForSCalled);
 
         $child = $parent->getState('S');
-        $this->assertEquals('C', $child->getCurrentState()->getName());
+        $this->assertEquals('C', $child->getCurrentState()->getID());
         $this->assertTrue($entryActionForCCalled);
     }
 
@@ -282,23 +282,23 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $parentBuilder = $this->prepareWashingMachine();
         $parent = $parentBuilder->getFSM();
         $parent->start();
-        $this->assertEquals('Running', $parent->getCurrentState()->getName());
+        $this->assertEquals('Running', $parent->getCurrentState()->getID());
         $child = $parent->getState('Running');
 
         $currentStateOfChild = $child->triggerEvent('w');
-        $this->assertEquals('Rinsing', $currentStateOfChild->getName());
+        $this->assertEquals('Rinsing', $currentStateOfChild->getID());
 
         $currentState = $parent->triggerEvent('powerCut');
-        $this->assertEquals('PowerOff', $currentState->getName());
+        $this->assertEquals('PowerOff', $currentState->getID());
 
         $currentState = $parent->triggerEvent('restorePower');
-        $this->assertEquals('Running', $currentState->getName());
-        $this->assertEquals('Rinsing', $child->getCurrentState()->getName());
+        $this->assertEquals('Running', $currentState->getID());
+        $this->assertEquals('Rinsing', $child->getCurrentState()->getID());
 
         $parent->triggerEvent('powerCut');
         $currentState = $parent->triggerEvent('reset');
-        $this->assertEquals('Running', $currentState->getName());
-        $this->assertEquals('Washing', $child->getCurrentState()->getName());
+        $this->assertEquals('Running', $currentState->getID());
+        $this->assertEquals('Washing', $child->getCurrentState()->getID());
     }
 
     /**
@@ -314,13 +314,13 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $fsm->start();
         $state = $fsm->getPreviousState();
         $this->assertInstanceOf('\Stagehand\FSM\IState', $state);
-        $this->assertEquals(IState::STATE_INITIAL, $state->getName());
+        $this->assertEquals(IState::STATE_INITIAL, $state->getID());
 
         $fsm->triggerEvent('w');
         $state = $fsm->getPreviousState();
 
         $this->assertInstanceOf('\Stagehand\FSM\IState', $state);
-        $this->assertEquals('Washing', $state->getName());
+        $this->assertEquals('Washing', $state->getID());
     }
 
     /**
@@ -361,11 +361,11 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $child = $childBuilder->getFSM();
         $state = $child->triggerEvent('put');
         $this->assertEquals(2, $washingCount);
-        $this->assertEquals('Washing', $state->getName());
+        $this->assertEquals('Washing', $state->getID());
 
         $state = $child->triggerEvent('hit');
         $this->assertEquals(3, $washingCount);
-        $this->assertEquals('Washing', $state->getName());
+        $this->assertEquals('Washing', $state->getID());
     }
 
     /**
@@ -387,11 +387,11 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $child = $childBuilder->getFSM();
         $state = $child->triggerEvent('put');
         $this->assertEquals(2, $payload->washingCount);
-        $this->assertEquals('Washing', $state->getName());
+        $this->assertEquals('Washing', $state->getID());
 
         $state = $child->triggerEvent('hit');
         $this->assertEquals(3, $payload->washingCount);
-        $this->assertEquals('Washing', $state->getName());
+        $this->assertEquals('Washing', $state->getID());
     }
 
     /**
@@ -404,16 +404,16 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $test = $this;
         $builder->setEntryAction('Washing', function (FSM $fsm, $event, $payload) use ($test)
         {
-            $test->assertEquals('Washing', $fsm->getCurrentState()->getName());
-            $test->assertEquals(IState::STATE_INITIAL, $fsm->getPreviousState()->getName());
+            $test->assertEquals('Washing', $fsm->getCurrentState()->getID());
+            $test->assertEquals(IState::STATE_INITIAL, $fsm->getPreviousState()->getID());
             $fsm->triggerEvent('w');
         });
         $builder->addTransition('Washing', 'w', 'Rinsing', function (FSM $fsm, $event, $payload) {});
         $builder->addTransition('Rinsing', 'r', 'Spinning');
         $fsm = $builder->getFSM();
         $fsm->start();
-        $this->assertEquals('Rinsing', $fsm->getCurrentState()->getName());
-        $this->assertEquals('Washing', $fsm->getPreviousState()->getName());
+        $this->assertEquals('Rinsing', $fsm->getCurrentState()->getID());
+        $this->assertEquals('Washing', $fsm->getPreviousState()->getID());
     }
 
     /**
@@ -477,12 +477,12 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $fsm = $builder->getFSM();
         $fsm->start();
 
-        $this->assertEquals('Stop', $fsm->getCurrentState()->getName());
+        $this->assertEquals('Stop', $fsm->getCurrentState()->getID());
         $this->assertTrue($fsm->hasEvent('play'));
         $this->assertFalse($fsm->hasEvent('stop'));
 
         $currentState = $fsm->triggerEvent('play');
-        $this->assertEquals('Playing', $currentState->getName());
+        $this->assertEquals('Playing', $currentState->getID());
         $this->assertTrue($fsm->hasEvent('stop'));
         $this->assertFalse($fsm->hasEvent('play'));
     }

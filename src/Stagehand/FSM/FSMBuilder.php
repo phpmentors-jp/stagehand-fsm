@@ -52,15 +52,15 @@ class FSMBuilder
     protected $fsm;
 
     /**
-     * @param string|\Stagemand\FSM\FSM $fsmNameOrFSM
+     * @param string|\Stagemand\FSM\FSM $fsmIDOrFSM
      */
-    public function __construct($fsmNameOrFSM = null)
+    public function __construct($fsmIDOrFSM = null)
     {
-        if (!is_null($fsmNameOrFSM)) {
-            if ($fsmNameOrFSM instanceof FSM) {
-                $this->fsm = $fsmNameOrFSM;
+        if (!is_null($fsmIDOrFSM)) {
+            if ($fsmIDOrFSM instanceof FSM) {
+                $this->fsm = $fsmIDOrFSM;
             } else {
-                $this->fsm = new FSM($fsmNameOrFSM);
+                $this->fsm = new FSM($fsmIDOrFSM);
             }
         } else {
             $this->fsm = new FSM();
@@ -78,32 +78,32 @@ class FSMBuilder
     /**
      * Sets the given state as the first state.
      *
-     * @param string $firstStateName
+     * @param string $firstStateID
      */
-    public function setFirstState($firstStateName)
+    public function setFirstState($firstStateID)
     {
-        $this->addTransition(IState::STATE_INITIAL, Event::EVENT_START, $firstStateName);
+        $this->addTransition(IState::STATE_INITIAL, Event::EVENT_START, $firstStateID);
     }
 
     /**
      * Sets the activity to the state.
      *
-     * @param string   $stateName
+     * @param string   $stateID
      * @param callback $activity
      */
-    public function setActivity($stateName, $activity)
+    public function setActivity($stateID, $activity)
     {
-        $this->addTransition($stateName, EVENT::EVENT_DO, null, $activity);
+        $this->addTransition($stateID, EVENT::EVENT_DO, null, $activity);
     }
 
     /**
-     * Adds the state with the given name.
+     * Adds the state with the given ID.
      *
-     * @param string $stateName
+     * @param string $stateID
      */
-    public function addState($stateName)
+    public function addState($stateID)
     {
-        $this->fsm->addState(new State($stateName));
+        $this->fsm->addState(new State($stateID));
     }
 
     /**
@@ -122,34 +122,34 @@ class FSMBuilder
     /**
      * Adds the state transition.
      *
-     * @param string   $stateName
-     * @param string   $eventName
-     * @param string   $nextStateName
+     * @param string   $stateID
+     * @param string   $eventID
+     * @param string   $nextStateID
      * @param callback $action
      * @param callback $guard
      * @param boolean  $usesHistoryMarker
      */
     public function addTransition(
-        $stateName,
-        $eventName,
-        $nextStateName,
+        $stateID,
+        $eventID,
+        $nextStateID,
         $action = null,
         $guard = null,
         $usesHistoryMarker = false)
     {
-        $state = $this->fsm->getState($stateName);
+        $state = $this->fsm->getState($stateID);
         if (is_null($state)) {
-            $state = new State($stateName);
+            $state = new State($stateID);
             $this->fsm->addState($state);
         }
 
-        $event = $state->getEvent($eventName);
+        $event = $state->getEvent($eventID);
         if (is_null($event)) {
-            $event = new Event($eventName);
+            $event = new Event($eventID);
             $state->addEvent($event);
         }
 
-        $event->setNextState($nextStateName);
+        $event->setNextState($nextStateID);
         $event->setAction($action);
         $event->setGuard($guard);
         $event->setUsesHistoryMarker($usesHistoryMarker);
@@ -158,23 +158,23 @@ class FSMBuilder
     /**
      * Sets the entry action to the state.
      *
-     * @param string   $stateName
+     * @param string   $stateID
      * @param callback $action
      */
-    public function setEntryAction($stateName, $action)
+    public function setEntryAction($stateID, $action)
     {
-        $this->addTransition($stateName, Event::EVENT_ENTRY, null, $action);
+        $this->addTransition($stateID, Event::EVENT_ENTRY, null, $action);
     }
 
     /**
      * Sets the exit action to the state.
      *
-     * @param string   $stateName
+     * @param string   $stateID
      * @param callback $action
      */
-    public function setExitAction($stateName, $action)
+    public function setExitAction($stateID, $action)
     {
-        $this->addTransition($stateName, Event::EVENT_EXIT, null, $action);
+        $this->addTransition($stateID, Event::EVENT_EXIT, null, $action);
     }
 
     /**
@@ -188,13 +188,13 @@ class FSMBuilder
     }
 
     /**
-     * Sets the name of the FSM.
+     * Sets the ID of the FSM.
      *
-     * @param string $name
+     * @param string $id
      */
-    public function setName($name)
+    public function setID($id)
     {
-        $this->fsm->setName($name);
+        $this->fsm->setID($id);
     }
 }
 

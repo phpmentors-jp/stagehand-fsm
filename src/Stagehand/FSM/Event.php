@@ -58,7 +58,7 @@ class Event
     const EVENT_END = '__end';
     const EVENT_DO = '__do';
 
-    protected $name;
+    protected $id;
     protected $nextState;
     protected $action;
     protected $guard;
@@ -67,21 +67,21 @@ class Event
     /**
      * Constructor
      *
-     * @param string $name
+     * @param string $id
      */
-    public function __construct($name)
+    public function __construct($id)
     {
-        $this->name = $name;
+        $this->id = $id;
     }
 
     /**
      * Sets the next state of the event.
      *
-     * @param string $state
+     * @param string $stateID
      */
-    public function setNextState($state)
+    public function setNextState($stateID)
     {
-        $this->nextState = $state;
+        $this->nextState = $stateID;
     }
 
     /**
@@ -127,13 +127,13 @@ class Event
     }
 
     /**
-     * Gets the name of the event.
+     * Gets the ID of the event.
      *
      * @return string
      */
-    public function getName()
+    public function getID()
     {
-        return $this->name;
+        return $this->id;
     }
 
     /**
