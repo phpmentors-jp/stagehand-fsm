@@ -66,44 +66,23 @@ class State implements IState
         $this->addEvent(new Event(Event::EVENT_DO));
     }
 
-    /**
-     * Finds and returns the event with the given ID.
-     *
-     * @param string $id
-     * @return \Stagehand\FSM\Event
-     */
     public function getEvent($id)
     {
         if (!$this->hasEvent($id)) return;
         return $this->events[$id];
     }
 
-    /**
-     * Adds the event with the given ID.
-     *
-     * @param \Stagehand\FSM\Event $event
-     * @return \Stagehand\FSM\Event
-     */
     public function addEvent(Event $event)
     {
         $this->events[ $event->getID() ] = $event;
     }
 
-    /**
-     * Gets the ID of the state.
-     *
-     * @return string
-     */
     public function getID()
     {
         return $this->id;
     }
 
     /**
-     * Returns whether the state has an event with a given ID.
-     *
-     * @param string $id
-     * @return boolean
      * @since Method available since Release 1.6.0
      */
     public function hasEvent($id)

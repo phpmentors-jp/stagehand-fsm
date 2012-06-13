@@ -61,34 +61,16 @@ class FSMState extends FSM implements IState
         return new self($fsm);
     }
 
-    /**
-     * Finds and returns the event with the given ID.
-     *
-     * @param string $eventID
-     * @return mixed
-     */
     public function getEvent($eventID)
     {
         return $this->state->getEvent($eventID);
     }
 
-    /**
-     * Adds the event with the given ID.
-     *
-     * @param \Stagehand\FSM\Event $event
-     */
     public function addEvent(Event $event)
     {
         $this->state->addEvent($event);
     }
 
-    /**
-     * Returns whether the state has an event with a given ID.
-     *
-     * @param string $eventID
-     * @return boolean
-     * @since Method available since Release 1.6.0
-     */
     public function hasEvent($eventID)
     {
         return $this->state->hasEvent($eventID);
