@@ -56,14 +56,10 @@ class FSMBuilder
      */
     public function __construct($fsmIDOrFSM = null)
     {
-        if (!is_null($fsmIDOrFSM)) {
-            if ($fsmIDOrFSM instanceof FSM) {
-                $this->fsm = $fsmIDOrFSM;
-            } else {
-                $this->fsm = new FSM($fsmIDOrFSM);
-            }
+        if ($fsmIDOrFSM instanceof FSM) {
+            $this->fsm = $fsmIDOrFSM;
         } else {
-            $this->fsm = new FSM();
+            $this->fsm = new FSM($fsmIDOrFSM);
         }
     }
 
