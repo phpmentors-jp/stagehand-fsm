@@ -107,7 +107,7 @@ class FSM
      */
     public function __construct($id = null)
     {
-        $this->setID($id);
+        $this->id = $id;
     }
 
     /**
@@ -208,16 +208,6 @@ class FSM
     public function addState(IState $state)
     {
         $this->states[ $state->getID() ] = $state;
-    }
-
-    /**
-     * Sets the ID of the FSM.
-     *
-     * @param string $id
-     */
-    public function setID($id)
-    {
-        $this->id = $id;
     }
 
     /**

@@ -186,16 +186,6 @@ class FSMBuilder
     {
         $this->fsm->setPayload($payload);
     }
-
-    /**
-     * Sets the ID of the FSM.
-     *
-     * @param string $id
-     */
-    public function setID($id)
-    {
-        $this->fsm->setID($id);
-    }
 }
 
 /*
