@@ -176,9 +176,9 @@ class FSMBuilder
     /**
      * Sets the given payload.
      *
-     * @param mixed &$payload
+     * @param mixed $payload
      */
-    public function setPayload(&$payload)
+    public function setPayload($payload)
     {
         $this->fsm->setPayload($payload);
     }
