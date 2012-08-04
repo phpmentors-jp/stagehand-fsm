@@ -52,7 +52,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     public function addsAState()
     {
         $builder = new FSMBuilder();
-        $builder->setFirstState('locked');
+        $builder->setStartState('locked');
         $builder->addState('foo');
         $builder->addState('bar');
         $fsm = $builder->getFSM();
@@ -69,13 +69,13 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     {
         $firstStateID = 'locked';
         $builder = new FSMBuilder();
-        $builder->setFirstState($firstStateID);
+        $builder->setStartState($firstStateID);
         $fsm = $builder->getFSM();
         $fsm->start();
         $this->assertEquals($firstStateID, $fsm->getCurrentState()->getID());
 
         $builder = new FSMBuilder();
-        $builder->setFirstState($firstStateID);
+        $builder->setStartState($firstStateID);
         $fsm = $builder->getFSM();
         $fsm->start();
         $this->assertEquals($firstStateID, $fsm->getCurrentState()->getID());
@@ -91,7 +91,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $alarmCalled = false;
         $thankCalled = false;
         $builder = new FSMBuilder();
-        $builder->setFirstState('locked');
+        $builder->setStartState('locked');
         $builder->addTransition('locked', 'insertCoin', 'unlocked', function (Event $event, $payload, FSM $fsm) use (&$unlockCalled)
         {
             $unlockCalled = true;
@@ -136,7 +136,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $maxNumberOfCoins = 10;
         $numberOfCoins = 11;
         $builder = new FSMBuilder();
-        $builder->setFirstState('locked');
+        $builder->setStartState('locked');
         $builder->addTransition('locked', 'insertCoin', 'unlocked', null, function (Event $event, $payload, FSM $fsm) use ($maxNumberOfCoins, $numberOfCoins)
         {
             return $numberOfCoins <= $maxNumberOfCoins;
@@ -158,7 +158,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $entryActionForInitialCalled = false;
         $entryActionForLockedCalled = false;
         $builder = new FSMBuilder();
-        $builder->setFirstState('locked');
+        $builder->setStartState('locked');
         $builder->setExitAction(IState::STATE_INITIAL, function (Event $event, $payload, FSM $fsm) use (&$entryActionForInitialCalled)
         {
             $entryActionForInitialCalled = true;
@@ -190,7 +190,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     public function supportsNestedFsms()
     {
         $childBuilder = new FSMBuilder('play');
-        $childBuilder->setFirstState('playing');
+        $childBuilder->setStartState('playing');
         $childBuilder->setActivity('playing', function (Event $event, \stdClass $payload, FSM $fsm)
         {
             ++$payload->count;
@@ -204,7 +204,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $parentBuilder = new FSMBuilder();
         $parentBuilder->setPayload($payload);
         $parentBuilder->addFSM($child);
-        $parentBuilder->setFirstState('stopped');
+        $parentBuilder->setStartState('stopped');
         $parentBuilder->setActivity('stopped', function (Event $event, \stdClass $payload, FSM $fsm)
         {
             ++$payload->count;
@@ -241,7 +241,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $entryActionForSCalled = false;
 
         $childBuilder = new FSMBuilder('S');
-        $childBuilder->setFirstState('C');
+        $childBuilder->setStartState('C');
         $childBuilder->addTransition('C', 'w', 'B');
         $childBuilder->addTransition('B', 'x', 'C');
         $childBuilder->addTransition('B', 'q', IState::STATE_FINAL);
@@ -251,7 +251,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         });
 
         $parentBuilder = new FSMBuilder();
-        $parentBuilder->setFirstState('A');
+        $parentBuilder->setStartState('A');
         $parentBuilder->addFSM($childBuilder->getFSM());
         $parentBuilder->addTransition('A', 'r', 'D');
         $parentBuilder->addTransition('A', 'y', 'S');
@@ -307,7 +307,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     public function getsThePreviousState()
     {
         $builder = new FSMBuilder();
-        $builder->setFirstState('Washing');
+        $builder->setStartState('Washing');
         $builder->addTransition('Washing', 'w', 'Rinsing');
         $builder->addTransition('Rinsing', 'r', 'Spinning');
         $fsm = $builder->getFSM();
@@ -400,7 +400,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     public function transitionsWhenAnEventIsTriggeredInAnAction()
     {
         $builder = new FSMBuilder();
-        $builder->setFirstState('Washing');
+        $builder->setStartState('Washing');
         $test = $this;
         $builder->setEntryAction('Washing', function ($event, $payload, FSM $fsm) use ($test)
         {
@@ -424,7 +424,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     {
         $finalizeCalled = false;
         $builder = new FSMBuilder();
-        $builder->setFirstState('ending');
+        $builder->setStartState('ending');
         $builder->addTransition('ending', Event::EVENT_END, IState::STATE_FINAL);
         $builder->setEntryAction(IState::STATE_FINAL, function (Event $event, $payload, FSM $fsm) use (&$finalizeCalled)
         {
@@ -471,7 +471,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     public function checksWhetherTheCurrentStateHasTheGivenEvent()
     {
         $builder = new FSMBuilder();
-        $builder->setFirstState('Stop');
+        $builder->setStartState('Stop');
         $builder->addTransition('Stop', 'play', 'Playing');
         $builder->addTransition('Playing', 'stop', 'Stop');
         $fsm = $builder->getFSM();
@@ -498,7 +498,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $activityForDisplayConfirmationCallCount = 0;
 
         $builder = new FSMBuilder();
-        $builder->setFirstState('DisplayForm');
+        $builder->setStartState('DisplayForm');
         $builder->setActivity('DisplayForm', function ($event, $payload, FSM $fsm) use (&$activityForDisplayFormCallCount)
         {
             ++$activityForDisplayFormCallCount;
@@ -531,12 +531,12 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     protected function prepareWashingMachine()
     {
         $childBuilder = new FSMBuilder('Running');
-        $childBuilder->setFirstState('Washing');
+        $childBuilder->setStartState('Washing');
         $childBuilder->addTransition('Washing', 'w', 'Rinsing');
         $childBuilder->addTransition('Rinsing', 'r', 'Spinning');
 
         $parentBuilder = new FSMBuilder();
-        $parentBuilder->setFirstState('Running');
+        $parentBuilder->setStartState('Running');
         $parentBuilder->addFSM($childBuilder->getFSM());
         $parentBuilder->addTransition('PowerOff', 'restorePower', 'Running', null, null, true);
         $parentBuilder->addTransition('Running', 'powerCut', 'PowerOff');

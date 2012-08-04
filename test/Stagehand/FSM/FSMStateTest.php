@@ -51,7 +51,7 @@ class FSMStateTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $builder = new FSMBuilder('play');
-        $builder->setFirstState('playing');
+        $builder->setStartState('playing');
         $builder->addTransition('playing', 'pause', 'paused');
         $builder->addTransition('paused', 'play', 'playing');
         $this->fsmState = FSMState::wrap($builder->getFSM());
