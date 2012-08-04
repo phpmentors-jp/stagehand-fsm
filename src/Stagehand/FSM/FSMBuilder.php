@@ -74,11 +74,11 @@ class FSMBuilder
     /**
      * Sets the given state as the first state.
      *
-     * @param string $firstStateID
+     * @param string $stateID
      */
-    public function setFirstState($firstStateID)
+    public function setFirstState($stateID)
     {
-        $this->addTransition(IState::STATE_INITIAL, Event::EVENT_START, $firstStateID);
+        $this->addTransition(IState::STATE_INITIAL, Event::EVENT_START, $stateID);
     }
 
     /**
