@@ -231,19 +231,6 @@ class FSM
     }
 
     /**
-     * Returns whether an event is a protected event such as the special
-     * events and so on.
-     *
-     * @param string $eventID
-     * @return boolean
-     * @since Method available since Release 1.5.0
-     */
-    public function isProtectedEvent($eventID)
-    {
-        return Event::isSpecialEvent($eventID) || $eventID == Event::EVENT_START || $eventID == Event::EVENT_END;
-    }
-
-    /**
      * Returns whether a state is a protected event such as the pseudo states
      * and so on.
      *

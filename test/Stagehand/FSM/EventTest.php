@@ -171,6 +171,21 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $event->setHistoryMarker(true);
         $this->assertTrue($event->getHistoryMarker());
     }
+
+    /**
+     * @test
+     * @since Method available since Release 2.0.0
+     */
+    public function checksWhetherAnEventIsProtectedOrNot()
+    {
+        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_ENTRY));
+        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_EXIT));
+        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_START));
+        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_END));
+        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_DO));
+        $this->assertFalse(Event::isProtectedEvent('foo'));
+    }
+
 }
 
 /*

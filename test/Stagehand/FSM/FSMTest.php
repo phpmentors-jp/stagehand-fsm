@@ -441,21 +441,6 @@ class FSMTest extends \PHPUnit_Framework_TestCase
      * @test
      * @since Method available since Release 1.5.0
      */
-    public function checksWhetherAnEventIsProtectedOrNot()
-    {
-        $fsm = new FSM();
-        $this->assertTrue($fsm->isProtectedEvent(Event::EVENT_ENTRY));
-        $this->assertTrue($fsm->isProtectedEvent(Event::EVENT_EXIT));
-        $this->assertTrue($fsm->isProtectedEvent(Event::EVENT_START));
-        $this->assertTrue($fsm->isProtectedEvent(Event::EVENT_END));
-        $this->assertTrue($fsm->isProtectedEvent(Event::EVENT_DO));
-        $this->assertFalse($fsm->isProtectedEvent('foo'));
-    }
-
-    /**
-     * @test
-     * @since Method available since Release 1.5.0
-     */
     public function checksWhetherAnStateIsProtectedOrNot()
     {
         $fsm = new FSM();
