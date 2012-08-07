@@ -148,7 +148,7 @@ class FSMBuilder
         $event->setNextState($nextStateID);
         $event->setAction($action);
         $event->setGuard($guard);
-        $event->setUsesHistoryMarker($usesHistoryMarker);
+        $event->setHistoryMarker($usesHistoryMarker);
     }
 
     /**

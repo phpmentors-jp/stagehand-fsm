@@ -121,7 +121,7 @@ class Event
      *
      * @param boolean $historyMarker
      */
-    public function setUsesHistoryMarker($historyMarker)
+    public function setHistoryMarker($historyMarker)
     {
         $this->historyMarker = $historyMarker;
     }

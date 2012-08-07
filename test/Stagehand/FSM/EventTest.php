@@ -168,7 +168,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     public function setsUsesHistoryMarker()
     {
         $event = new Event('foo');
-        $event->setUsesHistoryMarker(true);
+        $event->setHistoryMarker(true);
         $this->assertTrue($event->usesHistoryMarker());
     }
 }
