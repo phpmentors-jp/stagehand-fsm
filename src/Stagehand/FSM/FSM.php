@@ -269,17 +269,6 @@ class FSM
     }
 
     /**
-     * Returns whether the event is entry event or not.
-     *
-     * @param string $eventID
-     * @return boolean
-     */
-    protected function isEntryEvent($eventID)
-    {
-        return $eventID == Event::EVENT_ENTRY;
-    }
-
-    /**
      * Initializes the FSM.
      */
     protected function initialize()
@@ -332,7 +321,7 @@ class FSM
 
         $event->invokeAction($this);
 
-        if ($this->isEntryEvent($eventID) && $this->currentState instanceof FSM && !$historyMarker) {
+        if ($eventID == Event::EVENT_ENTRY && $this->currentState instanceof FSM && !$historyMarker) {
             $this->currentState->start();
         }
 
