@@ -91,6 +91,17 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($state->hasEvent('bar'));
         $this->assertFalse($state->hasEvent('baz'));
     }
+
+    /**
+     * @test
+     * @since Method available since Release 2.0.0
+     */
+    public function checksWhetherAnStateIsProtectedOrNot()
+    {
+        $this->assertTrue(State::isProtectedState(IState::STATE_INITIAL));
+        $this->assertTrue(State::isProtectedState(IState::STATE_FINAL));
+        $this->assertFalse(State::isProtectedState('foo'));
+    }
 }
 
 /*

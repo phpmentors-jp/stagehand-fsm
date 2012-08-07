@@ -89,6 +89,18 @@ class State implements IState
     {
         return array_key_exists($id, $this->events);
     }
+
+    /**
+     * Returns whether a state is a protected event such as the pseudo states and so on.
+     *
+     * @param string $stateID
+     * @return boolean
+     * @since Method available since Release 2.0.0
+     */
+    public static function isProtectedState($stateID)
+    {
+        return $stateID == IState::STATE_INITIAL || $stateID == IState::STATE_FINAL;
+    }
 }
 
 /*

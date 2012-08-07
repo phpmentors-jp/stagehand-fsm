@@ -231,19 +231,6 @@ class FSM
     }
 
     /**
-     * Returns whether a state is a protected event such as the pseudo states
-     * and so on.
-     *
-     * @param string $stateID
-     * @return boolean
-     * @since Method available since Release 1.5.0
-     */
-    public function isProtectedState($stateID)
-    {
-        return $stateID == IState::STATE_INITIAL || $stateID == IState::STATE_FINAL;
-    }
-
-    /**
      * Returns whether the current state has an event with a given ID.
      *
      * @param string $eventID
