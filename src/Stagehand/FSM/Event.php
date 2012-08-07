@@ -204,6 +204,18 @@ class Event
 
         call_user_func($this->action, $this, $fsm->getPayload(), $fsm);
     }
+
+    /**
+     * Returns whether the event is special event or not.
+     *
+     * @param string $eventID
+     * @return boolean
+     * @since Method available since Release 2.0.0
+     */
+    public static function isSpecialEvent($eventID)
+    {
+        return $eventID == self::EVENT_ENTRY || $eventID == self::EVENT_EXIT || $eventID == self::EVENT_DO;
+    }
 }
 
 /*

@@ -240,7 +240,7 @@ class FSM
      */
     public function isProtectedEvent($eventID)
     {
-        return $this->isSpecialEvent($eventID) || $eventID == Event::EVENT_START || $eventID == Event::EVENT_END;
+        return Event::isSpecialEvent($eventID) || $eventID == Event::EVENT_START || $eventID == Event::EVENT_END;
     }
 
     /**
@@ -276,17 +276,6 @@ class FSM
     public function clearPayload()
     {
         unset($this->payload);
-    }
-
-    /**
-     * Returns whether the event is special event or not.
-     *
-     * @param string $eventID
-     * @return boolean
-     */
-    protected function isSpecialEvent($eventID)
-    {
-        return $eventID == Event::EVENT_ENTRY || $eventID == Event::EVENT_EXIT || $eventID == Event::EVENT_DO;
     }
 
     /**
@@ -340,13 +329,13 @@ class FSM
      */
     protected function processEvent($eventID, $historyMarker = false)
     {
-        if ($this->currentState->getID() == IState::STATE_FINAL && !$this->isSpecialEvent($eventID)) {
+        if ($this->currentState->getID() == IState::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
             throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
         }
 
         $event = $this->currentState->getEvent($eventID);
         if (!is_null($event)) {
-            if (!$this->isSpecialEvent($eventID)) {
+            if (!Event::isSpecialEvent($eventID)) {
                 $result = $event->evaluateGuard($this);
                 if (!$result) {
                     $eventID = Event::EVENT_DO;
@@ -358,11 +347,11 @@ class FSM
             $event = $this->currentState->getEvent(Event::EVENT_DO);
         }
 
-        if (!$this->isSpecialEvent($eventID)) {
+        if (!Event::isSpecialEvent($eventID)) {
             $this->processEvent(Event::EVENT_EXIT, $historyMarker);
         }
 
-        if (!$this->isSpecialEvent($eventID)) {
+        if (!Event::isSpecialEvent($eventID)) {
             $nextStateID = $event->getNextState();
             $this->transition($nextStateID);
         }
@@ -373,11 +362,11 @@ class FSM
             $this->currentState->start();
         }
 
-        if (!$this->isSpecialEvent($eventID)) {
+        if (!Event::isSpecialEvent($eventID)) {
             $this->processEvent(Event::EVENT_ENTRY, $event->getHistoryMarker());
         }
 
-        if (!$this->isSpecialEvent($eventID)) {
+        if (!Event::isSpecialEvent($eventID)) {
             $this->processEvent(Event::EVENT_DO, $event->getHistoryMarker());
         }
 
