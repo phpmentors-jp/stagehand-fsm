@@ -119,11 +119,11 @@ class Event
     /**
      * Sets whether the event transitions to the history marker or not.
      *
-     * @param boolean $usesHistoryMarker
+     * @param boolean $historyMarker
      */
-    public function setUsesHistoryMarker($usesHistoryMarker)
+    public function setUsesHistoryMarker($historyMarker)
     {
-        $this->historyMarker = $usesHistoryMarker;
+        $this->historyMarker = $historyMarker;
     }
 
     /**
