@@ -169,7 +169,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     {
         $event = new Event('foo');
         $event->setHistoryMarker(true);
-        $this->assertTrue($event->usesHistoryMarker());
+        $this->assertTrue($event->getHistoryMarker());
     }
 }
 

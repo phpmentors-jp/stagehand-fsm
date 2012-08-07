@@ -374,11 +374,11 @@ class FSM
         }
 
         if (!$this->isSpecialEvent($eventID)) {
-            $this->processEvent(Event::EVENT_ENTRY, $event->usesHistoryMarker());
+            $this->processEvent(Event::EVENT_ENTRY, $event->getHistoryMarker());
         }
 
         if (!$this->isSpecialEvent($eventID)) {
-            $this->processEvent(Event::EVENT_DO, $event->usesHistoryMarker());
+            $this->processEvent(Event::EVENT_DO, $event->getHistoryMarker());
         }
 
         return $this->currentState;

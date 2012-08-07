@@ -171,7 +171,7 @@ class Event
      *
      * @return boolean
      */
-    public function usesHistoryMarker()
+    public function getHistoryMarker()
     {
         return $this->historyMarker;
     }
