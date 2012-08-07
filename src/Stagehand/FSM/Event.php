@@ -62,7 +62,7 @@ class Event
     protected $nextState;
     protected $action;
     protected $guard;
-    protected $usesHistoryMarker = false;
+    protected $historyMarker = false;
 
     /**
      * Constructor
@@ -123,7 +123,7 @@ class Event
      */
     public function setUsesHistoryMarker($usesHistoryMarker)
     {
-        $this->usesHistoryMarker = $usesHistoryMarker;
+        $this->historyMarker = $usesHistoryMarker;
     }
 
     /**
@@ -173,7 +173,7 @@ class Event
      */
     public function usesHistoryMarker()
     {
-        return $this->usesHistoryMarker;
+        return $this->historyMarker;
     }
 
     /**
