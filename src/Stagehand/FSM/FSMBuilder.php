@@ -123,7 +123,7 @@ class FSMBuilder
      * @param string   $nextStateID
      * @param callback $action
      * @param callback $guard
-     * @param boolean  $usesHistoryMarker
+     * @param boolean  $historyMarker
      */
     public function addTransition(
         $stateID,
@@ -131,7 +131,7 @@ class FSMBuilder
         $nextStateID,
         $action = null,
         $guard = null,
-        $usesHistoryMarker = false)
+        $historyMarker = false)
     {
         $state = $this->fsm->getState($stateID);
         if (is_null($state)) {
@@ -148,7 +148,7 @@ class FSMBuilder
         $event->setNextState($nextStateID);
         $event->setAction($action);
         $event->setGuard($guard);
-        $event->setHistoryMarker($usesHistoryMarker);
+        $event->setHistoryMarker($historyMarker);
     }
 
     /**

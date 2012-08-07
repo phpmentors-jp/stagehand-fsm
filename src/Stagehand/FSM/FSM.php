@@ -333,12 +333,12 @@ class FSM
      * Processes an event.
      *
      * @param string  $eventID
-     * @param boolean $usesHistoryMarker
+     * @param boolean $historyMarker
      * @return \Stagehand\FSM\IState
      * @throws \Stagehand\FSM\FSMAlreadyShutdownException
      * @since Method available since Release 1.7.0
      */
-    protected function processEvent($eventID, $usesHistoryMarker = false)
+    protected function processEvent($eventID, $historyMarker = false)
     {
         if ($this->currentState->getID() == IState::STATE_FINAL && !$this->isSpecialEvent($eventID)) {
             throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
@@ -359,7 +359,7 @@ class FSM
         }
 
         if (!$this->isSpecialEvent($eventID)) {
-            $this->processEvent(Event::EVENT_EXIT, $usesHistoryMarker);
+            $this->processEvent(Event::EVENT_EXIT, $historyMarker);
         }
 
         if (!$this->isSpecialEvent($eventID)) {
@@ -369,7 +369,7 @@ class FSM
 
         $event->invokeAction($this);
 
-        if ($this->isEntryEvent($eventID) && $this->currentState instanceof FSM && !$usesHistoryMarker) {
+        if ($this->isEntryEvent($eventID) && $this->currentState instanceof FSM && !$historyMarker) {
             $this->currentState->start();
         }
 
