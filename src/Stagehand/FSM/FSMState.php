@@ -81,7 +81,7 @@ class FSMState extends FSM implements IState
      *
      * @param \Stagehand\FSM\FSM $fsm
      */
-    public function __construct($fsm)
+    public function __construct(FSM $fsm)
     {
         parent::__construct();
         $this->currentState = $fsm->currentState;
