@@ -89,7 +89,7 @@ class FSMBuilder
      */
     public function setActivity($stateID, $activity)
     {
-        $this->addTransition($stateID, EVENT::EVENT_DO, null, $activity);
+        $this->addTransition($stateID, Event::EVENT_DO, null, $activity);
     }
 
     /**
