@@ -69,13 +69,12 @@ class State implements StateInterface
     /**
      * {@inheritDoc}
      *
-     * @param string $id
      * @return \Stagehand\FSM\Event
      */
-    public function getEvent($id)
+    public function getEvent($eventID)
     {
-        if (!$this->hasEvent($id)) return;
-        return $this->events[$id];
+        if (!$this->hasEvent($eventID)) return;
+        return $this->events[$eventID];
     }
 
     public function addEvent(Event $event)
