@@ -80,7 +80,7 @@ class State implements IState
 
     public function addEvent(Event $event)
     {
-        $this->events[ $event->getID() ] = $event;
+        $this->events[ $event->getEventID() ] = $event;
     }
 
     public function getStateID()

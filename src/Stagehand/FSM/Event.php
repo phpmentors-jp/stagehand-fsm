@@ -131,7 +131,7 @@ class Event
      *
      * @return string
      */
-    public function getID()
+    public function getEventID()
     {
         return $this->id;
     }

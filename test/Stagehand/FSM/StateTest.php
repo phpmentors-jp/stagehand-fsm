@@ -54,15 +54,15 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $state = new State('foo');
         $entry = $state->getEvent(Event::EVENT_ENTRY);
         $this->assertInstanceOf('\Stagehand\FSM\Event', $entry);
-        $this->assertEquals(Event::EVENT_ENTRY, $entry->getID());
+        $this->assertEquals(Event::EVENT_ENTRY, $entry->getEventID());
 
         $exit = $state->getEvent(Event::EVENT_EXIT);
         $this->assertInstanceOf('\Stagehand\FSM\Event', $exit);
-        $this->assertEquals(Event::EVENT_EXIT, $exit->getID());
+        $this->assertEquals(Event::EVENT_EXIT, $exit->getEventID());
 
         $do = $state->getEvent(Event::EVENT_DO);
         $this->assertInstanceOf('\Stagehand\FSM\Event', $do);
-        $this->assertEquals(Event::EVENT_DO, $do->getID());
+        $this->assertEquals(Event::EVENT_DO, $do->getEventID());
     }
 
     /**
