@@ -78,7 +78,7 @@ class FSMBuilder
      */
     public function setStartState($stateID)
     {
-        $this->addTransition(IState::STATE_INITIAL, Event::EVENT_START, $stateID);
+        $this->addTransition(StateInterface::STATE_INITIAL, Event::EVENT_START, $stateID);
     }
 
     /**

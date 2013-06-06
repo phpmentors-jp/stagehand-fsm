@@ -56,9 +56,9 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $builder->addState('foo');
         $builder->addState('bar');
         $fsm = $builder->getFSM();
-        $this->assertInstanceOf('\Stagehand\FSM\IState', $fsm->getState('foo'));
+        $this->assertInstanceOf('\Stagehand\FSM\StateInterface', $fsm->getState('foo'));
         $this->assertEquals('foo', $fsm->getState('foo')->getStateID());
-        $this->assertInstanceOf('\Stagehand\FSM\IState', $fsm->getState('bar'));
+        $this->assertInstanceOf('\Stagehand\FSM\StateInterface', $fsm->getState('bar'));
         $this->assertEquals('bar', $fsm->getState('bar')->getStateID());
     }
 
@@ -159,7 +159,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $entryActionForLockedCalled = false;
         $builder = new FSMBuilder();
         $builder->setStartState('locked');
-        $builder->setExitAction(IState::STATE_INITIAL, function (Event $event, $payload, FSM $fsm) use (&$entryActionForInitialCalled)
+        $builder->setExitAction(StateInterface::STATE_INITIAL, function (Event $event, $payload, FSM $fsm) use (&$entryActionForInitialCalled)
         {
             $entryActionForInitialCalled = true;
         });
@@ -244,7 +244,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $childBuilder->setStartState('C');
         $childBuilder->addTransition('C', 'w', 'B');
         $childBuilder->addTransition('B', 'x', 'C');
-        $childBuilder->addTransition('B', 'q', IState::STATE_FINAL);
+        $childBuilder->addTransition('B', 'q', StateInterface::STATE_FINAL);
         $childBuilder->setEntryAction('C', function (Event $event, $payload, FSM $fsm) use (&$entryActionForCCalled)
         {
             $entryActionForCCalled = true;
@@ -313,13 +313,13 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $fsm = $builder->getFSM();
         $fsm->start();
         $state = $fsm->getPreviousState();
-        $this->assertInstanceOf('\Stagehand\FSM\IState', $state);
-        $this->assertEquals(IState::STATE_INITIAL, $state->getStateID());
+        $this->assertInstanceOf('\Stagehand\FSM\StateInterface', $state);
+        $this->assertEquals(StateInterface::STATE_INITIAL, $state->getStateID());
 
         $fsm->triggerEvent('w');
         $state = $fsm->getPreviousState();
 
-        $this->assertInstanceOf('\Stagehand\FSM\IState', $state);
+        $this->assertInstanceOf('\Stagehand\FSM\StateInterface', $state);
         $this->assertEquals('Washing', $state->getStateID());
     }
 
@@ -405,7 +405,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $builder->setEntryAction('Washing', function ($event, $payload, FSM $fsm) use ($test)
         {
             $test->assertEquals('Washing', $fsm->getCurrentState()->getStateID());
-            $test->assertEquals(IState::STATE_INITIAL, $fsm->getPreviousState()->getStateID());
+            $test->assertEquals(StateInterface::STATE_INITIAL, $fsm->getPreviousState()->getStateID());
             $fsm->triggerEvent('w');
         });
         $builder->addTransition('Washing', 'w', 'Rinsing', function ($event, $payload, FSM $fsm) {});
@@ -425,8 +425,8 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $finalizeCalled = false;
         $builder = new FSMBuilder();
         $builder->setStartState('ending');
-        $builder->addTransition('ending', Event::EVENT_END, IState::STATE_FINAL);
-        $builder->setEntryAction(IState::STATE_FINAL, function (Event $event, $payload, FSM $fsm) use (&$finalizeCalled)
+        $builder->addTransition('ending', Event::EVENT_END, StateInterface::STATE_FINAL);
+        $builder->setEntryAction(StateInterface::STATE_FINAL, function (Event $event, $payload, FSM $fsm) use (&$finalizeCalled)
         {
             $finalizeCalled = true;
         });

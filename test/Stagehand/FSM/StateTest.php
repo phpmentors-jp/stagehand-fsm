@@ -98,8 +98,8 @@ class StateTest extends \PHPUnit_Framework_TestCase
      */
     public function checksWhetherAnStateIsProtectedOrNot()
     {
-        $this->assertTrue(State::isProtectedState(IState::STATE_INITIAL));
-        $this->assertTrue(State::isProtectedState(IState::STATE_FINAL));
+        $this->assertTrue(State::isProtectedState(StateInterface::STATE_INITIAL));
+        $this->assertTrue(State::isProtectedState(StateInterface::STATE_FINAL));
         $this->assertFalse(State::isProtectedState('foo'));
     }
 }

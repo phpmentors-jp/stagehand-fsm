@@ -46,7 +46,7 @@ namespace Stagehand\FSM;
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
-class FSMState extends FSM implements IState
+class FSMState extends FSM implements StateInterface
 {
     protected $state;
 
@@ -54,7 +54,7 @@ class FSMState extends FSM implements IState
      * Wraps a FSM object up with a FSMState object.
      *
      * @param \Stagehand\FSM\FSM $fsm
-     * @return \Stagehand\FSM\IState
+     * @return \Stagehand\FSM\StateInterface
      */
     public static function wrap($fsm)
     {

@@ -48,7 +48,7 @@ namespace Stagehand\FSM;
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
-class State implements IState
+class State implements StateInterface
 {
     protected $id;
     protected $events;
@@ -105,7 +105,7 @@ class State implements IState
      */
     public static function isProtectedState($stateID)
     {
-        return $stateID == IState::STATE_INITIAL || $stateID == IState::STATE_FINAL;
+        return $stateID == StateInterface::STATE_INITIAL || $stateID == StateInterface::STATE_FINAL;
     }
 }
 

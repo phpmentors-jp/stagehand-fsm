@@ -73,12 +73,12 @@ namespace Stagehand\FSM;
 class FSM
 {
     /**
-     * @var \Stagehand\FSM\IState
+     * @var \Stagehand\FSM\StateInterface
      */
     protected $currentState;
 
     /**
-     * @var \Stagehand\FSM\IState
+     * @var \Stagehand\FSM\StateInterface
      */
     protected $previousState;
 
@@ -122,7 +122,7 @@ class FSM
     /**
      * Gets the current state.
      *
-     * @return \Stagehand\FSM\IState
+     * @return \Stagehand\FSM\StateInterface
      */
     public function getCurrentState()
     {
@@ -132,7 +132,7 @@ class FSM
     /**
      * Gets the previous state.
      *
-     * @return \Stagehand\FSM\IState
+     * @return \Stagehand\FSM\StateInterface
      */
     public function getPreviousState()
     {
@@ -154,7 +154,7 @@ class FSM
      * <i>Note: Do not call this method directly from actions.</i>
      *
      * @param string $eventID
-     * @return \Stagehand\FSM\IState
+     * @return \Stagehand\FSM\StateInterface
      */
     public function triggerEvent($eventID)
     {
@@ -183,7 +183,7 @@ class FSM
      * state recursively if child FSMs exists.
      *
      * @param string $stateID
-     * @return \Stagehand\FSM\IState
+     * @return \Stagehand\FSM\StateInterface
      */
     public function getState($stateID)
     {
@@ -203,9 +203,9 @@ class FSM
     /**
      * Adds the state with the given ID.
      *
-     * @param \Stagehand\FSM\IState $state
+     * @param \Stagehand\FSM\StateInterface $state
      */
-    public function addState(IState $state)
+    public function addState(StateInterface $state)
     {
         $this->states[ $state->getStateID() ] = $state;
     }
@@ -273,9 +273,9 @@ class FSM
      */
     protected function initialize()
     {
-        $this->currentState = $this->getState(IState::STATE_INITIAL);
+        $this->currentState = $this->getState(StateInterface::STATE_INITIAL);
         if (is_null($this->currentState)) {
-            $state = new State(IState::STATE_INITIAL);
+            $state = new State(StateInterface::STATE_INITIAL);
             $this->addState($state);
             $this->currentState = $state;
         }
@@ -286,13 +286,13 @@ class FSM
      *
      * @param string  $eventID
      * @param boolean $historyMarker
-     * @return \Stagehand\FSM\IState
+     * @return \Stagehand\FSM\StateInterface
      * @throws \Stagehand\FSM\FSMAlreadyShutdownException
      * @since Method available since Release 1.7.0
      */
     protected function processEvent($eventID, $historyMarker = false)
     {
-        if ($this->currentState->getStateID() == IState::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
+        if ($this->currentState->getStateID() == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
             throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
         }
 
