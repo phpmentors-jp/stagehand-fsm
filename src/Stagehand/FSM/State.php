@@ -56,11 +56,11 @@ class State implements StateInterface
     /**
      * Constructor
      *
-     * @param string $id
+     * @param string $stateID
      */
-    public function __construct($id)
+    public function __construct($stateID)
     {
-        $this->stateID = $id;
+        $this->stateID = $stateID;
         $this->addEvent(new Event(Event::EVENT_ENTRY));
         $this->addEvent(new Event(Event::EVENT_EXIT));
         $this->addEvent(new Event(Event::EVENT_DO));
