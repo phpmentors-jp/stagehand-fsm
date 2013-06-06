@@ -67,11 +67,11 @@ class Event
     /**
      * Constructor
      *
-     * @param string $id
+     * @param string $eventID
      */
-    public function __construct($id)
+    public function __construct($eventID)
     {
-        $this->eventID = $id;
+        $this->eventID = $eventID;
     }
 
     /**
