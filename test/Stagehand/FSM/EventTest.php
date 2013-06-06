@@ -119,12 +119,12 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $payload->name = 'baz';
         $fsm->setPayload($payload);
         $event = new Event('foo');
-        $event->setGuard(function ($event, $payload, FSM $fsm) { return true; });
+        $event->setGuard(function (Event $event, $payload, FSM $fsm) { return true; });
         $this->assertTrue($event->evaluateGuard($fsm));
-        $event->setGuard(function ($event, $payload, FSM $fsm) { return false; });
+        $event->setGuard(function (Event $event, $payload, FSM $fsm) { return false; });
         $this->assertFalse($event->evaluateGuard($fsm));
         $test = $this;
-        $event->setGuard(function ($event, $payload, FSM $fsm) use ($test)
+        $event->setGuard(function (Event $event, $payload, FSM $fsm) use ($test)
         {
             $test->assertEquals('bar', $fsm->getFSMID());
             $test->assertEquals('foo', $event->getID());
@@ -145,14 +145,14 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $payload->name = 'baz';
         $fsm->setPayload($payload);
         $event = new Event('foo');
-        $event->setAction(function ($event, $payload, FSM $fsm) use (&$barInvoked)
+        $event->setAction(function (Event $event, $payload, FSM $fsm) use (&$barInvoked)
         {
             $barInvoked = true;
         });
         $event->invokeAction($fsm);
         $this->assertTrue($barInvoked);
         $test = $this;
-        $event->setAction(function ($event, $payload, FSM $fsm) use ($test)
+        $event->setAction(function (Event $event, $payload, FSM $fsm) use ($test)
         {
             $test->assertEquals('bar', $fsm->getFSMID());
             $test->assertEquals('foo', $event->getID());
