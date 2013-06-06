@@ -95,9 +95,9 @@ class FSMState extends FSM implements IState
     /**
      * {@inheritDoc}
      */
-    public function getID()
+    public function getStateID()
     {
-        return $this->state->getID();
+        return $this->state->getStateID();
     }
 }
 

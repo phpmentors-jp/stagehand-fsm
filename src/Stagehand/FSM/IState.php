@@ -72,7 +72,7 @@ interface IState
      *
      * @return string
      */
-    public function getID();
+    public function getStateID();
 
     /**
      * Returns whether the state has an event with a given ID.

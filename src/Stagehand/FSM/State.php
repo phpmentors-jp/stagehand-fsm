@@ -77,7 +77,7 @@ class State implements IState
         $this->events[ $event->getID() ] = $event;
     }
 
-    public function getID()
+    public function getStateID()
     {
         return $this->id;
     }

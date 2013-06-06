@@ -207,7 +207,7 @@ class FSM
      */
     public function addState(IState $state)
     {
-        $this->states[ $state->getID() ] = $state;
+        $this->states[ $state->getStateID() ] = $state;
     }
 
     /**
@@ -292,7 +292,7 @@ class FSM
      */
     protected function processEvent($eventID, $historyMarker = false)
     {
-        if ($this->currentState->getID() == IState::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
+        if ($this->currentState->getStateID() == IState::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
             throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
         }
 
