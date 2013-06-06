@@ -90,7 +90,7 @@ class FSM
     /**
      * @var string
      */
-    protected $id;
+    protected $fsmID;
 
     /**
      * @var mixed
@@ -107,7 +107,7 @@ class FSM
      */
     public function __construct($id = null)
     {
-        $this->id = $id;
+        $this->fsmID = $id;
     }
 
     /**
@@ -217,7 +217,7 @@ class FSM
      */
     public function getFSMID()
     {
-        return $this->id;
+        return $this->fsmID;
     }
 
     /**

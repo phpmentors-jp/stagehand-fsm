@@ -87,9 +87,9 @@ class FSMState extends FSM implements StateInterface
         $this->currentState = $fsm->currentState;
         $this->previousState = $fsm->previousState;
         $this->states = $fsm->states;
-        $this->id = $fsm->id;
+        $this->fsmID = $fsm->fsmID;
         $this->payload = $fsm->payload;
-        $this->state = new State($fsm->id);
+        $this->state = new State($fsm->fsmID);
     }
 
     /**
