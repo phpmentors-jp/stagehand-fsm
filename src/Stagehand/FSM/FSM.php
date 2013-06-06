@@ -103,11 +103,11 @@ class FSM
     protected $eventQueue = array();
 
     /**
-     * @param string $id
+     * @param string $fsmID
      */
-    public function __construct($id = null)
+    public function __construct($fsmID = null)
     {
-        $this->fsmID = $id;
+        $this->fsmID = $fsmID;
     }
 
     /**
