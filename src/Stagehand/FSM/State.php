@@ -66,6 +66,12 @@ class State implements IState
         $this->addEvent(new Event(Event::EVENT_DO));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param string $id
+     * @return \Stagehand\FSM\Event
+     */
     public function getEvent($id)
     {
         if (!$this->hasEvent($id)) return;
