@@ -451,13 +451,13 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $fsm->start();
 
         $this->assertEquals('Stop', $fsm->getCurrentState()->getStateID());
-        $this->assertTrue($fsm->hasEvent('play'));
-        $this->assertFalse($fsm->hasEvent('stop'));
+        $this->assertTrue($fsm->getCurrentState()->hasEvent('play'));
+        $this->assertFalse($fsm->getCurrentState()->hasEvent('stop'));
 
         $currentState = $fsm->triggerEvent('play');
         $this->assertEquals('Playing', $currentState->getStateID());
-        $this->assertTrue($fsm->hasEvent('stop'));
-        $this->assertFalse($fsm->hasEvent('play'));
+        $this->assertTrue($fsm->getCurrentState()->hasEvent('stop'));
+        $this->assertFalse($fsm->getCurrentState()->hasEvent('play'));
     }
 
     /**

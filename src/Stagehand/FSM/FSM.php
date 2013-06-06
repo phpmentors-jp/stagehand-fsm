@@ -231,18 +231,6 @@ class FSM
     }
 
     /**
-     * Returns whether the current state has an event with a given ID.
-     *
-     * @param string $eventID
-     * @return boolean
-     * @since Method available since Release 1.6.0
-     */
-    public function hasEvent($eventID)
-    {
-        return $this->currentState->hasEvent($eventID);
-    }
-
-    /**
      * Removes the payload from the property.
      *
      * @since Method available since Release 1.9.0
