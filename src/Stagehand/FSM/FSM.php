@@ -215,7 +215,7 @@ class FSM
      *
      * @return string
      */
-    public function getID()
+    public function getFSMID()
     {
         return $this->id;
     }

@@ -181,7 +181,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
     public function setsTheId()
     {
         $fsm = new FSM('foo');
-        $this->assertEquals('foo', $fsm->getID());
+        $this->assertEquals('foo', $fsm->getFSMID());
     }
 
     /**

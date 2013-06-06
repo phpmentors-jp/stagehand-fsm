@@ -91,6 +91,14 @@ class FSMState extends FSM implements IState
         $this->payload = $fsm->payload;
         $this->state = new State($fsm->id);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getID()
+    {
+        return $this->state->getID();
+    }
 }
 
 /*
