@@ -90,9 +90,9 @@ class State implements StateInterface
     /**
      * @since Method available since Release 1.6.0
      */
-    public function hasEvent($id)
+    public function hasEvent($eventID)
     {
-        return array_key_exists($id, $this->events);
+        return array_key_exists($eventID, $this->events);
     }
 
     /**
