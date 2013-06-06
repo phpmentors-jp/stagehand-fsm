@@ -50,7 +50,7 @@ namespace Stagehand\FSM;
  */
 class State implements StateInterface
 {
-    protected $id;
+    protected $stateID;
     protected $events;
 
     /**
@@ -60,7 +60,7 @@ class State implements StateInterface
      */
     public function __construct($id)
     {
-        $this->id = $id;
+        $this->stateID = $id;
         $this->addEvent(new Event(Event::EVENT_ENTRY));
         $this->addEvent(new Event(Event::EVENT_EXIT));
         $this->addEvent(new Event(Event::EVENT_DO));
@@ -85,7 +85,7 @@ class State implements StateInterface
 
     public function getStateID()
     {
-        return $this->id;
+        return $this->stateID;
     }
 
     /**
