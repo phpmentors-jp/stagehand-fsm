@@ -183,7 +183,7 @@ class FSM
      * state recursively if child FSMs exists.
      *
      * @param string $stateID
-     * @return mixed
+     * @return \Stagehand\FSM\IState
      */
     public function getState($stateID)
     {
