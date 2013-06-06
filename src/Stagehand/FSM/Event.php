@@ -58,7 +58,7 @@ class Event
     const EVENT_END = '__end';
     const EVENT_DO = '__do';
 
-    protected $id;
+    protected $eventID;
     protected $nextState;
     protected $action;
     protected $guard;
@@ -71,7 +71,7 @@ class Event
      */
     public function __construct($id)
     {
-        $this->id = $id;
+        $this->eventID = $id;
     }
 
     /**
@@ -133,7 +133,7 @@ class Event
      */
     public function getEventID()
     {
-        return $this->id;
+        return $this->eventID;
     }
 
     /**
