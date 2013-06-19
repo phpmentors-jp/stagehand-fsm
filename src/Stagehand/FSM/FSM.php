@@ -111,6 +111,20 @@ class FSM
     }
 
     /**
+     * @return array
+     */
+    public function __sleep()
+    {
+        return array(
+            'currentState',
+            'previousState',
+            'states',
+            'fsmID',
+            'eventQueue',
+        );
+    }
+
+    /**
      * Starts the Finite State Machine.
      */
     public function start()

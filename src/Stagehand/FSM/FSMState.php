@@ -51,6 +51,14 @@ class FSMState extends FSM implements StateInterface
     protected $state;
 
     /**
+     * @return array
+     */
+    public function __sleep()
+    {
+        return array_merge(parent::__sleep(), array('state'));
+    }
+
+    /**
      * Wraps a FSM object up with a FSMState object.
      *
      * @param \Stagehand\FSM\FSM $fsm
