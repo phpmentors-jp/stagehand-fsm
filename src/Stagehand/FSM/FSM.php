@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2008, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2008, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
@@ -58,7 +58,7 @@ namespace Stagehand\FSM;
  * o User defined payload
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2008, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
@@ -78,7 +78,7 @@ class FSM
     protected $currentState;
 
     /**
-     * @var \Stagehand\FSM\StateInterface
+     * @var string
      */
     protected $previousState;
 
@@ -150,7 +150,7 @@ class FSM
      */
     public function getPreviousState()
     {
-        return $this->previousState;
+        return $this->getState($this->previousState);
     }
 
     /**
@@ -261,7 +261,7 @@ class FSM
      */
     protected function transition($stateID)
     {
-        $this->previousState = $this->currentState;
+        $this->previousState = $this->currentState->getStateID();
         $state = $this->getState($stateID);
         if (is_null($state)) {
             $state = new State($stateID);
