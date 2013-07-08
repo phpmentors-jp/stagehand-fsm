@@ -145,6 +145,12 @@ class FSMBuilder
             $state->addEvent($event);
         }
 
+        $nextState = $this->fsm->getState($nextStateID);
+        if (is_null($nextState)) {
+            $nextState = new State($nextStateID);
+            $this->fsm->addState($nextState);
+        }
+
         $event->setNextState($nextStateID);
         $event->setAction($action);
         $event->setGuard($guard);
