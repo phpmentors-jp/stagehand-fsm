@@ -50,12 +50,17 @@ namespace Stagehand\FSM;
  */
 class State implements StateInterface
 {
-    protected $stateID;
+    /**
+     * @var string
+     */
+     protected $stateID;
+
+    /**
+     * @var array
+     */
     protected $events;
 
     /**
-     * Constructor
-     *
      * @param string $stateID
      */
     public function __construct($stateID)

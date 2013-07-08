@@ -58,15 +58,32 @@ class Event
     const EVENT_END = '__end';
     const EVENT_DO = '__do';
 
+    /**
+     * @var string
+     */
     protected $eventID;
+
+    /**
+     * @var string
+     */
     protected $nextState;
+
+    /**
+     * @var callback
+     */
     protected $action;
+
+    /**
+     * @var callback
+     */
     protected $guard;
+
+    /**
+     * @var boolean
+     */
     protected $historyMarker = false;
 
     /**
-     * Constructor
-     *
      * @param string $eventID
      */
     public function __construct($eventID)

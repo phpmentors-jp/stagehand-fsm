@@ -48,6 +48,9 @@ namespace Stagehand\FSM;
  */
 class FSMState extends FSM implements StateInterface
 {
+    /**
+     * @var \Stagehand\FSM\StateInterface
+     */
     protected $state;
 
     /**
@@ -85,8 +88,6 @@ class FSMState extends FSM implements StateInterface
     }
 
     /**
-     * Constructor
-     *
      * @param \Stagehand\FSM\FSM $fsm
      */
     public function __construct(FSM $fsm)
