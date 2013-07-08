@@ -258,15 +258,16 @@ class FSM
      * Transitions to the next state.
      *
      * @param string $stateID
+     * @throws \Stagehand\FSM\StateNotFoundException
      */
     protected function transition($stateID)
     {
         $this->previousStateID = $this->currentStateID;
         $state = $this->getState($stateID);
         if (is_null($state)) {
-            $state = new State($stateID);
-            $this->addState($state);
+            throw new StateNotFoundException(sprintf('The state for ID [ %s ] is not found in the FSM.', $stateID));
         }
+
         $this->currentStateID = $state->getStateID();
     }
 

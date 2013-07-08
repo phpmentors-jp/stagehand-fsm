@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2008, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2008, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -39,7 +39,7 @@ namespace Stagehand\FSM;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2006-2008, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
@@ -496,6 +496,26 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $activityForDisplayFormCallCount);
         $this->assertEquals(1, $transitionActionForDisplayFormCallCount);
         $this->assertEquals(1, $activityForDisplayConfirmationCallCount);
+    }
+
+    /**
+     * @test
+     * @since Method available since Release 2.0.0
+     */
+    public function raisesAnExceptionWhenTransitioningToANonExsistingState()
+    {
+        $builder = new FSMBuilder();
+        $builder->setStartState('locked');
+        $fsm = $builder->getFSM();
+        $fsm->getState('locked')->addEvent(new Event('insertCoin'));
+        $fsm->getState('locked')->getEvent('insertCoin')->setNextState('unlocked');
+        $fsm->start();
+
+        try {
+            $fsm->triggerEvent('insertCoin');
+            $this->fail('An expected exception has not been raised.');
+        } catch (StateNotFoundException $e) {
+        }
     }
 
     /**
