@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -42,7 +42,7 @@ namespace Stagehand\FSM;
  * transition and entry/exit/do special events.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
@@ -109,12 +109,13 @@ class Event
      */
     public function setAction($action)
     {
-        if (is_null($action)) return;
-        if (!is_callable($action)) {
-            throw new ObjectNotCallableException('The action is not callable.');
-        }
+        if (!is_null($action)) {
+            if (!is_callable($action)) {
+                throw new ObjectNotCallableException('The action is not callable.');
+            }
 
-        $this->action = $action;
+            $this->action = $action;
+        }
     }
 
     /**
@@ -125,12 +126,13 @@ class Event
      */
     public function setGuard($guard)
     {
-        if (is_null($guard)) return;
-        if (!is_callable($guard)) {
-            throw new ObjectNotCallableException('The guard is not callable.');
-        }
+        if (!is_null($guard)) {
+            if (!is_callable($guard)) {
+                throw new ObjectNotCallableException('The guard is not callable.');
+            }
 
-        $this->guard = $guard;
+            $this->guard = $guard;
+        }
     }
 
     /**
@@ -203,9 +205,9 @@ class Event
     {
         if (is_null($this->guard)) {
             return true;
+        } else {
+            return call_user_func($this->guard, $this, $fsm->getPayload(), $fsm);
         }
-
-        return call_user_func($this->guard, $this, $fsm->getPayload(), $fsm);
     }
 
     /**
@@ -215,11 +217,9 @@ class Event
      */
     public function invokeAction(FSM $fsm)
     {
-        if (is_null($this->action)) {
-            return;
+        if (!is_null($this->action)) {
+            call_user_func($this->action, $this, $fsm->getPayload(), $fsm);
         }
-
-        call_user_func($this->action, $this, $fsm->getPayload(), $fsm);
     }
 
     /**

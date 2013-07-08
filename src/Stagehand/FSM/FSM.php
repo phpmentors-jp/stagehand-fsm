@@ -173,10 +173,12 @@ class FSM
     public function triggerEvent($eventID)
     {
         $this->queueEvent($eventID);
+
         while (true) {
-            if (!count($this->eventQueue)) {
+            if (count($this->eventQueue) == 0) {
                 return $this->getCurrentState();
             }
+
             $this->processEvent(array_shift($this->eventQueue));
         }
     }
@@ -211,6 +213,8 @@ class FSM
                     }
                 }
             }
+
+            return null;
         }
     }
 
@@ -260,15 +264,15 @@ class FSM
      * @param string $stateID
      * @throws \Stagehand\FSM\StateNotFoundException
      */
-    protected function transition($stateID)
+    protected function transition($nextStateID)
     {
-        $this->previousStateID = $this->currentStateID;
-        $state = $this->getState($stateID);
-        if (is_null($state)) {
-            throw new StateNotFoundException(sprintf('The state for ID [ %s ] is not found in the FSM.', $stateID));
+        $nextState = $this->getState($nextStateID);
+        if (is_null($nextState)) {
+            throw new StateNotFoundException(sprintf('The state for ID [ %s ] is not found in the FSM.', $nextStateID));
         }
 
-        $this->currentStateID = $state->getStateID();
+        $this->previousStateID = $this->currentStateID;
+        $this->currentStateID = $nextState->getStateID();
     }
 
     /**
@@ -278,9 +282,8 @@ class FSM
     {
         $currentState = $this->getState(StateInterface::STATE_INITIAL);
         if (is_null($currentState)) {
-            $state = new State(StateInterface::STATE_INITIAL);
-            $this->addState($state);
-            $currentState = $state;
+            $currentState = new State(StateInterface::STATE_INITIAL);
+            $this->addState($currentState);
         }
 
         $this->currentStateID = $currentState->getStateID();
@@ -302,7 +305,10 @@ class FSM
         }
 
         $event = $this->getCurrentState()->getEvent($eventID);
-        if (!is_null($event)) {
+        if (is_null($event)) {
+            $eventID = Event::EVENT_DO;
+            $event = $this->getCurrentState()->getEvent(Event::EVENT_DO);
+        } else {
             if (!Event::isSpecialEvent($eventID)) {
                 $result = $event->evaluateGuard($this);
                 if (!$result) {
@@ -310,9 +316,6 @@ class FSM
                     $event = $this->getCurrentState()->getEvent(Event::EVENT_DO);
                 }
             }
-        } else {
-            $eventID = Event::EVENT_DO;
-            $event = $this->getCurrentState()->getEvent(Event::EVENT_DO);
         }
 
         if (!Event::isSpecialEvent($eventID)) {
