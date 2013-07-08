@@ -167,7 +167,7 @@ class FSM
      * Triggers the given event in the current state.
      * <i>Note: Do not call this method directly from actions.</i>
      *
-     * @param string $eventID
+     * @param  string                        $eventID
      * @return \Stagehand\FSM\StateInterface
      */
     public function triggerEvent($eventID)
@@ -198,7 +198,7 @@ class FSM
      * Finds and returns the state with the given ID. This method finds the
      * state recursively if child FSMs exists.
      *
-     * @param string $stateID
+     * @param  string                        $stateID
      * @return \Stagehand\FSM\StateInterface
      */
     public function getState($stateID)
@@ -261,7 +261,7 @@ class FSM
     /**
      * Transitions to the next state.
      *
-     * @param string $stateID
+     * @param  string                                $stateID
      * @throws \Stagehand\FSM\StateNotFoundException
      */
     protected function transition($nextStateID)
@@ -292,8 +292,8 @@ class FSM
     /**
      * Processes an event.
      *
-     * @param string  $eventID
-     * @param boolean $historyMarker
+     * @param  string                                     $eventID
+     * @param  boolean                                    $historyMarker
      * @return \Stagehand\FSM\StateInterface
      * @throws \Stagehand\FSM\FSMAlreadyShutdownException
      * @since Method available since Release 1.7.0

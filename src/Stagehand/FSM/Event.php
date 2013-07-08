@@ -104,7 +104,7 @@ class Event
     /**
      * Sets the action the event.
      *
-     * @param callback $action
+     * @param  callback                                  $action
      * @throws \Stagehand\FSM\ObjectNotCallableException
      */
     public function setAction($action)
@@ -121,7 +121,7 @@ class Event
     /**
      * Sets the guard the event.
      *
-     * @param callback $guard
+     * @param  callback                                  $guard
      * @throws \Stagehand\FSM\ObjectNotCallableException
      */
     public function setGuard($guard)
@@ -198,7 +198,7 @@ class Event
     /**
      * Evaluates the guard.
      *
-     * @param \Stagehand\FSM\FSM $fsm
+     * @param  \Stagehand\FSM\FSM $fsm
      * @return boolean
      */
     public function evaluateGuard(FSM $fsm)
@@ -225,7 +225,7 @@ class Event
     /**
      * Returns whether the event is special event or not.
      *
-     * @param string $eventID
+     * @param  string  $eventID
      * @return boolean
      * @since Method available since Release 2.0.0
      */
@@ -238,7 +238,7 @@ class Event
      * Returns whether an event is a protected event such as the special
      * events and so on.
      *
-     * @param string $eventID
+     * @param  string  $eventID
      * @return boolean
      * @since Method available since Release 2.0.0
      */

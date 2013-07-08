@@ -55,7 +55,7 @@ interface StateInterface
     /**
      * Finds and returns the event with the given ID.
      *
-     * @param string $eventID
+     * @param  string               $eventID
      * @return \Stagehand\FSM\Event
      */
     public function getEvent($eventID);
@@ -77,7 +77,7 @@ interface StateInterface
     /**
      * Returns whether the state has an event with a given ID.
      *
-     * @param string $eventID
+     * @param  string  $eventID
      * @return boolean
      */
     public function hasEvent($eventID);

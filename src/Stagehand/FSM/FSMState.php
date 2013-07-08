@@ -64,7 +64,7 @@ class FSMState extends FSM implements StateInterface
     /**
      * Wraps a FSM object up with a FSMState object.
      *
-     * @param \Stagehand\FSM\FSM $fsm
+     * @param  \Stagehand\FSM\FSM            $fsm
      * @return \Stagehand\FSM\StateInterface
      */
     public static function wrap($fsm)
