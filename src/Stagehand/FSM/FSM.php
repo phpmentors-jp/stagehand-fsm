@@ -75,7 +75,7 @@ class FSM
     /**
      * @var string
      */
-    protected $currentState;
+    protected $currentStateID;
 
     /**
      * @var string
@@ -116,7 +116,7 @@ class FSM
     public function __sleep()
     {
         return array(
-            'currentState',
+            'currentStateID',
             'previousState',
             'states',
             'fsmID',
@@ -140,7 +140,7 @@ class FSM
      */
     public function getCurrentState()
     {
-        return $this->getState($this->currentState);
+        return $this->getState($this->currentStateID);
     }
 
     /**
@@ -261,13 +261,13 @@ class FSM
      */
     protected function transition($stateID)
     {
-        $this->previousState = $this->currentState;
+        $this->previousState = $this->currentStateID;
         $state = $this->getState($stateID);
         if (is_null($state)) {
             $state = new State($stateID);
             $this->addState($state);
         }
-        $this->currentState = $state->getStateID();
+        $this->currentStateID = $state->getStateID();
     }
 
     /**
@@ -282,7 +282,7 @@ class FSM
             $currentState = $state;
         }
 
-        $this->currentState = $currentState->getStateID();
+        $this->currentStateID = $currentState->getStateID();
     }
 
     /**
@@ -296,7 +296,7 @@ class FSM
      */
     protected function processEvent($eventID, $historyMarker = false)
     {
-        if ($this->currentState == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
+        if ($this->currentStateID == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
             throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
         }
 
