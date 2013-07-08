@@ -93,7 +93,7 @@ class FSMState extends FSM implements StateInterface
     {
         parent::__construct();
         $this->currentStateID = $fsm->currentStateID;
-        $this->previousState = $fsm->previousState;
+        $this->previousStateID = $fsm->previousStateID;
         $this->states = $fsm->states;
         $this->fsmID = $fsm->fsmID;
         $this->payload = $fsm->payload;

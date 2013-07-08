@@ -80,7 +80,7 @@ class FSM
     /**
      * @var string
      */
-    protected $previousState;
+    protected $previousStateID;
 
     /**
      * @var array
@@ -117,7 +117,7 @@ class FSM
     {
         return array(
             'currentStateID',
-            'previousState',
+            'previousStateID',
             'states',
             'fsmID',
             'eventQueue',
@@ -150,7 +150,7 @@ class FSM
      */
     public function getPreviousState()
     {
-        return $this->getState($this->previousState);
+        return $this->getState($this->previousStateID);
     }
 
     /**
@@ -261,7 +261,7 @@ class FSM
      */
     protected function transition($stateID)
     {
-        $this->previousState = $this->currentStateID;
+        $this->previousStateID = $this->currentStateID;
         $state = $this->getState($stateID);
         if (is_null($state)) {
             $state = new State($stateID);
