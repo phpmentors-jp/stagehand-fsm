@@ -58,7 +58,7 @@ class State implements StateInterface
     /**
      * @var array
      */
-    protected $events;
+    protected $events = array();
 
     /**
      * @param string $stateID
