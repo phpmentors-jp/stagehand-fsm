@@ -73,7 +73,7 @@ namespace Stagehand\FSM;
 class FSM
 {
     /**
-     * @var \Stagehand\FSM\StateInterface
+     * @var string
      */
     protected $currentState;
 
@@ -140,7 +140,7 @@ class FSM
      */
     public function getCurrentState()
     {
-        return $this->currentState;
+        return $this->getState($this->currentState);
     }
 
     /**
@@ -175,7 +175,7 @@ class FSM
         $this->queueEvent($eventID);
         while (true) {
             if (!count($this->eventQueue)) {
-                return $this->currentState;
+                return $this->getCurrentState();
             }
             $this->processEvent(array_shift($this->eventQueue));
         }
@@ -261,13 +261,13 @@ class FSM
      */
     protected function transition($stateID)
     {
-        $this->previousState = $this->currentState->getStateID();
+        $this->previousState = $this->currentState;
         $state = $this->getState($stateID);
         if (is_null($state)) {
             $state = new State($stateID);
             $this->addState($state);
         }
-        $this->currentState = $state;
+        $this->currentState = $state->getStateID();
     }
 
     /**
@@ -275,12 +275,14 @@ class FSM
      */
     protected function initialize()
     {
-        $this->currentState = $this->getState(StateInterface::STATE_INITIAL);
-        if (is_null($this->currentState)) {
+        $currentState = $this->getState(StateInterface::STATE_INITIAL);
+        if (is_null($currentState)) {
             $state = new State(StateInterface::STATE_INITIAL);
             $this->addState($state);
-            $this->currentState = $state;
+            $currentState = $state;
         }
+
+        $this->currentState = $currentState->getStateID();
     }
 
     /**
@@ -294,22 +296,22 @@ class FSM
      */
     protected function processEvent($eventID, $historyMarker = false)
     {
-        if ($this->currentState->getStateID() == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
+        if ($this->currentState == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
             throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
         }
 
-        $event = $this->currentState->getEvent($eventID);
+        $event = $this->getCurrentState()->getEvent($eventID);
         if (!is_null($event)) {
             if (!Event::isSpecialEvent($eventID)) {
                 $result = $event->evaluateGuard($this);
                 if (!$result) {
                     $eventID = Event::EVENT_DO;
-                    $event = $this->currentState->getEvent(Event::EVENT_DO);
+                    $event = $this->getCurrentState()->getEvent(Event::EVENT_DO);
                 }
             }
         } else {
             $eventID = Event::EVENT_DO;
-            $event = $this->currentState->getEvent(Event::EVENT_DO);
+            $event = $this->getCurrentState()->getEvent(Event::EVENT_DO);
         }
 
         if (!Event::isSpecialEvent($eventID)) {
@@ -323,8 +325,8 @@ class FSM
 
         $event->invokeAction($this);
 
-        if ($eventID == Event::EVENT_ENTRY && $this->currentState instanceof FSM && !$historyMarker) {
-            $this->currentState->start();
+        if ($eventID == Event::EVENT_ENTRY && $this->getCurrentState() instanceof FSM && !$historyMarker) {
+            $this->getCurrentState()->start();
         }
 
         if (!Event::isSpecialEvent($eventID)) {
@@ -335,7 +337,7 @@ class FSM
             $this->processEvent(Event::EVENT_DO, $event->getHistoryMarker());
         }
 
-        return $this->currentState;
+        return $this->getCurrentState();
     }
 }
 
