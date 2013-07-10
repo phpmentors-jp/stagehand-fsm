@@ -103,20 +103,6 @@ class FSMBuilder
     }
 
     /**
-     * Adds a FSM object to the FSM.
-     *
-     * @param \Stagehand\FSM\FSM $fsm
-     */
-    public function addFSM(FSM $fsm)
-    {
-        if (is_null($fsm->getPayload())) {
-            $fsm->setPayload($this->fsm->getPayload());
-        }
-
-        $this->fsm->addState(FSMState::wrap($fsm));
-    }
-
-    /**
      * Adds the state transition.
      *
      * @param string   $stateID
@@ -131,8 +117,7 @@ class FSMBuilder
         $eventID,
         $nextStateID,
         $action = null,
-        $guard = null,
-        $historyMarker = false)
+        $guard = null)
     {
         $state = $this->fsm->getState($stateID);
         if (is_null($state)) {
@@ -155,7 +140,6 @@ class FSMBuilder
         $event->setNextState($nextStateID);
         $event->setAction($action);
         $event->setGuard($guard);
-        $event->setHistoryMarker($historyMarker);
     }
 
     /**

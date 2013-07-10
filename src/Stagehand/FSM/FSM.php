@@ -206,14 +206,6 @@ class FSM
         if (array_key_exists($stateID, $this->states)) {
             return $this->states[$stateID];
         } else {
-            foreach ($this->states as $state) {
-                if ($state instanceof FSM) {
-                    if (!is_null($state->getState($stateID))) {
-                        return $state;
-                    }
-                }
-            }
-
             return null;
         }
     }
@@ -293,12 +285,11 @@ class FSM
      * Processes an event.
      *
      * @param  string                                     $eventID
-     * @param  boolean                                    $historyMarker
      * @return \Stagehand\FSM\StateInterface
      * @throws \Stagehand\FSM\FSMAlreadyShutdownException
      * @since Method available since Release 1.7.0
      */
-    protected function processEvent($eventID, $historyMarker = false)
+    protected function processEvent($eventID)
     {
         if ($this->currentStateID == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
             throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
@@ -319,7 +310,7 @@ class FSM
         }
 
         if (!Event::isSpecialEvent($eventID)) {
-            $this->processEvent(Event::EVENT_EXIT, $historyMarker);
+            $this->processEvent(Event::EVENT_EXIT);
         }
 
         if (!Event::isSpecialEvent($eventID)) {
@@ -329,16 +320,12 @@ class FSM
 
         $event->invokeAction($this);
 
-        if ($eventID == Event::EVENT_ENTRY && $this->getCurrentState() instanceof FSM && !$historyMarker) {
-            $this->getCurrentState()->start();
+        if (!Event::isSpecialEvent($eventID)) {
+            $this->processEvent(Event::EVENT_ENTRY);
         }
 
         if (!Event::isSpecialEvent($eventID)) {
-            $this->processEvent(Event::EVENT_ENTRY, $event->getHistoryMarker());
-        }
-
-        if (!Event::isSpecialEvent($eventID)) {
-            $this->processEvent(Event::EVENT_DO, $event->getHistoryMarker());
+            $this->processEvent(Event::EVENT_DO);
         }
 
         return $this->getCurrentState();

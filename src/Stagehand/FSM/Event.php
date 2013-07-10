@@ -79,11 +79,6 @@ class Event
     protected $guard;
 
     /**
-     * @var boolean
-     */
-    protected $historyMarker = false;
-
-    /**
      * @param string $eventID
      */
     public function __construct($eventID)
@@ -136,16 +131,6 @@ class Event
     }
 
     /**
-     * Sets whether the event transitions to the history marker or not.
-     *
-     * @param boolean $historyMarker
-     */
-    public function setHistoryMarker($historyMarker)
-    {
-        $this->historyMarker = $historyMarker;
-    }
-
-    /**
      * Gets the ID of the event.
      *
      * @return string
@@ -183,16 +168,6 @@ class Event
     public function getGuard()
     {
         return $this->guard;
-    }
-
-    /**
-     * Returns whether the event transitions to the history marker or not.
-     *
-     * @return boolean
-     */
-    public function getHistoryMarker()
-    {
-        return $this->historyMarker;
     }
 
     /**
