@@ -108,6 +108,7 @@ class FSM
     public function __construct($fsmID = null)
     {
         $this->fsmID = $fsmID;
+        $this->addState(new State(StateInterface::STATE_INITIAL));
     }
 
     /**
@@ -293,13 +294,7 @@ class FSM
      */
     protected function initialize()
     {
-        $currentState = $this->getState(StateInterface::STATE_INITIAL);
-        if (is_null($currentState)) {
-            $currentState = new State(StateInterface::STATE_INITIAL);
-            $this->addState($currentState);
-        }
-
-        $this->currentStateID = $currentState->getStateID();
+        $this->currentStateID = StateInterface::STATE_INITIAL;
     }
 }
 
