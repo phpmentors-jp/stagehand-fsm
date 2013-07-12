@@ -253,18 +253,24 @@ class FSM
     /**
      * Transitions to the next state.
      *
-     * @param  string                                $stateID
+     * @param  \Stagehand\FSM\Event                  $event
      * @throws \Stagehand\FSM\StateNotFoundException
      */
-    protected function transition($nextStateID)
+    protected function transition(Event $event)
     {
-        $nextState = $this->getState($nextStateID);
+        $this->getCurrentState()->getEvent(Event::EVENT_EXIT)->invokeAction($this);
+
+        $event->invokeAction($this);
+
+        $nextState = $this->getState($event->getNextState());
         if (is_null($nextState)) {
-            throw new StateNotFoundException(sprintf('The state for ID [ %s ] is not found in the FSM.', $nextStateID));
+            throw new StateNotFoundException(sprintf('The state [ %s ] is not found in the FSM.', $event->getNextState()));
         }
 
         $this->previousStateID = $this->currentStateID;
         $this->currentStateID = $nextState->getStateID();
+
+        $this->getCurrentState()->getEvent(Event::EVENT_ENTRY)->invokeAction($this);
     }
 
     /**
@@ -297,35 +303,19 @@ class FSM
 
         $event = $this->getCurrentState()->getEvent($eventID);
         if (is_null($event)) {
-            $eventID = Event::EVENT_DO;
-            $event = $this->getCurrentState()->getEvent(Event::EVENT_DO);
+            $this->getCurrentState()->getEvent(Event::EVENT_DO)->invokeAction($this);
+
+            return;
         } else {
-            if (!Event::isSpecialEvent($eventID)) {
+            if (Event::isSpecialEvent($eventID)) {
+            } else {
                 $result = $event->evaluateGuard($this);
-                if (!$result) {
-                    $eventID = Event::EVENT_DO;
-                    $event = $this->getCurrentState()->getEvent(Event::EVENT_DO);
+                if ($result) {
+                    $this->transition($event);
                 }
+
+                $this->getCurrentState()->getEvent(Event::EVENT_DO)->invokeAction($this);
             }
-        }
-
-        if (!Event::isSpecialEvent($eventID)) {
-            $this->processEvent(Event::EVENT_EXIT);
-        }
-
-        if (!Event::isSpecialEvent($eventID)) {
-            $nextStateID = $event->getNextState();
-            $this->transition($nextStateID);
-        }
-
-        $event->invokeAction($this);
-
-        if (!Event::isSpecialEvent($eventID)) {
-            $this->processEvent(Event::EVENT_ENTRY);
-        }
-
-        if (!Event::isSpecialEvent($eventID)) {
-            $this->processEvent(Event::EVENT_DO);
         }
 
         return $this->getCurrentState();
