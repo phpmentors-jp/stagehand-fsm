@@ -163,16 +163,6 @@ class FSMBuilder
     {
         $this->addTransition($stateID, Event::EVENT_EXIT, null, $action);
     }
-
-    /**
-     * Sets the given payload.
-     *
-     * @param mixed $payload
-     */
-    public function setPayload($payload)
-    {
-        $this->fsm->setPayload($payload);
-    }
 }
 
 /*
