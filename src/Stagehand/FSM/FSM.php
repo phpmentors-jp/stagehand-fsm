@@ -167,8 +167,9 @@ class FSM
      * Triggers the given event in the current state.
      * <i>Note: Do not call this method directly from actions.</i>
      *
-     * @param  string                        $eventID
+     * @param  string                                     $eventID
      * @return \Stagehand\FSM\StateInterface
+     * @throws \Stagehand\FSM\FSMAlreadyShutdownException
      */
     public function triggerEvent($eventID)
     {
@@ -177,9 +178,23 @@ class FSM
         while (true) {
             if (count($this->eventQueue) == 0) {
                 return $this->getCurrentState();
-            }
+            } else {
+                if ($this->currentStateID == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
+                    throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
+                }
 
-            $this->processEvent(array_shift($this->eventQueue));
+                $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));
+                if (!is_null($event)) {
+                    $result = $event->evaluateGuard($this);
+                    if ($result) {
+                        $this->transition($event);
+                    }
+                }
+
+                $this->getCurrentState()->getEvent(Event::EVENT_DO)->invokeAction($this);
+
+                continue;
+            }
         }
     }
 
@@ -285,40 +300,6 @@ class FSM
         }
 
         $this->currentStateID = $currentState->getStateID();
-    }
-
-    /**
-     * Processes an event.
-     *
-     * @param  string                                     $eventID
-     * @return \Stagehand\FSM\StateInterface
-     * @throws \Stagehand\FSM\FSMAlreadyShutdownException
-     * @since Method available since Release 1.7.0
-     */
-    protected function processEvent($eventID)
-    {
-        if ($this->currentStateID == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
-            throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
-        }
-
-        $event = $this->getCurrentState()->getEvent($eventID);
-        if (is_null($event)) {
-            $this->getCurrentState()->getEvent(Event::EVENT_DO)->invokeAction($this);
-
-            return;
-        } else {
-            if (Event::isSpecialEvent($eventID)) {
-            } else {
-                $result = $event->evaluateGuard($this);
-                if ($result) {
-                    $this->transition($event);
-                }
-
-                $this->getCurrentState()->getEvent(Event::EVENT_DO)->invokeAction($this);
-            }
-        }
-
-        return $this->getCurrentState();
     }
 }
 
