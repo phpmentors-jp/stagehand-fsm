@@ -278,13 +278,8 @@ class FSM
 
         $event->invokeAction($this);
 
-        $nextState = $this->getState($event->getNextState());
-        if (is_null($nextState)) {
-            throw new StateNotFoundException(sprintf('The state [ %s ] is not found in the FSM.', $event->getNextState()));
-        }
-
         $this->previousStateID = $this->currentStateID;
-        $this->currentStateID = $nextState->getStateID();
+        $this->currentStateID = $event->getNextState()->getStateID();
 
         $this->getCurrentState()->getEvent(Event::EVENT_ENTRY)->invokeAction($this);
     }

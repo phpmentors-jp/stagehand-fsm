@@ -58,16 +58,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function setsTheNextState()
-    {
-        $event = new Event('foo');
-        $event->setNextState('foo');
-        $this->assertEquals('foo', $event->getNextState());
-    }
-
-    /**
-     * @test
-     */
     public function setsTheAction()
     {
         $action = function () {};

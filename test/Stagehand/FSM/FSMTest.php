@@ -297,26 +297,6 @@ class FSMTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $transitionActionForDisplayFormCallCount);
         $this->assertEquals(1, $activityForDisplayConfirmationCallCount);
     }
-
-    /**
-     * @test
-     * @since Method available since Release 2.0.0
-     */
-    public function raisesAnExceptionWhenTransitioningToANonExsistingState()
-    {
-        $builder = new FSMBuilder();
-        $builder->setStartState('locked');
-        $fsm = $builder->getFSM();
-        $fsm->getState('locked')->addEvent(new Event('insertCoin'));
-        $fsm->getState('locked')->getEvent('insertCoin')->setNextState('unlocked');
-        $fsm->start();
-
-        try {
-            $fsm->triggerEvent('insertCoin');
-            $this->fail('An expected exception has not been raised.');
-        } catch (StateNotFoundException $e) {
-        }
-    }
 }
 
 /*

@@ -64,7 +64,7 @@ class Event
     protected $eventID;
 
     /**
-     * @var string
+     * @var \Stagehand\FSM\StateInterface
      */
     protected $nextState;
 
@@ -89,11 +89,11 @@ class Event
     /**
      * Sets the next state of the event.
      *
-     * @param string $stateID
+     * @param \Stagehand\FSM\StateInterface $state
      */
-    public function setNextState($stateID)
+    public function setNextState(StateInterface $state)
     {
-        $this->nextState = $stateID;
+        $this->nextState = $state;
     }
 
     /**
@@ -143,7 +143,7 @@ class Event
     /**
      * Gets the next state of the event.
      *
-     * @return string
+     * @return \Stagehand\FSM\StateInterface
      */
     public function getNextState()
     {
