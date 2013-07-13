@@ -174,7 +174,7 @@ class StateMachine
      *
      * @param  string                                     $eventID
      * @return \Stagehand\FSM\StateInterface
-     * @throws \Stagehand\FSM\StateMachine\FSMAlreadyShutdownException
+     * @throws \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
      */
     public function triggerEvent($eventID)
     {
@@ -185,7 +185,7 @@ class StateMachine
                 return $this->getCurrentState();
             } else {
                 if ($this->currentStateID == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
-                    throw new FSMAlreadyShutdownException('The FSM was already shutdown.');
+                    throw new StateMachineAlreadyShutdownException('The FSM was already shutdown.');
                 }
 
                 $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));

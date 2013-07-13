@@ -225,7 +225,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Stagehand\FSM\StateMachine\FSMAlreadyShutdownException
+     * @expectedException \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
      */
     public function shutdownsTheFsmWhenTheStateReachesTheFinalState()
     {

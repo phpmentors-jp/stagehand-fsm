@@ -44,7 +44,7 @@ namespace Stagehand\FSM\StateMachine;
  * @version    Release: @package_version@
  * @since      Class available since Release 2.0.0
  */
-class FSMAlreadyShutdownException extends \RuntimeException
+class StateMachineAlreadyShutdownException extends \RuntimeException
 {
 }
 
