@@ -53,23 +53,22 @@ class StateMachineBuilder
     /**
      * @var \Stagehand\FSM\StateMachine\StateMachine
      */
-    protected $fsm;
+    protected $stateMachine;
 
     /**
-     *
-     * @param string $fsmID
+     * @param string $stateMachineID
      */
-    public function __construct($fsmID = null)
+    public function __construct($stateMachineID = null)
     {
-        $this->fsm = new StateMachine($fsmID);
+        $this->stateMachine = new StateMachine($stateMachineID);
     }
 
     /**
      * @return \Stagehand\FSM\StateMachine\StateMachine
      */
-    public function getFSM()
+    public function getStateMachine()
     {
-        return $this->fsm;
+        return $this->stateMachine;
     }
 
     /**
@@ -100,7 +99,7 @@ class StateMachineBuilder
      */
     public function addState($stateID)
     {
-        $this->fsm->addState(new State($stateID));
+        $this->stateMachine->addState(new State($stateID));
     }
 
     /**
@@ -120,10 +119,10 @@ class StateMachineBuilder
         $action = null,
         $guard = null)
     {
-        $state = $this->fsm->getState($stateID);
+        $state = $this->stateMachine->getState($stateID);
         if (is_null($state)) {
             $state = new State($stateID);
-            $this->fsm->addState($state);
+            $this->stateMachine->addState($state);
         }
 
         $event = $state->getEvent($eventID);
@@ -132,10 +131,10 @@ class StateMachineBuilder
             $state->addEvent($event);
         }
 
-        $nextState = $this->fsm->getState($nextStateID);
+        $nextState = $this->stateMachine->getState($nextStateID);
         if (is_null($nextState)) {
             $nextState = new State($nextStateID);
-            $this->fsm->addState($nextState);
+            $this->stateMachine->addState($nextState);
         }
 
         $event->setNextState($nextState);

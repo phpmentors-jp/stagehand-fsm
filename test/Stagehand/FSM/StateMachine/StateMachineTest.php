@@ -58,11 +58,11 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder->setStartState('locked');
         $builder->addState('foo');
         $builder->addState('bar');
-        $fsm = $builder->getFSM();
-        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $fsm->getState('foo'));
-        $this->assertEquals('foo', $fsm->getState('foo')->getStateID());
-        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $fsm->getState('bar'));
-        $this->assertEquals('bar', $fsm->getState('bar')->getStateID());
+        $stateMachine = $builder->getStateMachine();
+        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $stateMachine->getState('foo'));
+        $this->assertEquals('foo', $stateMachine->getState('foo')->getStateID());
+        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $stateMachine->getState('bar'));
+        $this->assertEquals('bar', $stateMachine->getState('bar')->getStateID());
     }
 
     /**
@@ -73,15 +73,15 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $firstStateID = 'locked';
         $builder = new StateMachineBuilder();
         $builder->setStartState($firstStateID);
-        $fsm = $builder->getFSM();
-        $fsm->start();
-        $this->assertEquals($firstStateID, $fsm->getCurrentState()->getStateID());
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
+        $this->assertEquals($firstStateID, $stateMachine->getCurrentState()->getStateID());
 
         $builder = new StateMachineBuilder();
         $builder->setStartState($firstStateID);
-        $fsm = $builder->getFSM();
-        $fsm->start();
-        $this->assertEquals($firstStateID, $fsm->getCurrentState()->getStateID());
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
+        $this->assertEquals($firstStateID, $stateMachine->getCurrentState()->getStateID());
     }
 
     /**
@@ -95,34 +95,34 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $thankCalled = false;
         $builder = new StateMachineBuilder();
         $builder->setStartState('locked');
-        $builder->addTransition('locked', 'insertCoin', 'unlocked', function (Event $event, $payload, StateMachine $fsm) use (&$unlockCalled) {
+        $builder->addTransition('locked', 'insertCoin', 'unlocked', function (Event $event, $payload, StateMachine $stateMachine) use (&$unlockCalled) {
             $unlockCalled = true;
         });
-        $builder->addTransition('unlocked', 'pass', 'locked', function (Event $event, $payload, StateMachine $fsm) use (&$lockCalled) {
+        $builder->addTransition('unlocked', 'pass', 'locked', function (Event $event, $payload, StateMachine $stateMachine) use (&$lockCalled) {
             $lockCalled = true;
         });
-        $builder->addTransition('locked', 'pass', 'locked', function (Event $event, $payload, StateMachine $fsm) use (&$alarmCalled) {
+        $builder->addTransition('locked', 'pass', 'locked', function (Event $event, $payload, StateMachine $stateMachine) use (&$alarmCalled) {
             $alarmCalled = true;
         });
-        $builder->addTransition('unlocked', 'insertCoin', 'unlocked', function (Event $event, $payload, StateMachine $fsm) use (&$thankCalled) {
+        $builder->addTransition('unlocked', 'insertCoin', 'unlocked', function (Event $event, $payload, StateMachine $stateMachine) use (&$thankCalled) {
             $thankCalled = true;
         });
-        $fsm = $builder->getFSM();
-        $fsm->start();
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
 
-        $currentState = $fsm->triggerEvent('pass');
+        $currentState = $stateMachine->triggerEvent('pass');
         $this->assertEquals('locked', $currentState->getStateID());
         $this->assertTrue($alarmCalled);
 
-        $currentState = $fsm->triggerEvent('insertCoin');
+        $currentState = $stateMachine->triggerEvent('insertCoin');
         $this->assertEquals('unlocked', $currentState->getStateID());
         $this->assertTrue($unlockCalled);
 
-        $currentState = $fsm->triggerEvent('insertCoin');
+        $currentState = $stateMachine->triggerEvent('insertCoin');
         $this->assertEquals('unlocked', $currentState->getStateID());
         $this->assertTrue($thankCalled);
 
-        $currentState = $fsm->triggerEvent('pass');
+        $currentState = $stateMachine->triggerEvent('pass');
         $this->assertEquals('locked', $currentState->getStateID());
         $this->assertTrue($lockCalled);
     }
@@ -136,15 +136,15 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $numberOfCoins = 11;
         $builder = new StateMachineBuilder();
         $builder->setStartState('locked');
-        $builder->addTransition('locked', 'insertCoin', 'unlocked', null, function (Event $event, $payload, StateMachine $fsm) use ($maxNumberOfCoins, $numberOfCoins) {
+        $builder->addTransition('locked', 'insertCoin', 'unlocked', null, function (Event $event, $payload, StateMachine $stateMachine) use ($maxNumberOfCoins, $numberOfCoins) {
             return $numberOfCoins <= $maxNumberOfCoins;
         });
         $builder->addTransition('unlocked', 'pass', 'locked');
         $builder->addTransition('locked', 'pass', 'locked');
         $builder->addTransition('unlocked', 'insertCoin', 'unlocked');
-        $fsm = $builder->getFSM();
-        $fsm->start();
-        $currentState = $fsm->triggerEvent('insertCoin');
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
+        $currentState = $stateMachine->triggerEvent('insertCoin');
         $this->assertEquals('locked', $currentState->getStateID());
     }
 
@@ -157,18 +157,18 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $entryActionForLockedCalled = false;
         $builder = new StateMachineBuilder();
         $builder->setStartState('locked');
-        $builder->setExitAction(StateInterface::STATE_INITIAL, function (Event $event, $payload, StateMachine $fsm) use (&$entryActionForInitialCalled) {
+        $builder->setExitAction(StateInterface::STATE_INITIAL, function (Event $event, $payload, StateMachine $stateMachine) use (&$entryActionForInitialCalled) {
             $entryActionForInitialCalled = true;
         });
-        $builder->setEntryAction('locked', function (Event $event, $payload, StateMachine $fsm) use (&$entryActionForLockedCalled) {
+        $builder->setEntryAction('locked', function (Event $event, $payload, StateMachine $stateMachine) use (&$entryActionForLockedCalled) {
             $entryActionForLockedCalled = true;
         });
-        $fsm = $builder->getFSM();
-        $fsm->start();
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
 
         $this->assertTrue($entryActionForInitialCalled);
         $this->assertTrue($entryActionForLockedCalled);
-        $this->assertEquals('locked', $fsm->getCurrentState()->getStateID());
+        $this->assertEquals('locked', $stateMachine->getCurrentState()->getStateID());
     }
 
     /**
@@ -176,8 +176,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function setsTheId()
     {
-        $fsm = new StateMachine('foo');
-        $this->assertEquals('foo', $fsm->getFSMID());
+        $stateMachine = new StateMachine('foo');
+        $this->assertEquals('foo', $stateMachine->getStateMachineID());
     }
 
     /**
@@ -189,14 +189,14 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder->setStartState('Washing');
         $builder->addTransition('Washing', 'w', 'Rinsing');
         $builder->addTransition('Rinsing', 'r', 'Spinning');
-        $fsm = $builder->getFSM();
-        $fsm->start();
-        $state = $fsm->getPreviousState();
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
+        $state = $stateMachine->getPreviousState();
         $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $state);
         $this->assertEquals(StateInterface::STATE_INITIAL, $state->getStateID());
 
-        $fsm->triggerEvent('w');
-        $state = $fsm->getPreviousState();
+        $stateMachine->triggerEvent('w');
+        $state = $stateMachine->getPreviousState();
 
         $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $state);
         $this->assertEquals('Washing', $state->getStateID());
@@ -210,37 +210,37 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder = new StateMachineBuilder();
         $builder->setStartState('Washing');
         $test = $this;
-        $builder->setEntryAction('Washing', function ($event, $payload, StateMachine $fsm) use ($test) {
-            $test->assertEquals('Washing', $fsm->getCurrentState()->getStateID());
-            $test->assertEquals(StateInterface::STATE_INITIAL, $fsm->getPreviousState()->getStateID());
-            $fsm->triggerEvent('w');
+        $builder->setEntryAction('Washing', function ($event, $payload, StateMachine $stateMachine) use ($test) {
+            $test->assertEquals('Washing', $stateMachine->getCurrentState()->getStateID());
+            $test->assertEquals(StateInterface::STATE_INITIAL, $stateMachine->getPreviousState()->getStateID());
+            $stateMachine->triggerEvent('w');
         });
-        $builder->addTransition('Washing', 'w', 'Rinsing', function ($event, $payload, StateMachine $fsm) {});
+        $builder->addTransition('Washing', 'w', 'Rinsing', function ($event, $payload, StateMachine $stateMachine) {});
         $builder->addTransition('Rinsing', 'r', 'Spinning');
-        $fsm = $builder->getFSM();
-        $fsm->start();
-        $this->assertEquals('Rinsing', $fsm->getCurrentState()->getStateID());
-        $this->assertEquals('Washing', $fsm->getPreviousState()->getStateID());
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
+        $this->assertEquals('Rinsing', $stateMachine->getCurrentState()->getStateID());
+        $this->assertEquals('Washing', $stateMachine->getPreviousState()->getStateID());
     }
 
     /**
      * @test
      * @expectedException \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
      */
-    public function shutdownsTheFsmWhenTheStateReachesTheFinalState()
+    public function shutdownsTheStateMachineWhenTheStateReachesTheFinalState()
     {
         $finalizeCalled = false;
         $builder = new StateMachineBuilder();
         $builder->setStartState('ending');
         $builder->addTransition('ending', Event::EVENT_END, StateInterface::STATE_FINAL);
-        $builder->setEntryAction(StateInterface::STATE_FINAL, function (Event $event, $payload, StateMachine $fsm) use (&$finalizeCalled) {
+        $builder->setEntryAction(StateInterface::STATE_FINAL, function (Event $event, $payload, StateMachine $stateMachine) use (&$finalizeCalled) {
             $finalizeCalled = true;
         });
-        $fsm = $builder->getFSM();
-        $fsm->start();
-        $fsm->triggerEvent(Event::EVENT_END);
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
+        $stateMachine->triggerEvent(Event::EVENT_END);
         $this->assertTrue($finalizeCalled);
-        $fsm->triggerEvent('foo');
+        $stateMachine->triggerEvent('foo');
     }
 
     /**
@@ -253,17 +253,17 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder->setStartState('Stop');
         $builder->addTransition('Stop', 'play', 'Playing');
         $builder->addTransition('Playing', 'stop', 'Stop');
-        $fsm = $builder->getFSM();
-        $fsm->start();
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
 
-        $this->assertEquals('Stop', $fsm->getCurrentState()->getStateID());
-        $this->assertTrue($fsm->getCurrentState()->hasEvent('play'));
-        $this->assertFalse($fsm->getCurrentState()->hasEvent('stop'));
+        $this->assertEquals('Stop', $stateMachine->getCurrentState()->getStateID());
+        $this->assertTrue($stateMachine->getCurrentState()->hasEvent('play'));
+        $this->assertFalse($stateMachine->getCurrentState()->hasEvent('stop'));
 
-        $currentState = $fsm->triggerEvent('play');
+        $currentState = $stateMachine->triggerEvent('play');
         $this->assertEquals('Playing', $currentState->getStateID());
-        $this->assertTrue($fsm->getCurrentState()->hasEvent('stop'));
-        $this->assertFalse($fsm->getCurrentState()->hasEvent('play'));
+        $this->assertTrue($stateMachine->getCurrentState()->hasEvent('stop'));
+        $this->assertFalse($stateMachine->getCurrentState()->hasEvent('play'));
     }
 
     /**
@@ -278,23 +278,23 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
         $builder = new StateMachineBuilder();
         $builder->setStartState('DisplayForm');
-        $builder->setActivity('DisplayForm', function ($event, $payload, StateMachine $fsm) use (&$activityForDisplayFormCallCount) {
+        $builder->setActivity('DisplayForm', function ($event, $payload, StateMachine $stateMachine) use (&$activityForDisplayFormCallCount) {
             ++$activityForDisplayFormCallCount;
         });
-        $builder->addTransition('DisplayForm', 'confirmForm', 'processConfirmForm', function ($event, $payload, StateMachine $fsm) use (&$transitionActionForDisplayFormCallCount) {
+        $builder->addTransition('DisplayForm', 'confirmForm', 'processConfirmForm', function ($event, $payload, StateMachine $stateMachine) use (&$transitionActionForDisplayFormCallCount) {
             ++$transitionActionForDisplayFormCallCount;
-            $fsm->queueEvent('goDisplayConfirmation');
+            $stateMachine->queueEvent('goDisplayConfirmation');
         });
         $builder->addTransition('processConfirmForm', 'goDisplayConfirmation', 'DisplayConfirmation');
-        $builder->setActivity('DisplayConfirmation', function ($event, $payload, StateMachine $fsm) use (&$activityForDisplayConfirmationCallCount) {
+        $builder->setActivity('DisplayConfirmation', function ($event, $payload, StateMachine $stateMachine) use (&$activityForDisplayConfirmationCallCount) {
             ++$activityForDisplayConfirmationCallCount;
         });
-        $fsm = $builder->getFSM();
-        $fsm->start();
+        $stateMachine = $builder->getStateMachine();
+        $stateMachine->start();
 
         $this->assertEquals(1, $activityForDisplayFormCallCount);
 
-        $fsm->triggerEvent('confirmForm');
+        $stateMachine->triggerEvent('confirmForm');
 
         $this->assertEquals(1, $activityForDisplayFormCallCount);
         $this->assertEquals(1, $transitionActionForDisplayFormCallCount);

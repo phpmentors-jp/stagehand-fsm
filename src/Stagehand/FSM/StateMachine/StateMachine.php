@@ -94,7 +94,7 @@ class StateMachine
     /**
      * @var string
      */
-    protected $fsmID;
+    protected $stateMachineID;
 
     /**
      * @var mixed
@@ -107,11 +107,11 @@ class StateMachine
     protected $eventQueue = array();
 
     /**
-     * @param string $fsmID
+     * @param string $stateMachineID
      */
-    public function __construct($fsmID = null)
+    public function __construct($stateMachineID = null)
     {
-        $this->fsmID = $fsmID;
+        $this->stateMachineID = $stateMachineID;
         $this->addState(new State(StateInterface::STATE_INITIAL));
     }
 
@@ -124,7 +124,7 @@ class StateMachine
             'currentStateID',
             'previousStateID',
             'states',
-            'fsmID',
+            'stateMachineID',
             'eventQueue',
         );
     }
@@ -185,7 +185,7 @@ class StateMachine
                 return $this->getCurrentState();
             } else {
                 if ($this->currentStateID == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
-                    throw new StateMachineAlreadyShutdownException('The FSM was already shutdown.');
+                    throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
                 }
 
                 $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));
@@ -241,13 +241,13 @@ class StateMachine
     }
 
     /**
-     * Gets the ID of the FSM.
+     * Gets the ID of the state machine.
      *
      * @return string
      */
-    public function getFSMID()
+    public function getStateMachineID()
     {
-        return $this->fsmID;
+        return $this->stateMachineID;
     }
 
     /**
@@ -289,7 +289,7 @@ class StateMachine
     }
 
     /**
-     * Initializes the FSM.
+     * Initializes the state machine.
      */
     protected function initialize()
     {
