@@ -37,7 +37,7 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event;
+use Stagehand\FSM\Event\Event;
 
 /**
  * A state class which builds initial structure of the state which consists
@@ -76,7 +76,7 @@ class State implements StateInterface
     /**
      * {@inheritDoc}
      *
-     * @return \Stagehand\FSM\Event
+     * @return \Stagehand\FSM\Event\Event
      */
     public function getEvent($eventID)
     {

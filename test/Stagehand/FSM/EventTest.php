@@ -35,7 +35,7 @@
  * @since      File available since Release 0.1.0
  */
 
-namespace Stagehand\FSM;
+namespace Stagehand\FSM\Event;
 
 use Stagehand\FSM\StateMachine\StateMachine;
 
@@ -70,7 +70,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Stagehand\FSM\ObjectNotCallableException
+     * @expectedException \Stagehand\FSM\Event\ObjectNotCallableException
      * @since Method available since Release 2.0.0
      */
     public function raisesAnExceptionWhenANonCallableActionIsSpecified()
@@ -92,7 +92,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Stagehand\FSM\ObjectNotCallableException
+     * @expectedException \Stagehand\FSM\Event\ObjectNotCallableException
      * @since Method available since Release 2.0.0
      */
     public function raisesAnExceptionWhenANonCallableGuardIsSpecified()

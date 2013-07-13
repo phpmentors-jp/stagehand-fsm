@@ -35,7 +35,7 @@
  * @since      File available since Release 0.1.0
  */
 
-namespace Stagehand\FSM;
+namespace Stagehand\FSM\Event;
 
 use Stagehand\FSM\StateMachine\StateMachine;
 use Stagehand\FSM\State\StateInterface;
@@ -103,7 +103,7 @@ class Event
      * Sets the action the event.
      *
      * @param  callback                                  $action
-     * @throws \Stagehand\FSM\ObjectNotCallableException
+     * @throws \Stagehand\FSM\Event\ObjectNotCallableException
      */
     public function setAction($action)
     {
@@ -120,7 +120,7 @@ class Event
      * Sets the guard the event.
      *
      * @param  callback                                  $guard
-     * @throws \Stagehand\FSM\ObjectNotCallableException
+     * @throws \Stagehand\FSM\Event\ObjectNotCallableException
      */
     public function setGuard($guard)
     {

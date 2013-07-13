@@ -44,7 +44,7 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Stagehand\FSM\Event;
+use Stagehand\FSM\Event\Event;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 
@@ -273,7 +273,7 @@ class StateMachine
     /**
      * Transitions to the next state.
      *
-     * @param  \Stagehand\FSM\Event                  $event
+     * @param  \Stagehand\FSM\Event\Event                  $event
      * @throws \Stagehand\FSM\StateNotFoundException
      */
     protected function transition(Event $event)

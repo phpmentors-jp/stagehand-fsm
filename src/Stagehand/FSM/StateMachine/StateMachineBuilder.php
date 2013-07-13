@@ -37,9 +37,9 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Stagehand\FSM\Event;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
+use Stagehand\FSM\Event\Event;
 
 /**
  * @package    Stagehand_FSM

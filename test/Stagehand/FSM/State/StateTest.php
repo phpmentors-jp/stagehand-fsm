@@ -37,7 +37,7 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event;
+use Stagehand\FSM\Event\Event;
 
 /**
  * @package    Stagehand_FSM
@@ -55,15 +55,15 @@ class StateTest extends \PHPUnit_Framework_TestCase
     {
         $state = new State('foo');
         $entry = $state->getEvent(Event::EVENT_ENTRY);
-        $this->assertInstanceOf('\Stagehand\FSM\Event', $entry);
+        $this->assertInstanceOf('\Stagehand\FSM\Event\Event', $entry);
         $this->assertEquals(Event::EVENT_ENTRY, $entry->getEventID());
 
         $exit = $state->getEvent(Event::EVENT_EXIT);
-        $this->assertInstanceOf('\Stagehand\FSM\Event', $exit);
+        $this->assertInstanceOf('\Stagehand\FSM\Event\Event', $exit);
         $this->assertEquals(Event::EVENT_EXIT, $exit->getEventID());
 
         $do = $state->getEvent(Event::EVENT_DO);
-        $this->assertInstanceOf('\Stagehand\FSM\Event', $do);
+        $this->assertInstanceOf('\Stagehand\FSM\Event\Event', $do);
         $this->assertEquals(Event::EVENT_DO, $do->getEventID());
     }
 
