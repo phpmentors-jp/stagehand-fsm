@@ -35,7 +35,9 @@
  * @since      File available since Release 2.0.0
  */
 
-namespace Stagehand\FSM;
+namespace Stagehand\FSM\State;
+
+use Stagehand\FSM\Event;
 
 /**
  * @package    Stagehand_FSM

@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,90 +29,80 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
  */
 
-namespace Stagehand\FSM;
+namespace Stagehand\FSM\State;
+
+use Stagehand\FSM\Event;
 
 /**
- * A state class which builds initial structure of the state which consists
- * entry/exit actions and an activity, and behaves as event holder of the
- * state.
- *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
-class State implements StateInterface
+class StateTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var string
+     * @test
      */
-     protected $stateID;
-
-    /**
-     * @var array
-     */
-    protected $events = array();
-
-    /**
-     * @param string $stateID
-     */
-    public function __construct($stateID)
+    public function createsSpecialEventsInTheConstructor()
     {
-        $this->stateID = $stateID;
-        $this->addEvent(new Event(Event::EVENT_ENTRY));
-        $this->addEvent(new Event(Event::EVENT_EXIT));
-        $this->addEvent(new Event(Event::EVENT_DO));
+        $state = new State('foo');
+        $entry = $state->getEvent(Event::EVENT_ENTRY);
+        $this->assertInstanceOf('\Stagehand\FSM\Event', $entry);
+        $this->assertEquals(Event::EVENT_ENTRY, $entry->getEventID());
+
+        $exit = $state->getEvent(Event::EVENT_EXIT);
+        $this->assertInstanceOf('\Stagehand\FSM\Event', $exit);
+        $this->assertEquals(Event::EVENT_EXIT, $exit->getEventID());
+
+        $do = $state->getEvent(Event::EVENT_DO);
+        $this->assertInstanceOf('\Stagehand\FSM\Event', $do);
+        $this->assertEquals(Event::EVENT_DO, $do->getEventID());
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @return \Stagehand\FSM\Event
+     * @test
      */
-    public function getEvent($eventID)
+    public function addsAnEvent()
     {
-        if ($this->hasEvent($eventID)) {
-            return $this->events[$eventID];
-        } else {
-            return null;
-        }
-    }
+        $state = new State('foo');
+        $state->addEvent(new Event('foo'));
+        $this->assertTrue($state->hasEvent('foo'));
 
-    public function addEvent(Event $event)
-    {
-        $this->events[ $event->getEventID() ] = $event;
-    }
-
-    public function getStateID()
-    {
-        return $this->stateID;
+        $state->addEvent(new Event('bar'));
+        $this->assertTrue($state->hasEvent('bar'));
     }
 
     /**
+     * @test
      * @since Method available since Release 1.6.0
      */
-    public function hasEvent($eventID)
+    public function checksWhetherTheStateHasTheGivenEvent()
     {
-        return array_key_exists($eventID, $this->events);
+        $state = new State('foo');
+        $state->addEvent(new Event('foo'));
+        $this->assertTrue($state->hasEvent('foo'));
+        $state->addEvent(new Event('bar'));
+        $this->assertTrue($state->hasEvent('bar'));
+        $this->assertFalse($state->hasEvent('baz'));
     }
 
     /**
-     * Returns whether a state is a protected event such as the pseudo states and so on.
-     *
-     * @param  string  $stateID
-     * @return boolean
+     * @test
      * @since Method available since Release 2.0.0
      */
-    public static function isProtectedState($stateID)
+    public function checksWhetherAnStateIsProtectedOrNot()
     {
-        return $stateID == StateInterface::STATE_INITIAL || $stateID == StateInterface::STATE_FINAL;
+        $this->assertTrue(State::isProtectedState(StateInterface::STATE_INITIAL));
+        $this->assertTrue(State::isProtectedState(StateInterface::STATE_FINAL));
+        $this->assertFalse(State::isProtectedState('foo'));
     }
 }
 

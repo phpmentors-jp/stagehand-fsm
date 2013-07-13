@@ -38,6 +38,7 @@
 namespace Stagehand\FSM;
 
 use Stagehand\FSM\StateMachine\StateMachine;
+use Stagehand\FSM\State\StateInterface;
 
 /**
  * An event class which manages an event such as a event which triggers
@@ -66,7 +67,7 @@ class Event
     protected $eventID;
 
     /**
-     * @var \Stagehand\FSM\StateInterface
+     * @var \Stagehand\FSM\State\StateInterface
      */
     protected $nextState;
 
@@ -91,7 +92,7 @@ class Event
     /**
      * Sets the next state of the event.
      *
-     * @param \Stagehand\FSM\StateInterface $state
+     * @param \Stagehand\FSM\State\StateInterface $state
      */
     public function setNextState(StateInterface $state)
     {
@@ -145,7 +146,7 @@ class Event
     /**
      * Gets the next state of the event.
      *
-     * @return \Stagehand\FSM\StateInterface
+     * @return \Stagehand\FSM\State\StateInterface
      */
     public function getNextState()
     {

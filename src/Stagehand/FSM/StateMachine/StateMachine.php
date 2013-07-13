@@ -44,9 +44,9 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Stagehand\FSM\State;
-use Stagehand\FSM\StateInterface;
 use Stagehand\FSM\Event;
+use Stagehand\FSM\State\State;
+use Stagehand\FSM\State\StateInterface;
 
 /**
  * A Finite State Machine.
@@ -141,7 +141,7 @@ class StateMachine
     /**
      * Gets the current state.
      *
-     * @return \Stagehand\FSM\StateInterface
+     * @return \Stagehand\FSM\State\StateInterface
      */
     public function getCurrentState()
     {
@@ -151,7 +151,7 @@ class StateMachine
     /**
      * Gets the previous state.
      *
-     * @return \Stagehand\FSM\StateInterface
+     * @return \Stagehand\FSM\State\StateInterface
      */
     public function getPreviousState()
     {
@@ -173,7 +173,7 @@ class StateMachine
      * <i>Note: Do not call this method directly from actions.</i>
      *
      * @param  string                                     $eventID
-     * @return \Stagehand\FSM\StateInterface
+     * @return \Stagehand\FSM\State\StateInterface
      * @throws \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
      */
     public function triggerEvent($eventID)
@@ -219,7 +219,7 @@ class StateMachine
      * state recursively if child FSMs exists.
      *
      * @param  string                        $stateID
-     * @return \Stagehand\FSM\StateInterface
+     * @return \Stagehand\FSM\State\StateInterface
      */
     public function getState($stateID)
     {
@@ -233,7 +233,7 @@ class StateMachine
     /**
      * Adds the state with the given ID.
      *
-     * @param \Stagehand\FSM\StateInterface $state
+     * @param \Stagehand\FSM\State\StateInterface $state
      */
     public function addState(StateInterface $state)
     {

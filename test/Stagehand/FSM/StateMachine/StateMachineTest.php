@@ -38,7 +38,7 @@
 namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event;
-use Stagehand\FSM\StateInterface;
+use Stagehand\FSM\State\StateInterface;
 
 /**
  * @package    Stagehand_FSM
@@ -59,9 +59,9 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder->addState('foo');
         $builder->addState('bar');
         $fsm = $builder->getFSM();
-        $this->assertInstanceOf('\Stagehand\FSM\StateInterface', $fsm->getState('foo'));
+        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $fsm->getState('foo'));
         $this->assertEquals('foo', $fsm->getState('foo')->getStateID());
-        $this->assertInstanceOf('\Stagehand\FSM\StateInterface', $fsm->getState('bar'));
+        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $fsm->getState('bar'));
         $this->assertEquals('bar', $fsm->getState('bar')->getStateID());
     }
 
@@ -192,13 +192,13 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $fsm = $builder->getFSM();
         $fsm->start();
         $state = $fsm->getPreviousState();
-        $this->assertInstanceOf('\Stagehand\FSM\StateInterface', $state);
+        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $state);
         $this->assertEquals(StateInterface::STATE_INITIAL, $state->getStateID());
 
         $fsm->triggerEvent('w');
         $state = $fsm->getPreviousState();
 
-        $this->assertInstanceOf('\Stagehand\FSM\StateInterface', $state);
+        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $state);
         $this->assertEquals('Washing', $state->getStateID());
     }
 
