@@ -40,6 +40,7 @@ namespace Stagehand\FSM\StateMachine;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\Event\Event;
+use Stagehand\FSM\Event\ObjectNotCallableException;
 
 /**
  * @package    Stagehand_FSM
@@ -86,6 +87,7 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $activity
+     * @throws Stagehand\FSM\Event\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\EventNotFoundException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
@@ -101,7 +103,13 @@ class StateMachineBuilder
             throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', Event::EVENT_DO, $stateID));
         }
 
-        $event->setAction($activity);
+        if (!is_null($activity)) {
+            if (is_callable($activity)) {
+                $event->setAction($activity);
+            } else {
+                throw new ObjectNotCallableException('The activity for the event "%s" in the state "%s" is not callable.', Event::EVENT_DO, $stateID);
+            }
+        }
     }
 
     /**
@@ -123,6 +131,7 @@ class StateMachineBuilder
      * @param callback $action
      * @param callback $guard
      * @param boolean  $historyMarker
+     * @throws Stagehand\FSM\Event\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function addTransition(
@@ -149,8 +158,22 @@ class StateMachineBuilder
         }
 
         $event->setNextState($nextState);
-        $event->setAction($action);
-        $event->setGuard($guard);
+
+        if (!is_null($action)) {
+            if (is_callable($action)) {
+                $event->setAction($action);
+            } else {
+                throw new ObjectNotCallableException('The action for the event "%s" in the state "%s" is not callable.', $eventID, $stateID);
+            }
+        }
+
+        if (!is_null($guard)) {
+            if (is_callable($guard)) {
+                $event->setGuard($guard);
+            } else {
+                throw new ObjectNotCallableException('The guard for the event "%s" in the state "%s" is not callable.', $eventID, $stateID);
+            }
+        }
     }
 
     /**
@@ -158,6 +181,7 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $action
+     * @throws Stagehand\FSM\Event\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\EventNotFoundException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
@@ -173,7 +197,13 @@ class StateMachineBuilder
             throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', Event::EVENT_ENTRY, $stateID));
         }
 
-        $event->setAction($action);
+        if (!is_null($action)) {
+            if (is_callable($action)) {
+                $event->setAction($action);
+            } else {
+                throw new ObjectNotCallableException('The action for the event "%s" in the state "%s" is not callable.', Event::EVENT_ENTRY, $stateID);
+            }
+        }
     }
 
     /**
@@ -181,6 +211,7 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $action
+     * @throws Stagehand\FSM\Event\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\EventNotFoundException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
@@ -196,7 +227,13 @@ class StateMachineBuilder
             throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', Event::EVENT_EXIT, $stateID));
         }
 
-        $event->setAction($action);
+        if (!is_null($action)) {
+            if (is_callable($action)) {
+                $event->setAction($action);
+            } else {
+                throw new ObjectNotCallableException('The action for the event "%s" in the state "%s" is not callable.', Event::EVENT_EXIT, $stateID);
+            }
+        }
     }
 }
 

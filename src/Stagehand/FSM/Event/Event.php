@@ -103,34 +103,20 @@ class Event
      * Sets the action the event.
      *
      * @param  callback                                  $action
-     * @throws \Stagehand\FSM\Event\ObjectNotCallableException
      */
     public function setAction($action)
     {
-        if (!is_null($action)) {
-            if (!is_callable($action)) {
-                throw new ObjectNotCallableException('The action is not callable.');
-            }
-
-            $this->action = $action;
-        }
+        $this->action = $action;
     }
 
     /**
      * Sets the guard the event.
      *
      * @param  callback                                  $guard
-     * @throws \Stagehand\FSM\Event\ObjectNotCallableException
      */
     public function setGuard($guard)
     {
-        if (!is_null($guard)) {
-            if (!is_callable($guard)) {
-                throw new ObjectNotCallableException('The guard is not callable.');
-            }
-
-            $this->guard = $guard;
-        }
+        $this->guard = $guard;
     }
 
     /**

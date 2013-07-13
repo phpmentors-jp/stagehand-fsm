@@ -70,17 +70,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Stagehand\FSM\Event\ObjectNotCallableException
-     * @since Method available since Release 2.0.0
-     */
-    public function raisesAnExceptionWhenANonCallableActionIsSpecified()
-    {
-        $event = new Event('foo');
-        $event->setAction('foo');
-    }
-
-    /**
-     * @test
      */
     public function setsTheGuard()
     {
@@ -88,17 +77,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $event = new Event('foo');
         $event->setGuard($guard);
         $this->assertSame($guard, $event->getGuard());
-    }
-
-    /**
-     * @test
-     * @expectedException \Stagehand\FSM\Event\ObjectNotCallableException
-     * @since Method available since Release 2.0.0
-     */
-    public function raisesAnExceptionWhenANonCallableGuardIsSpecified()
-    {
-        $event = new Event('foo');
-        $event->setGuard('foo');
     }
 
     /**
