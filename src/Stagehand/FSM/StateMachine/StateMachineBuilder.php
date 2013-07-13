@@ -56,15 +56,12 @@ class StateMachineBuilder
     protected $fsm;
 
     /**
-     * @param string|\Stagemand\FSM\StateMachine\StateMachine $fsmIDOrFSM
+     *
+     * @param string $fsmID
      */
-    public function __construct($fsmIDOrFSM = null)
+    public function __construct($fsmID = null)
     {
-        if ($fsmIDOrFSM instanceof StateMachine) {
-            $this->fsm = $fsmIDOrFSM;
-        } else {
-            $this->fsm = new StateMachine($fsmIDOrFSM);
-        }
+        $this->fsm = new StateMachine($fsmID);
     }
 
     /**
