@@ -54,7 +54,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function addsAState()
     {
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState('locked');
         $builder->addState('foo');
         $builder->addState('bar');
@@ -71,13 +71,13 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     public function setsTheFirstState()
     {
         $firstStateID = 'locked';
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState($firstStateID);
         $fsm = $builder->getFSM();
         $fsm->start();
         $this->assertEquals($firstStateID, $fsm->getCurrentState()->getStateID());
 
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState($firstStateID);
         $fsm = $builder->getFSM();
         $fsm->start();
@@ -93,7 +93,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $lockCalled = false;
         $alarmCalled = false;
         $thankCalled = false;
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState('locked');
         $builder->addTransition('locked', 'insertCoin', 'unlocked', function (Event $event, $payload, StateMachine $fsm) use (&$unlockCalled) {
             $unlockCalled = true;
@@ -134,7 +134,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     {
         $maxNumberOfCoins = 10;
         $numberOfCoins = 11;
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState('locked');
         $builder->addTransition('locked', 'insertCoin', 'unlocked', null, function (Event $event, $payload, StateMachine $fsm) use ($maxNumberOfCoins, $numberOfCoins) {
             return $numberOfCoins <= $maxNumberOfCoins;
@@ -155,7 +155,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     {
         $entryActionForInitialCalled = false;
         $entryActionForLockedCalled = false;
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState('locked');
         $builder->setExitAction(StateInterface::STATE_INITIAL, function (Event $event, $payload, StateMachine $fsm) use (&$entryActionForInitialCalled) {
             $entryActionForInitialCalled = true;
@@ -185,7 +185,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function getsThePreviousState()
     {
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState('Washing');
         $builder->addTransition('Washing', 'w', 'Rinsing');
         $builder->addTransition('Rinsing', 'r', 'Spinning');
@@ -207,7 +207,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function transitionsWhenAnEventIsTriggeredInAnAction()
     {
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState('Washing');
         $test = $this;
         $builder->setEntryAction('Washing', function ($event, $payload, StateMachine $fsm) use ($test) {
@@ -230,7 +230,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     public function shutdownsTheFsmWhenTheStateReachesTheFinalState()
     {
         $finalizeCalled = false;
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState('ending');
         $builder->addTransition('ending', Event::EVENT_END, StateInterface::STATE_FINAL);
         $builder->setEntryAction(StateInterface::STATE_FINAL, function (Event $event, $payload, StateMachine $fsm) use (&$finalizeCalled) {
@@ -249,7 +249,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function checksWhetherTheCurrentStateHasTheGivenEvent()
     {
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState('Stop');
         $builder->addTransition('Stop', 'play', 'Playing');
         $builder->addTransition('Playing', 'stop', 'Stop');
@@ -276,7 +276,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $transitionActionForDisplayFormCallCount = 0;
         $activityForDisplayConfirmationCallCount = 0;
 
-        $builder = new FSMBuilder();
+        $builder = new StateMachineBuilder();
         $builder->setStartState('DisplayForm');
         $builder->setActivity('DisplayForm', function ($event, $payload, StateMachine $fsm) use (&$activityForDisplayFormCallCount) {
             ++$activityForDisplayFormCallCount;
