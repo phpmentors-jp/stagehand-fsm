@@ -55,9 +55,10 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     public function addsAState()
     {
         $builder = new StateMachineBuilder();
-        $builder->setStartState('locked');
+        $builder->addState('locked');
         $builder->addState('foo');
         $builder->addState('bar');
+        $builder->setStartState('locked');
         $stateMachine = $builder->getStateMachine();
         $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $stateMachine->getState('foo'));
         $this->assertEquals('foo', $stateMachine->getState('foo')->getStateID());
@@ -72,12 +73,14 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     {
         $firstStateID = 'locked';
         $builder = new StateMachineBuilder();
+        $builder->addState($firstStateID);
         $builder->setStartState($firstStateID);
         $stateMachine = $builder->getStateMachine();
         $stateMachine->start();
         $this->assertEquals($firstStateID, $stateMachine->getCurrentState()->getStateID());
 
         $builder = new StateMachineBuilder();
+        $builder->addState($firstStateID);
         $builder->setStartState($firstStateID);
         $stateMachine = $builder->getStateMachine();
         $stateMachine->start();
@@ -94,6 +97,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $alarmCalled = false;
         $thankCalled = false;
         $builder = new StateMachineBuilder();
+        $builder->addState('locked');
+        $builder->addState('unlocked');
         $builder->setStartState('locked');
         $builder->addTransition('locked', 'insertCoin', 'unlocked', function (Event $event, $payload, StateMachine $stateMachine) use (&$unlockCalled) {
             $unlockCalled = true;
@@ -135,6 +140,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $maxNumberOfCoins = 10;
         $numberOfCoins = 11;
         $builder = new StateMachineBuilder();
+        $builder->addState('locked');
+        $builder->addState('unlocked');
         $builder->setStartState('locked');
         $builder->addTransition('locked', 'insertCoin', 'unlocked', null, function (Event $event, $payload, StateMachine $stateMachine) use ($maxNumberOfCoins, $numberOfCoins) {
             return $numberOfCoins <= $maxNumberOfCoins;
@@ -156,6 +163,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $entryActionForInitialCalled = false;
         $entryActionForLockedCalled = false;
         $builder = new StateMachineBuilder();
+        $builder->addState('locked');
         $builder->setStartState('locked');
         $builder->setExitAction(StateInterface::STATE_INITIAL, function (Event $event, $payload, StateMachine $stateMachine) use (&$entryActionForInitialCalled) {
             $entryActionForInitialCalled = true;
@@ -186,6 +194,9 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     public function getsThePreviousState()
     {
         $builder = new StateMachineBuilder();
+        $builder->addState('Washing');
+        $builder->addState('Rinsing');
+        $builder->addState('Spinning');
         $builder->setStartState('Washing');
         $builder->addTransition('Washing', 'w', 'Rinsing');
         $builder->addTransition('Rinsing', 'r', 'Spinning');
@@ -208,6 +219,9 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     public function transitionsWhenAnEventIsTriggeredInAnAction()
     {
         $builder = new StateMachineBuilder();
+        $builder->addState('Washing');
+        $builder->addState('Rinsing');
+        $builder->addState('Spinning');
         $builder->setStartState('Washing');
         $test = $this;
         $builder->setEntryAction('Washing', function ($event, $payload, StateMachine $stateMachine) use ($test) {
@@ -231,6 +245,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     {
         $finalizeCalled = false;
         $builder = new StateMachineBuilder();
+        $builder->addState('ending');
+        $builder->addState(StateInterface::STATE_FINAL);
         $builder->setStartState('ending');
         $builder->addTransition('ending', Event::EVENT_END, StateInterface::STATE_FINAL);
         $builder->setEntryAction(StateInterface::STATE_FINAL, function (Event $event, $payload, StateMachine $stateMachine) use (&$finalizeCalled) {
@@ -250,6 +266,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     public function checksWhetherTheCurrentStateHasTheGivenEvent()
     {
         $builder = new StateMachineBuilder();
+        $builder->addState('Stop');
+        $builder->addState('Playing');
         $builder->setStartState('Stop');
         $builder->addTransition('Stop', 'play', 'Playing');
         $builder->addTransition('Playing', 'stop', 'Stop');
@@ -277,6 +295,9 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $activityForDisplayConfirmationCallCount = 0;
 
         $builder = new StateMachineBuilder();
+        $builder->addState('DisplayForm');
+        $builder->addState('processConfirmForm');
+        $builder->addState('DisplayConfirmation');
         $builder->setStartState('DisplayForm');
         $builder->setActivity('DisplayForm', function ($event, $payload, StateMachine $stateMachine) use (&$activityForDisplayFormCallCount) {
             ++$activityForDisplayFormCallCount;

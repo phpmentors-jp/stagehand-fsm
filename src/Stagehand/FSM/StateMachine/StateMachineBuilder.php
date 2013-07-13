@@ -86,10 +86,22 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $activity
+     * @throws Stagehand\FSM\StateMachine\EventNotFoundException
+     * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setActivity($stateID, $activity)
     {
-        $this->addTransition($stateID, Event::EVENT_DO, null, $activity);
+        $state = $this->stateMachine->getState($stateID);
+        if (is_null($state)) {
+            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
+        }
+
+        $event = $state->getEvent(Event::EVENT_DO);
+        if (is_null($event)) {
+            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', Event::EVENT_DO, $stateID));
+        }
+
+        $event->setAction($activity);
     }
 
     /**
@@ -111,6 +123,7 @@ class StateMachineBuilder
      * @param callback $action
      * @param callback $guard
      * @param boolean  $historyMarker
+     * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function addTransition(
         $stateID,
@@ -121,8 +134,7 @@ class StateMachineBuilder
     {
         $state = $this->stateMachine->getState($stateID);
         if (is_null($state)) {
-            $state = new State($stateID);
-            $this->stateMachine->addState($state);
+            throw new StateNotFoundException(sprintf('The state "%s" is not found.', $stateID));
         }
 
         $event = $state->getEvent($eventID);
@@ -133,8 +145,7 @@ class StateMachineBuilder
 
         $nextState = $this->stateMachine->getState($nextStateID);
         if (is_null($nextState)) {
-            $nextState = new State($nextStateID);
-            $this->stateMachine->addState($nextState);
+            throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateID));
         }
 
         $event->setNextState($nextState);
@@ -147,10 +158,22 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $action
+     * @throws Stagehand\FSM\StateMachine\EventNotFoundException
+     * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setEntryAction($stateID, $action)
     {
-        $this->addTransition($stateID, Event::EVENT_ENTRY, null, $action);
+        $state = $this->stateMachine->getState($stateID);
+        if (is_null($state)) {
+            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
+        }
+
+        $event = $state->getEvent(Event::EVENT_ENTRY);
+        if (is_null($event)) {
+            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', Event::EVENT_ENTRY, $stateID));
+        }
+
+        $event->setAction($action);
     }
 
     /**
@@ -158,10 +181,22 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $action
+     * @throws Stagehand\FSM\StateMachine\EventNotFoundException
+     * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setExitAction($stateID, $action)
     {
-        $this->addTransition($stateID, Event::EVENT_EXIT, null, $action);
+        $state = $this->stateMachine->getState($stateID);
+        if (is_null($state)) {
+            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
+        }
+
+        $event = $state->getEvent(Event::EVENT_EXIT);
+        if (is_null($event)) {
+            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', Event::EVENT_EXIT, $stateID));
+        }
+
+        $event->setAction($action);
     }
 }
 
