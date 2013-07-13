@@ -37,7 +37,7 @@
 
 namespace Stagehand\FSM;
 
-use Stagehand\FSM\StateMachine\FSM;
+use Stagehand\FSM\StateMachine\StateMachine;
 
 /**
  * An event class which manages an event such as a event which triggers
@@ -175,10 +175,10 @@ class Event
     /**
      * Evaluates the guard.
      *
-     * @param  \Stagehand\FSM\StateMachine\FSM $fsm
+     * @param  \Stagehand\FSM\StateMachine\StateMachine $fsm
      * @return boolean
      */
-    public function evaluateGuard(FSM $fsm)
+    public function evaluateGuard(StateMachine $fsm)
     {
         if (is_null($this->guard)) {
             return true;
@@ -190,9 +190,9 @@ class Event
     /**
      * Invokes the action.
      *
-     * @param \Stagehand\FSM\StateMachine\FSM $fsm
+     * @param \Stagehand\FSM\StateMachine\StateMachine $fsm
      */
-    public function invokeAction(FSM $fsm)
+    public function invokeAction(StateMachine $fsm)
     {
         if (!is_null($this->action)) {
             call_user_func($this->action, $this, $fsm->getPayload(), $fsm);

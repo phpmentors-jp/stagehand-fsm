@@ -51,24 +51,24 @@ use Stagehand\FSM\StateInterface;
 class FSMBuilder
 {
     /**
-     * @var \Stagehand\FSM\StateMachine\FSM
+     * @var \Stagehand\FSM\StateMachine\StateMachine
      */
     protected $fsm;
 
     /**
-     * @param string|\Stagemand\FSM\StateMachine\FSM $fsmIDOrFSM
+     * @param string|\Stagemand\FSM\StateMachine\StateMachine $fsmIDOrFSM
      */
     public function __construct($fsmIDOrFSM = null)
     {
-        if ($fsmIDOrFSM instanceof FSM) {
+        if ($fsmIDOrFSM instanceof StateMachine) {
             $this->fsm = $fsmIDOrFSM;
         } else {
-            $this->fsm = new FSM($fsmIDOrFSM);
+            $this->fsm = new StateMachine($fsmIDOrFSM);
         }
     }
 
     /**
-     * @return \Stagehand\FSM\StateMachine\FSM
+     * @return \Stagehand\FSM\StateMachine\StateMachine
      */
     public function getFSM()
     {

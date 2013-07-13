@@ -74,7 +74,7 @@ use Stagehand\FSM\Event;
  * @link       http://www.generation5.org/content/2003/FSM_Tutorial.asp
  * @since      Class available since Release 0.1.0
  */
-class FSM
+class StateMachine
 {
     /**
      * @var string

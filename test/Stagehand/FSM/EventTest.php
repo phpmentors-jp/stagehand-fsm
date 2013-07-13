@@ -37,7 +37,7 @@
 
 namespace Stagehand\FSM;
 
-use Stagehand\FSM\StateMachine\FSM;
+use Stagehand\FSM\StateMachine\StateMachine;
 
 /**
  * @package    Stagehand_FSM
@@ -106,17 +106,17 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function evaluatesTheGuard()
     {
-        $fsm = new FSM('bar');
+        $fsm = new StateMachine('bar');
         $payload = new \stdClass();
         $payload->name = 'baz';
         $fsm->setPayload($payload);
         $event = new Event('foo');
-        $event->setGuard(function (Event $event, $payload, FSM $fsm) { return true; });
+        $event->setGuard(function (Event $event, $payload, StateMachine $fsm) { return true; });
         $this->assertTrue($event->evaluateGuard($fsm));
-        $event->setGuard(function (Event $event, $payload, FSM $fsm) { return false; });
+        $event->setGuard(function (Event $event, $payload, StateMachine $fsm) { return false; });
         $this->assertFalse($event->evaluateGuard($fsm));
         $test = $this;
-        $event->setGuard(function (Event $event, $payload, FSM $fsm) use ($test) {
+        $event->setGuard(function (Event $event, $payload, StateMachine $fsm) use ($test) {
             $test->assertEquals('bar', $fsm->getFSMID());
             $test->assertEquals('foo', $event->getEventID());
             $test->assertEquals('baz', $payload->name);
@@ -132,18 +132,18 @@ class EventTest extends \PHPUnit_Framework_TestCase
     public function invokesTheAction()
     {
         $barInvoked = false;
-        $fsm = new FSM('bar');
+        $fsm = new StateMachine('bar');
         $payload = new \stdClass();
         $payload->name = 'baz';
         $fsm->setPayload($payload);
         $event = new Event('foo');
-        $event->setAction(function (Event $event, $payload, FSM $fsm) use (&$barInvoked) {
+        $event->setAction(function (Event $event, $payload, StateMachine $fsm) use (&$barInvoked) {
             $barInvoked = true;
         });
         $event->invokeAction($fsm);
         $this->assertTrue($barInvoked);
         $test = $this;
-        $event->setAction(function (Event $event, $payload, FSM $fsm) use ($test) {
+        $event->setAction(function (Event $event, $payload, StateMachine $fsm) use ($test) {
             $test->assertEquals('bar', $fsm->getFSMID());
             $test->assertEquals('foo', $event->getEventID());
             $test->assertEquals('baz', $payload->name);
