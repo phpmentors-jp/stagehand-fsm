@@ -86,8 +86,8 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $activity
+     * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\EventNotFoundException
-     * @throws Stagehand\FSM\StateMachine\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setActivity($stateID, $activity)
@@ -106,7 +106,7 @@ class StateMachineBuilder
             if (is_callable($activity)) {
                 $event->setAction($activity);
             } else {
-                throw new ObjectNotCallableException('The activity for the event "%s" in the state "%s" is not callable.', Event::EVENT_DO, $stateID);
+                throw new ActionNotCallableException('The activity for the event "%s" in the state "%s" is not callable.', Event::EVENT_DO, $stateID);
             }
         }
     }
@@ -130,7 +130,7 @@ class StateMachineBuilder
      * @param callback $action
      * @param callback $guard
      * @param boolean  $historyMarker
-     * @throws Stagehand\FSM\StateMachine\ObjectNotCallableException
+     * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function addTransition(
@@ -162,7 +162,7 @@ class StateMachineBuilder
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
-                throw new ObjectNotCallableException('The action for the event "%s" in the state "%s" is not callable.', $eventID, $stateID);
+                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', $eventID, $stateID);
             }
         }
 
@@ -170,7 +170,7 @@ class StateMachineBuilder
             if (is_callable($guard)) {
                 $event->setGuard($guard);
             } else {
-                throw new ObjectNotCallableException('The guard for the event "%s" in the state "%s" is not callable.', $eventID, $stateID);
+                throw new ActionNotCallableException('The guard for the event "%s" in the state "%s" is not callable.', $eventID, $stateID);
             }
         }
     }
@@ -180,8 +180,8 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $action
+     * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\EventNotFoundException
-     * @throws Stagehand\FSM\StateMachine\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setEntryAction($stateID, $action)
@@ -200,7 +200,7 @@ class StateMachineBuilder
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
-                throw new ObjectNotCallableException('The action for the event "%s" in the state "%s" is not callable.', Event::EVENT_ENTRY, $stateID);
+                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', Event::EVENT_ENTRY, $stateID);
             }
         }
     }
@@ -210,8 +210,8 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $action
+     * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\EventNotFoundException
-     * @throws Stagehand\FSM\StateMachine\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setExitAction($stateID, $action)
@@ -230,7 +230,7 @@ class StateMachineBuilder
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
-                throw new ObjectNotCallableException('The action for the event "%s" in the state "%s" is not callable.', Event::EVENT_EXIT, $stateID);
+                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', Event::EVENT_EXIT, $stateID);
             }
         }
     }
