@@ -37,6 +37,8 @@
 
 namespace Stagehand\FSM;
 
+use Stagehand\FSM\StateMachine\FSM;
+
 /**
  * @package    Stagehand_FSM
  * @copyright  2006-2007, 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>

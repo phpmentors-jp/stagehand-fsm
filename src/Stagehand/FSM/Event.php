@@ -37,6 +37,8 @@
 
 namespace Stagehand\FSM;
 
+use Stagehand\FSM\StateMachine\FSM;
+
 /**
  * An event class which manages an event such as a event which triggers
  * transition and entry/exit/do special events.
@@ -173,7 +175,7 @@ class Event
     /**
      * Evaluates the guard.
      *
-     * @param  \Stagehand\FSM\FSM $fsm
+     * @param  \Stagehand\FSM\StateMachine\FSM $fsm
      * @return boolean
      */
     public function evaluateGuard(FSM $fsm)
@@ -188,7 +190,7 @@ class Event
     /**
      * Invokes the action.
      *
-     * @param \Stagehand\FSM\FSM $fsm
+     * @param \Stagehand\FSM\StateMachine\FSM $fsm
      */
     public function invokeAction(FSM $fsm)
     {

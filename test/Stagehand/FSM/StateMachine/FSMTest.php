@@ -35,7 +35,10 @@
  * @since      File available since Release 0.1.0
  */
 
-namespace Stagehand\FSM;
+namespace Stagehand\FSM\StateMachine;
+
+use Stagehand\FSM\Event;
+use Stagehand\FSM\StateInterface;
 
 /**
  * @package    Stagehand_FSM
@@ -222,7 +225,7 @@ class FSMTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Stagehand\FSM\FSMAlreadyShutdownException
+     * @expectedException \Stagehand\FSM\StateMachine\FSMAlreadyShutdownException
      */
     public function shutdownsTheFsmWhenTheStateReachesTheFinalState()
     {

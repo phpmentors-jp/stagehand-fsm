@@ -35,7 +35,11 @@
  * @since      File available since Release 2.0.0
  */
 
-namespace Stagehand\FSM;
+namespace Stagehand\FSM\StateMachine;
+
+use Stagehand\FSM\Event;
+use Stagehand\FSM\State;
+use Stagehand\FSM\StateInterface;
 
 /**
  * @package    Stagehand_FSM
@@ -47,12 +51,12 @@ namespace Stagehand\FSM;
 class FSMBuilder
 {
     /**
-     * @var \Stagehand\FSM\FSM
+     * @var \Stagehand\FSM\StateMachine\FSM
      */
     protected $fsm;
 
     /**
-     * @param string|\Stagemand\FSM\FSM $fsmIDOrFSM
+     * @param string|\Stagemand\FSM\StateMachine\FSM $fsmIDOrFSM
      */
     public function __construct($fsmIDOrFSM = null)
     {
@@ -64,7 +68,7 @@ class FSMBuilder
     }
 
     /**
-     * @return \Stagehand\FSM\FSM
+     * @return \Stagehand\FSM\StateMachine\FSM
      */
     public function getFSM()
     {

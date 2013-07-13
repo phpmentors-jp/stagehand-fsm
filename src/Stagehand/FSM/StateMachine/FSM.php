@@ -42,7 +42,11 @@
  * @since      File available since Release 0.1.0
  */
 
-namespace Stagehand\FSM;
+namespace Stagehand\FSM\StateMachine;
+
+use Stagehand\FSM\State;
+use Stagehand\FSM\StateInterface;
+use Stagehand\FSM\Event;
 
 /**
  * A Finite State Machine.
@@ -170,7 +174,7 @@ class FSM
      *
      * @param  string                                     $eventID
      * @return \Stagehand\FSM\StateInterface
-     * @throws \Stagehand\FSM\FSMAlreadyShutdownException
+     * @throws \Stagehand\FSM\StateMachine\FSMAlreadyShutdownException
      */
     public function triggerEvent($eventID)
     {
