@@ -38,6 +38,7 @@
 namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\Event;
+use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\StateInterface;
 
 /**
@@ -100,16 +101,16 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder->addState('locked');
         $builder->addState('unlocked');
         $builder->setStartState('locked');
-        $builder->addTransition('locked', 'insertCoin', 'unlocked', function (Event $event, $payload, StateMachine $stateMachine) use (&$unlockCalled) {
+        $builder->addTransition('locked', 'insertCoin', 'unlocked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$unlockCalled) {
             $unlockCalled = true;
         });
-        $builder->addTransition('unlocked', 'pass', 'locked', function (Event $event, $payload, StateMachine $stateMachine) use (&$lockCalled) {
+        $builder->addTransition('unlocked', 'pass', 'locked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$lockCalled) {
             $lockCalled = true;
         });
-        $builder->addTransition('locked', 'pass', 'locked', function (Event $event, $payload, StateMachine $stateMachine) use (&$alarmCalled) {
+        $builder->addTransition('locked', 'pass', 'locked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$alarmCalled) {
             $alarmCalled = true;
         });
-        $builder->addTransition('unlocked', 'insertCoin', 'unlocked', function (Event $event, $payload, StateMachine $stateMachine) use (&$thankCalled) {
+        $builder->addTransition('unlocked', 'insertCoin', 'unlocked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$thankCalled) {
             $thankCalled = true;
         });
         $stateMachine = $builder->getStateMachine();
@@ -143,7 +144,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder->addState('locked');
         $builder->addState('unlocked');
         $builder->setStartState('locked');
-        $builder->addTransition('locked', 'insertCoin', 'unlocked', null, function (Event $event, $payload, StateMachine $stateMachine) use ($maxNumberOfCoins, $numberOfCoins) {
+        $builder->addTransition('locked', 'insertCoin', 'unlocked', null, function (EventInterface $event, $payload, StateMachine $stateMachine) use ($maxNumberOfCoins, $numberOfCoins) {
             return $numberOfCoins <= $maxNumberOfCoins;
         });
         $builder->addTransition('unlocked', 'pass', 'locked');
@@ -165,10 +166,10 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder = new StateMachineBuilder();
         $builder->addState('locked');
         $builder->setStartState('locked');
-        $builder->setExitAction(StateInterface::STATE_INITIAL, function (Event $event, $payload, StateMachine $stateMachine) use (&$entryActionForInitialCalled) {
+        $builder->setExitAction(StateInterface::STATE_INITIAL, function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$entryActionForInitialCalled) {
             $entryActionForInitialCalled = true;
         });
-        $builder->setEntryAction('locked', function (Event $event, $payload, StateMachine $stateMachine) use (&$entryActionForLockedCalled) {
+        $builder->setEntryAction('locked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$entryActionForLockedCalled) {
             $entryActionForLockedCalled = true;
         });
         $stateMachine = $builder->getStateMachine();
@@ -224,12 +225,12 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder->addState('Spinning');
         $builder->setStartState('Washing');
         $test = $this;
-        $builder->setEntryAction('Washing', function ($event, $payload, StateMachine $stateMachine) use ($test) {
+        $builder->setEntryAction('Washing', function (EventInterface $event, $payload, StateMachine $stateMachine) use ($test) {
             $test->assertEquals('Washing', $stateMachine->getCurrentState()->getStateID());
             $test->assertEquals(StateInterface::STATE_INITIAL, $stateMachine->getPreviousState()->getStateID());
             $stateMachine->triggerEvent('w');
         });
-        $builder->addTransition('Washing', 'w', 'Rinsing', function ($event, $payload, StateMachine $stateMachine) {});
+        $builder->addTransition('Washing', 'w', 'Rinsing', function (EventInterface $event, $payload, StateMachine $stateMachine) {});
         $builder->addTransition('Rinsing', 'r', 'Spinning');
         $stateMachine = $builder->getStateMachine();
         $stateMachine->start();
@@ -248,13 +249,13 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder->addState('ending');
         $builder->addState(StateInterface::STATE_FINAL);
         $builder->setStartState('ending');
-        $builder->addTransition('ending', Event::EVENT_END, StateInterface::STATE_FINAL);
-        $builder->setEntryAction(StateInterface::STATE_FINAL, function (Event $event, $payload, StateMachine $stateMachine) use (&$finalizeCalled) {
+        $builder->addTransition('ending', EventInterface::EVENT_END, StateInterface::STATE_FINAL);
+        $builder->setEntryAction(StateInterface::STATE_FINAL, function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$finalizeCalled) {
             $finalizeCalled = true;
         });
         $stateMachine = $builder->getStateMachine();
         $stateMachine->start();
-        $stateMachine->triggerEvent(Event::EVENT_END);
+        $stateMachine->triggerEvent(EventInterface::EVENT_END);
         $this->assertTrue($finalizeCalled);
         $stateMachine->triggerEvent('foo');
     }
@@ -299,15 +300,15 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $builder->addState('processConfirmForm');
         $builder->addState('DisplayConfirmation');
         $builder->setStartState('DisplayForm');
-        $builder->setActivity('DisplayForm', function ($event, $payload, StateMachine $stateMachine) use (&$activityForDisplayFormCallCount) {
+        $builder->setActivity('DisplayForm', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$activityForDisplayFormCallCount) {
             ++$activityForDisplayFormCallCount;
         });
-        $builder->addTransition('DisplayForm', 'confirmForm', 'processConfirmForm', function ($event, $payload, StateMachine $stateMachine) use (&$transitionActionForDisplayFormCallCount) {
+        $builder->addTransition('DisplayForm', 'confirmForm', 'processConfirmForm', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$transitionActionForDisplayFormCallCount) {
             ++$transitionActionForDisplayFormCallCount;
             $stateMachine->queueEvent('goDisplayConfirmation');
         });
         $builder->addTransition('processConfirmForm', 'goDisplayConfirmation', 'DisplayConfirmation');
-        $builder->setActivity('DisplayConfirmation', function ($event, $payload, StateMachine $stateMachine) use (&$activityForDisplayConfirmationCallCount) {
+        $builder->setActivity('DisplayConfirmation', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$activityForDisplayConfirmationCallCount) {
             ++$activityForDisplayConfirmationCallCount;
         });
         $stateMachine = $builder->getStateMachine();

@@ -37,9 +37,10 @@
 
 namespace Stagehand\FSM\StateMachine;
 
+use Stagehand\FSM\Event\Event;
+use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
-use Stagehand\FSM\Event\Event;
 
 /**
  * @package    Stagehand_FSM
@@ -78,7 +79,7 @@ class StateMachineBuilder
      */
     public function setStartState($stateID)
     {
-        $this->addTransition(StateInterface::STATE_INITIAL, Event::EVENT_START, $stateID);
+        $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateID);
     }
 
     /**
@@ -97,16 +98,16 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
         }
 
-        $event = $state->getEvent(Event::EVENT_DO);
+        $event = $state->getEvent(EventInterface::EVENT_DO);
         if (is_null($event)) {
-            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', Event::EVENT_DO, $stateID));
+            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', EventInterface::EVENT_DO, $stateID));
         }
 
         if (!is_null($activity)) {
             if (is_callable($activity)) {
                 $event->setAction($activity);
             } else {
-                throw new ActionNotCallableException('The activity for the event "%s" in the state "%s" is not callable.', Event::EVENT_DO, $stateID);
+                throw new ActionNotCallableException('The activity for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_DO, $stateID);
             }
         }
     }
@@ -191,16 +192,16 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
         }
 
-        $event = $state->getEvent(Event::EVENT_ENTRY);
+        $event = $state->getEvent(EventInterface::EVENT_ENTRY);
         if (is_null($event)) {
-            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', Event::EVENT_ENTRY, $stateID));
+            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', EventInterface::EVENT_ENTRY, $stateID));
         }
 
         if (!is_null($action)) {
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
-                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', Event::EVENT_ENTRY, $stateID);
+                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_ENTRY, $stateID);
             }
         }
     }
@@ -221,16 +222,16 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
         }
 
-        $event = $state->getEvent(Event::EVENT_EXIT);
+        $event = $state->getEvent(EventInterface::EVENT_EXIT);
         if (is_null($event)) {
-            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', Event::EVENT_EXIT, $stateID));
+            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', EventInterface::EVENT_EXIT, $stateID));
         }
 
         if (!is_null($action)) {
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
-                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', Event::EVENT_EXIT, $stateID);
+                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_EXIT, $stateID);
             }
         }
     }

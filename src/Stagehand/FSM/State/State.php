@@ -38,6 +38,7 @@
 namespace Stagehand\FSM\State;
 
 use Stagehand\FSM\Event\Event;
+use Stagehand\FSM\Event\EventInterface;
 
 /**
  * A state class which builds initial structure of the state which consists
@@ -68,15 +69,13 @@ class State implements StateInterface
     public function __construct($stateID)
     {
         $this->stateID = $stateID;
-        $this->addEvent(new Event(Event::EVENT_ENTRY));
-        $this->addEvent(new Event(Event::EVENT_EXIT));
-        $this->addEvent(new Event(Event::EVENT_DO));
+        $this->addEvent(new Event(EventInterface::EVENT_ENTRY));
+        $this->addEvent(new Event(EventInterface::EVENT_EXIT));
+        $this->addEvent(new Event(EventInterface::EVENT_DO));
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @return \Stagehand\FSM\Event\Event
      */
     public function getEvent($eventID)
     {
@@ -87,7 +86,7 @@ class State implements StateInterface
         }
     }
 
-    public function addEvent(Event $event)
+    public function addEvent(EventInterface $event)
     {
         $this->events[ $event->getEventID() ] = $event;
     }

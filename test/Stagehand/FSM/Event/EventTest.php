@@ -89,12 +89,12 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $payload->name = 'baz';
         $stateMachine->setPayload($payload);
         $event = new Event('foo');
-        $event->setGuard(function (Event $event, $payload, StateMachine $stateMachine) { return true; });
+        $event->setGuard(function (EventInterface $event, $payload, StateMachine $stateMachine) { return true; });
         $this->assertTrue($event->evaluateGuard($stateMachine));
-        $event->setGuard(function (Event $event, $payload, StateMachine $stateMachine) { return false; });
+        $event->setGuard(function (EventInterface $event, $payload, StateMachine $stateMachine) { return false; });
         $this->assertFalse($event->evaluateGuard($stateMachine));
         $test = $this;
-        $event->setGuard(function (Event $event, $payload, StateMachine $stateMachine) use ($test) {
+        $event->setGuard(function (EventInterface $event, $payload, StateMachine $stateMachine) use ($test) {
             $test->assertEquals('bar', $stateMachine->getStateMachineID());
             $test->assertEquals('foo', $event->getEventID());
             $test->assertEquals('baz', $payload->name);
@@ -115,13 +115,13 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $payload->name = 'baz';
         $stateMachine->setPayload($payload);
         $event = new Event('foo');
-        $event->setAction(function (Event $event, $payload, StateMachine $stateMachine) use (&$barInvoked) {
+        $event->setAction(function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$barInvoked) {
             $barInvoked = true;
         });
         $event->invokeAction($stateMachine);
         $this->assertTrue($barInvoked);
         $test = $this;
-        $event->setAction(function (Event $event, $payload, StateMachine $stateMachine) use ($test) {
+        $event->setAction(function (EventInterface $event, $payload, StateMachine $stateMachine) use ($test) {
             $test->assertEquals('bar', $stateMachine->getStateMachineID());
             $test->assertEquals('foo', $event->getEventID());
             $test->assertEquals('baz', $payload->name);
@@ -137,11 +137,11 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function checksWhetherAnEventIsProtectedOrNot()
     {
-        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_ENTRY));
-        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_EXIT));
-        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_START));
-        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_END));
-        $this->assertTrue(Event::isProtectedEvent(Event::EVENT_DO));
+        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_ENTRY));
+        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_EXIT));
+        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_START));
+        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_END));
+        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_DO));
         $this->assertFalse(Event::isProtectedEvent('foo'));
     }
 

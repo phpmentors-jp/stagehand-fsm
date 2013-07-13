@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2012 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,60 +29,45 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      File available since Release 2.0.0
  */
 
-namespace Stagehand\FSM\State;
-
-use Stagehand\FSM\Event\EventInterface;
+namespace Stagehand\FSM\Event;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
  * @since      Class available since Release 2.0.0
  */
-interface StateInterface
+interface EventInterface
 {
     /*
-     * Constants for pseudo states.
+     * Constants for special events.
      */
-    const STATE_INITIAL = '__initial';
-    const STATE_FINAL = '__final';
+    const EVENT_ENTRY = '__entry';
+    const EVENT_EXIT = '__exit';
+    const EVENT_START = '__start';
+    const EVENT_END = '__end';
+    const EVENT_DO = '__do';
 
     /**
-     * Finds and returns the event with the given ID.
-     *
-     * @param  string               $eventID
-     * @return \Stagehand\FSM\Event\EventInterface
-     */
-    public function getEvent($eventID);
-
-    /**
-     * Adds the event with the given ID.
-     *
-     * @param \Stagehand\FSM\Event\EventInterface $event
-     */
-    public function addEvent(EventInterface $event);
-
-    /**
-     * Gets the ID of the state.
+     * Gets the ID of the event.
      *
      * @return string
      */
-    public function getStateID();
+    public function getEventID();
 
     /**
-     * Returns whether the state has an event with a given ID.
+     * Gets the action for the event.
      *
-     * @param  string  $eventID
-     * @return boolean
+     * @return callback
      */
-    public function hasEvent($eventID);
+    public function getAction();
 }
 
 /*

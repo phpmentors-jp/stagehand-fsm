@@ -45,6 +45,7 @@
 namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\Event;
+use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 
@@ -135,7 +136,7 @@ class StateMachine
     public function start()
     {
         $this->initialize();
-        $this->triggerEvent(Event::EVENT_START);
+        $this->triggerEvent(EventInterface::EVENT_START);
     }
 
     /**
@@ -196,7 +197,7 @@ class StateMachine
                     }
                 }
 
-                $this->getCurrentState()->getEvent(Event::EVENT_DO)->invokeAction($this);
+                $this->getCurrentState()->getEvent(EventInterface::EVENT_DO)->invokeAction($this);
 
                 continue;
             }
@@ -273,19 +274,19 @@ class StateMachine
     /**
      * Transitions to the next state.
      *
-     * @param  \Stagehand\FSM\Event\Event                  $event
+     * @param  \Stagehand\FSM\Event\EventInterface                  $event
      * @throws \Stagehand\FSM\StateNotFoundException
      */
-    protected function transition(Event $event)
+    protected function transition(EventInterface $event)
     {
-        $this->getCurrentState()->getEvent(Event::EVENT_EXIT)->invokeAction($this);
+        $this->getCurrentState()->getEvent(EventInterface::EVENT_EXIT)->invokeAction($this);
 
         $event->invokeAction($this);
 
         $this->previousStateID = $this->currentStateID;
         $this->currentStateID = $event->getNextState()->getStateID();
 
-        $this->getCurrentState()->getEvent(Event::EVENT_ENTRY)->invokeAction($this);
+        $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY)->invokeAction($this);
     }
 
     /**
