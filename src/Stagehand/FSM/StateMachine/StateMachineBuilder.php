@@ -40,7 +40,6 @@ namespace Stagehand\FSM\StateMachine;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\Event\Event;
-use Stagehand\FSM\Event\ObjectNotCallableException;
 
 /**
  * @package    Stagehand_FSM
@@ -87,8 +86,8 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $activity
-     * @throws Stagehand\FSM\Event\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\EventNotFoundException
+     * @throws Stagehand\FSM\StateMachine\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setActivity($stateID, $activity)
@@ -131,7 +130,7 @@ class StateMachineBuilder
      * @param callback $action
      * @param callback $guard
      * @param boolean  $historyMarker
-     * @throws Stagehand\FSM\Event\ObjectNotCallableException
+     * @throws Stagehand\FSM\StateMachine\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function addTransition(
@@ -181,8 +180,8 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $action
-     * @throws Stagehand\FSM\Event\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\EventNotFoundException
+     * @throws Stagehand\FSM\StateMachine\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setEntryAction($stateID, $action)
@@ -211,8 +210,8 @@ class StateMachineBuilder
      *
      * @param string   $stateID
      * @param callback $action
-     * @throws Stagehand\FSM\Event\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\EventNotFoundException
+     * @throws Stagehand\FSM\StateMachine\ObjectNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setExitAction($stateID, $action)
