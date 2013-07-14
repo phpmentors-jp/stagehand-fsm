@@ -159,30 +159,6 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function supportsExitAndEntryActions()
-    {
-        $entryActionForInitialCalled = false;
-        $entryActionForLockedCalled = false;
-        $builder = new StateMachineBuilder();
-        $builder->addState('locked');
-        $builder->setStartState('locked');
-        $builder->setExitAction(StateInterface::STATE_INITIAL, function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$entryActionForInitialCalled) {
-            $entryActionForInitialCalled = true;
-        });
-        $builder->setEntryAction('locked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$entryActionForLockedCalled) {
-            $entryActionForLockedCalled = true;
-        });
-        $stateMachine = $builder->getStateMachine();
-        $stateMachine->start();
-
-        $this->assertTrue($entryActionForInitialCalled);
-        $this->assertTrue($entryActionForLockedCalled);
-        $this->assertEquals('locked', $stateMachine->getCurrentState()->getStateID());
-    }
-
-    /**
-     * @test
-     */
     public function setsTheId()
     {
         $stateMachine = new StateMachine('foo');
@@ -236,28 +212,6 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $stateMachine->start();
         $this->assertEquals('Rinsing', $stateMachine->getCurrentState()->getStateID());
         $this->assertEquals('Washing', $stateMachine->getPreviousState()->getStateID());
-    }
-
-    /**
-     * @test
-     * @expectedException \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
-     */
-    public function shutdownsTheStateMachineWhenTheStateReachesTheFinalState()
-    {
-        $finalizeCalled = false;
-        $builder = new StateMachineBuilder();
-        $builder->addState('ending');
-        $builder->addState(StateInterface::STATE_FINAL);
-        $builder->setStartState('ending');
-        $builder->addTransition('ending', EventInterface::EVENT_END, StateInterface::STATE_FINAL);
-        $builder->setEntryAction(StateInterface::STATE_FINAL, function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$finalizeCalled) {
-            $finalizeCalled = true;
-        });
-        $stateMachine = $builder->getStateMachine();
-        $stateMachine->start();
-        $stateMachine->triggerEvent(EventInterface::EVENT_END);
-        $this->assertTrue($finalizeCalled);
-        $stateMachine->triggerEvent('foo');
     }
 
     /**

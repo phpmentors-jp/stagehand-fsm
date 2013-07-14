@@ -45,8 +45,7 @@
 namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
-use Stagehand\FSM\Event\TransitionEvent;
-use Stagehand\FSM\State\State;
+use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
 
 /**
@@ -184,7 +183,7 @@ class StateMachine
             if (count($this->eventQueue) == 0) {
                 return $this->getCurrentState();
             } else {
-                if ($this->currentStateID == StateInterface::STATE_FINAL && !TransitionEvent::isSpecialEvent($eventID)) {
+                if ($this->currentStateID == StateInterface::STATE_FINAL) {
                     throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
                 }
 
@@ -273,13 +272,13 @@ class StateMachine
     /**
      * Transitions to the next state.
      *
-     * @param  \Stagehand\FSM\Event\EventInterface                  $event
+     * @param  \Stagehand\FSM\Event\TransitionEventInterface                  $event
      * @throws \Stagehand\FSM\StateNotFoundException
      */
-    protected function transition(EventInterface $event)
+    protected function transition(TransitionEventInterface $event)
     {
         $exitEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_EXIT);
-        if (!is_null($exitEvent->getAction())) {
+        if (!is_null($exitEvent) && !is_null($exitEvent->getAction())) {
             $this->invokeAction($exitEvent);
         }
 
@@ -291,7 +290,7 @@ class StateMachine
         $this->currentStateID = $event->getNextState()->getStateID();
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
-        if (!is_null($entryEvent->getAction())) {
+        if (!is_null($entryEvent) && !is_null($entryEvent->getAction())) {
             $this->invokeAction($entryEvent);
         }
     }

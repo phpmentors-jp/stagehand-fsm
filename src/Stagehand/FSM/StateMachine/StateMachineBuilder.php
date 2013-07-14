@@ -42,6 +42,7 @@ use Stagehand\FSM\Event\EntryEvent;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\ExitEvent;
 use Stagehand\FSM\Event\TransitionEvent;
+use Stagehand\FSM\State\InitialState;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 
@@ -64,10 +65,7 @@ class StateMachineBuilder
      */
     public function __construct($stateMachineID = null)
     {
-        $initialState = new State(StateInterface::STATE_INITIAL);
-        $initialState->addEvent(new ExitEvent());
         $this->stateMachine = new StateMachine($stateMachineID);
-        $this->stateMachine->addState($initialState);
     }
 
     /**
@@ -85,6 +83,11 @@ class StateMachineBuilder
      */
     public function setStartState($stateID)
     {
+        if (is_null($this->stateMachine->getState(StateInterface::STATE_INITIAL))) {
+            $transitionEvent = new TransitionEvent(EventInterface::EVENT_START);
+            $this->stateMachine->addState(new InitialState($transitionEvent));
+        }
+
         $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateID);
     }
 

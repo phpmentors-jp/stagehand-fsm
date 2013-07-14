@@ -37,7 +37,6 @@
 
 namespace Stagehand\FSM\Event;
 
-use Stagehand\FSM\StateMachine\StateMachine;
 use Stagehand\FSM\State\StateInterface;
 
 /**
@@ -50,7 +49,7 @@ use Stagehand\FSM\State\StateInterface;
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
  */
-class TransitionEvent implements EventInterface
+class TransitionEvent implements TransitionEventInterface
 {
     /**
      * @var string
@@ -121,9 +120,7 @@ class TransitionEvent implements EventInterface
     }
 
     /**
-     * Gets the next state of the event.
-     *
-     * @return \Stagehand\FSM\State\StateInterface
+     * {@inheritDoc}
      */
     public function getNextState()
     {
@@ -141,9 +138,7 @@ class TransitionEvent implements EventInterface
     }
 
     /**
-     * Gets the guard the event.
-     *
-     * @return callback
+     * {@inheritDoc}
      */
     public function getGuard()
     {
