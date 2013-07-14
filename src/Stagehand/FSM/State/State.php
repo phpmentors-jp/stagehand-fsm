@@ -91,18 +91,6 @@ class State implements StateInterface
     {
         return $this->stateID;
     }
-
-    /**
-     * Returns whether a state is a protected event such as the pseudo states and so on.
-     *
-     * @param  string  $stateID
-     * @return boolean
-     * @since Method available since Release 2.0.0
-     */
-    public static function isProtectedState($stateID)
-    {
-        return $stateID == StateInterface::STATE_INITIAL || $stateID == StateInterface::STATE_FINAL;
-    }
 }
 
 /*
