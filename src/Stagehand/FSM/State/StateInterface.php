@@ -37,8 +37,6 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\EventInterface;
-
 /**
  * @package    Stagehand_FSM
  * @copyright  2011-2012 KUBO Atsuhiro <kubo@iteman.jp>
@@ -61,13 +59,6 @@ interface StateInterface
      * @return \Stagehand\FSM\Event\EventInterface
      */
     public function getEvent($eventID);
-
-    /**
-     * Adds the event with the given ID.
-     *
-     * @param \Stagehand\FSM\Event\EventInterface $event
-     */
-    public function addEvent(EventInterface $event);
 
     /**
      * Gets the ID of the state.
