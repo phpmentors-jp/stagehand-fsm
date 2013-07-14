@@ -37,7 +37,7 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\Event;
+use Stagehand\FSM\Event\TransitionEvent;
 use Stagehand\FSM\Event\EventInterface;
 
 /**
@@ -55,10 +55,10 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function addsAnEvent()
     {
         $state = new State('foo');
-        $state->addEvent(new Event('foo'));
+        $state->addEvent(new TransitionEvent('foo'));
         $this->assertTrue($state->hasEvent('foo'));
 
-        $state->addEvent(new Event('bar'));
+        $state->addEvent(new TransitionEvent('bar'));
         $this->assertTrue($state->hasEvent('bar'));
     }
 
@@ -69,9 +69,9 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function checksWhetherTheStateHasTheGivenEvent()
     {
         $state = new State('foo');
-        $state->addEvent(new Event('foo'));
+        $state->addEvent(new TransitionEvent('foo'));
         $this->assertTrue($state->hasEvent('foo'));
-        $state->addEvent(new Event('bar'));
+        $state->addEvent(new TransitionEvent('bar'));
         $this->assertTrue($state->hasEvent('bar'));
         $this->assertFalse($state->hasEvent('baz'));
     }

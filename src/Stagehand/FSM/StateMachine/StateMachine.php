@@ -44,8 +44,8 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Stagehand\FSM\Event\Event;
 use Stagehand\FSM\Event\EventInterface;
+use Stagehand\FSM\Event\TransitionEvent;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 
@@ -184,7 +184,7 @@ class StateMachine
             if (count($this->eventQueue) == 0) {
                 return $this->getCurrentState();
             } else {
-                if ($this->currentStateID == StateInterface::STATE_FINAL && !Event::isSpecialEvent($eventID)) {
+                if ($this->currentStateID == StateInterface::STATE_FINAL && !TransitionEvent::isSpecialEvent($eventID)) {
                     throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
                 }
 

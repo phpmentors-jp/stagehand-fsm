@@ -53,7 +53,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function getsTheId()
     {
-        $event = new Event('foo');
+        $event = new TransitionEvent('foo');
         $this->assertEquals('foo', $event->getEventID());
     }
 
@@ -63,7 +63,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     public function setsTheAction()
     {
         $action = function () {};
-        $event = new Event('foo');
+        $event = new TransitionEvent('foo');
         $event->setAction($action);
         $this->assertSame($action, $event->getAction());
     }
@@ -74,7 +74,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     public function setsTheGuard()
     {
         $guard = function () {};
-        $event = new Event('foo');
+        $event = new TransitionEvent('foo');
         $event->setGuard($guard);
         $this->assertSame($guard, $event->getGuard());
     }
@@ -85,12 +85,12 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function checksWhetherAnEventIsProtectedOrNot()
     {
-        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_ENTRY));
-        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_EXIT));
-        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_START));
-        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_END));
-        $this->assertTrue(Event::isProtectedEvent(EventInterface::EVENT_DO));
-        $this->assertFalse(Event::isProtectedEvent('foo'));
+        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_ENTRY));
+        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_EXIT));
+        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_START));
+        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_END));
+        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_DO));
+        $this->assertFalse(TransitionEvent::isProtectedEvent('foo'));
     }
 
 }

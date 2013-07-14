@@ -39,9 +39,9 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\DoEvent;
 use Stagehand\FSM\Event\EntryEvent;
-use Stagehand\FSM\Event\Event;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\ExitEvent;
+use Stagehand\FSM\Event\TransitionEvent;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 
@@ -158,7 +158,7 @@ class StateMachineBuilder
 
         $event = $state->getEvent($eventID);
         if (is_null($event)) {
-            $event = new Event($eventID);
+            $event = new TransitionEvent($eventID);
             $state->addEvent($event);
         }
 
