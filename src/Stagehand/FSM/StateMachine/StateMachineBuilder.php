@@ -42,6 +42,7 @@ use Stagehand\FSM\Event\EntryEvent;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\ExitEvent;
 use Stagehand\FSM\Event\TransitionEvent;
+use Stagehand\FSM\State\FinalState;
 use Stagehand\FSM\State\InitialState;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
@@ -91,6 +92,23 @@ class StateMachineBuilder
         }
 
         $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateID, $action, $guard);
+    }
+
+    /**
+     * Sets the given state as an end state.
+     *
+     * @param string $stateID
+     * @param string $eventID
+     * @param callback $action
+     * @param callback $guard
+     */
+    public function setEndState($stateID, $eventID, $action = null, $guard = null)
+    {
+        if (is_null($this->stateMachine->getState(StateInterface::STATE_FINAL))) {
+            $this->stateMachine->addState(new FinalState());
+        }
+
+        $this->addTransition($stateID, $eventID, StateInterface::STATE_FINAL, $action, $guard);
     }
 
     /**
