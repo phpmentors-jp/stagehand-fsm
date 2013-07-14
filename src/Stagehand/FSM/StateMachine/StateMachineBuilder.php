@@ -80,15 +80,17 @@ class StateMachineBuilder
      * Sets the given state as the first state.
      *
      * @param string $stateID
+     * @param callback $action
+     * @param callback $guard
      */
-    public function setStartState($stateID)
+    public function setStartState($stateID, $action = null, $guard = null)
     {
         if (is_null($this->stateMachine->getState(StateInterface::STATE_INITIAL))) {
             $transitionEvent = new TransitionEvent(EventInterface::EVENT_START);
             $this->stateMachine->addState(new InitialState($transitionEvent));
         }
 
-        $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateID);
+        $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateID, $action, $guard);
     }
 
     /**
