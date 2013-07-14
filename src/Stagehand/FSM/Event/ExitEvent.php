@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,87 +29,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
- * @since      File available since Release 0.1.0
+ * @since      File available since Release 2.0.0
  */
 
-namespace Stagehand\FSM\State;
-
-use Stagehand\FSM\Event\EventInterface;
+namespace Stagehand\FSM\Event;
 
 /**
- * A state class which builds initial structure of the state which consists
- * entry/exit actions and an activity, and behaves as event holder of the
- * state.
- *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
  * @version    Release: @package_version@
- * @since      Class available since Release 0.1.0
+ * @since      Class available since Release 2.0.0
  */
-class State implements StateInterface
+class ExitEvent implements EventInterface
 {
     /**
-     * @var string
+     * @var callback
      */
-     protected $stateID;
+    protected $action;
 
     /**
-     * @var array
+     * {@inheritDoc}
      */
-    protected $events = array();
-
-    /**
-     * @param string $stateID
-     */
-    public function __construct($stateID)
+    public function getEventID()
     {
-        $this->stateID = $stateID;
+        return EventInterface::EVENT_EXIT;
+    }
+
+    /**
+     * @param callback $action
+     */
+    public function setAction($action)
+    {
+        $this->action = $action;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getEvent($eventID)
+    public function getAction()
     {
-        if ($this->hasEvent($eventID)) {
-            return $this->events[$eventID];
-        } else {
-            return null;
-        }
-    }
-
-    public function addEvent(EventInterface $event)
-    {
-        $this->events[ $event->getEventID() ] = $event;
-    }
-
-    public function getStateID()
-    {
-        return $this->stateID;
-    }
-
-    /**
-     * @since Method available since Release 1.6.0
-     */
-    public function hasEvent($eventID)
-    {
-        return array_key_exists($eventID, $this->events);
-    }
-
-    /**
-     * Returns whether a state is a protected event such as the pseudo states and so on.
-     *
-     * @param  string  $stateID
-     * @return boolean
-     * @since Method available since Release 2.0.0
-     */
-    public static function isProtectedState($stateID)
-    {
-        return $stateID == StateInterface::STATE_INITIAL || $stateID == StateInterface::STATE_FINAL;
+        return $this->action;
     }
 }
 

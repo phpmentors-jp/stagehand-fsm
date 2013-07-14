@@ -52,25 +52,6 @@ class StateTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function createsSpecialEventsInTheConstructor()
-    {
-        $state = new State('foo');
-        $entry = $state->getEvent(EventInterface::EVENT_ENTRY);
-        $this->assertInstanceOf('\Stagehand\FSM\Event\EventInterface', $entry);
-        $this->assertEquals(EventInterface::EVENT_ENTRY, $entry->getEventID());
-
-        $exit = $state->getEvent(EventInterface::EVENT_EXIT);
-        $this->assertInstanceOf('\Stagehand\FSM\Event\EventInterface', $exit);
-        $this->assertEquals(EventInterface::EVENT_EXIT, $exit->getEventID());
-
-        $do = $state->getEvent(EventInterface::EVENT_DO);
-        $this->assertInstanceOf('\Stagehand\FSM\Event\EventInterface', $do);
-        $this->assertEquals(EventInterface::EVENT_DO, $do->getEventID());
-    }
-
-    /**
-     * @test
-     */
     public function addsAnEvent()
     {
         $state = new State('foo');

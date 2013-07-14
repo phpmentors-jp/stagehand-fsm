@@ -37,8 +37,11 @@
 
 namespace Stagehand\FSM\StateMachine;
 
+use Stagehand\FSM\Event\DoEvent;
+use Stagehand\FSM\Event\EntryEvent;
 use Stagehand\FSM\Event\Event;
 use Stagehand\FSM\Event\EventInterface;
+use Stagehand\FSM\Event\ExitEvent;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 
@@ -61,7 +64,10 @@ class StateMachineBuilder
      */
     public function __construct($stateMachineID = null)
     {
+        $initialState = new State(StateInterface::STATE_INITIAL);
+        $initialState->addEvent(new ExitEvent());
         $this->stateMachine = new StateMachine($stateMachineID);
+        $this->stateMachine->addState($initialState);
     }
 
     /**
@@ -119,7 +125,11 @@ class StateMachineBuilder
      */
     public function addState($stateID)
     {
-        $this->stateMachine->addState(new State($stateID));
+        $state = new State($stateID);
+        $state->addEvent(new EntryEvent());
+        $state->addEvent(new ExitEvent());
+        $state->addEvent(new DoEvent());
+        $this->stateMachine->addState($state);
     }
 
     /**

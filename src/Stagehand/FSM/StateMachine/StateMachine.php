@@ -113,7 +113,6 @@ class StateMachine
     public function __construct($stateMachineID = null)
     {
         $this->stateMachineID = $stateMachineID;
-        $this->addState(new State(StateInterface::STATE_INITIAL));
     }
 
     /**
