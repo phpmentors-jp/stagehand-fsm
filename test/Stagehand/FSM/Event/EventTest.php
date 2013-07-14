@@ -81,58 +81,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     */
-    public function evaluatesTheGuard()
-    {
-        $stateMachine = new StateMachine('bar');
-        $payload = new \stdClass();
-        $payload->name = 'baz';
-        $stateMachine->setPayload($payload);
-        $event = new Event('foo');
-        $event->setGuard(function (EventInterface $event, $payload, StateMachine $stateMachine) { return true; });
-        $this->assertTrue($event->evaluateGuard($stateMachine));
-        $event->setGuard(function (EventInterface $event, $payload, StateMachine $stateMachine) { return false; });
-        $this->assertFalse($event->evaluateGuard($stateMachine));
-        $test = $this;
-        $event->setGuard(function (EventInterface $event, $payload, StateMachine $stateMachine) use ($test) {
-            $test->assertEquals('bar', $stateMachine->getStateMachineID());
-            $test->assertEquals('foo', $event->getEventID());
-            $test->assertEquals('baz', $payload->name);
-
-            return true;
-        });
-        $this->assertTrue($event->evaluateGuard($stateMachine));
-    }
-
-    /**
-     * @test
-     */
-    public function invokesTheAction()
-    {
-        $barInvoked = false;
-        $stateMachine = new StateMachine('bar');
-        $payload = new \stdClass();
-        $payload->name = 'baz';
-        $stateMachine->setPayload($payload);
-        $event = new Event('foo');
-        $event->setAction(function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$barInvoked) {
-            $barInvoked = true;
-        });
-        $event->invokeAction($stateMachine);
-        $this->assertTrue($barInvoked);
-        $test = $this;
-        $event->setAction(function (EventInterface $event, $payload, StateMachine $stateMachine) use ($test) {
-            $test->assertEquals('bar', $stateMachine->getStateMachineID());
-            $test->assertEquals('foo', $event->getEventID());
-            $test->assertEquals('baz', $payload->name);
-
-            return true;
-        });
-        $event->invokeAction($stateMachine);
-    }
-
-    /**
-     * @test
      * @since Method available since Release 2.0.0
      */
     public function checksWhetherAnEventIsProtectedOrNot()

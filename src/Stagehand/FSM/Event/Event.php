@@ -151,33 +151,6 @@ class Event implements EventInterface
     }
 
     /**
-     * Evaluates the guard.
-     *
-     * @param  \Stagehand\FSM\StateMachine\StateMachine $stateMachine
-     * @return boolean
-     */
-    public function evaluateGuard(StateMachine $stateMachine)
-    {
-        if (is_null($this->guard)) {
-            return true;
-        } else {
-            return call_user_func($this->guard, $this, $stateMachine->getPayload(), $stateMachine);
-        }
-    }
-
-    /**
-     * Invokes the action.
-     *
-     * @param \Stagehand\FSM\StateMachine\StateMachine $stateMachine
-     */
-    public function invokeAction(StateMachine $stateMachine)
-    {
-        if (!is_null($this->action)) {
-            call_user_func($this->action, $this, $stateMachine->getPayload(), $stateMachine);
-        }
-    }
-
-    /**
      * Returns whether the event is special event or not.
      *
      * @param  string  $eventID

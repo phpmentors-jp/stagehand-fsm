@@ -190,14 +190,14 @@ class StateMachine
                 }
 
                 $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));
-                if (!is_null($event)) {
-                    $result = $event->evaluateGuard($this);
-                    if ($result) {
-                        $this->transition($event);
-                    }
+                if (!is_null($event) && (is_null($event->getGuard()) || $this->evaluateGuard($event))) {
+                    $this->transition($event);
                 }
 
-                $this->getCurrentState()->getEvent(EventInterface::EVENT_DO)->invokeAction($this);
+                $doEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_DO);
+                if (!is_null($doEvent) && !is_null($doEvent->getAction())) {
+                    $this->invokeAction($doEvent);
+                }
 
                 continue;
             }
@@ -279,14 +279,22 @@ class StateMachine
      */
     protected function transition(EventInterface $event)
     {
-        $this->getCurrentState()->getEvent(EventInterface::EVENT_EXIT)->invokeAction($this);
+        $exitEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_EXIT);
+        if (!is_null($exitEvent->getAction())) {
+            $this->invokeAction($exitEvent);
+        }
 
-        $event->invokeAction($this);
+        if (!is_null($event->getAction())) {
+            $this->invokeAction($event);
+        }
 
         $this->previousStateID = $this->currentStateID;
         $this->currentStateID = $event->getNextState()->getStateID();
 
-        $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY)->invokeAction($this);
+        $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
+        if (!is_null($entryEvent->getAction())) {
+            $this->invokeAction($entryEvent);
+        }
     }
 
     /**
@@ -295,6 +303,29 @@ class StateMachine
     protected function initialize()
     {
         $this->currentStateID = StateInterface::STATE_INITIAL;
+    }
+
+    /**
+     * Evaluates the guard for an event.
+     *
+     * @param \Stagehand\FSM\Event\EventInterface $event
+     * @return boolean
+     * @since Method available since Release 2.0.0
+     */
+    protected function evaluateGuard(EventInterface $event)
+    {
+        return call_user_func($event->getGuard(), $event, $this->getPayload(), $this);
+    }
+
+    /**
+     * Invokes the action for an event.
+     *
+     * @param \Stagehand\FSM\Event\EventInterface $event
+     * @since Method available since Release 2.0.0
+     */
+    protected function invokeAction(EventInterface $event)
+    {
+        call_user_func($event->getAction(), $event, $this->getPayload(), $this);
     }
 }
 
