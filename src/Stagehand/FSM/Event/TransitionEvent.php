@@ -144,31 +144,6 @@ class TransitionEvent implements TransitionEventInterface
     {
         return $this->guard;
     }
-
-    /**
-     * Returns whether the event is special event or not.
-     *
-     * @param  string  $eventID
-     * @return boolean
-     * @since Method available since Release 2.0.0
-     */
-    public static function isSpecialEvent($eventID)
-    {
-        return $eventID == self::EVENT_ENTRY || $eventID == self::EVENT_EXIT || $eventID == self::EVENT_DO;
-    }
-
-    /**
-     * Returns whether an event is a protected event such as the special
-     * events and so on.
-     *
-     * @param  string  $eventID
-     * @return boolean
-     * @since Method available since Release 2.0.0
-     */
-    public static function isProtectedEvent($eventID)
-    {
-        return static::isSpecialEvent($eventID) || $eventID == self::EVENT_START || $eventID == self::EVENT_END;
-    }
 }
 
 /*

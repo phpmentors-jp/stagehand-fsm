@@ -78,21 +78,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $event->setGuard($guard);
         $this->assertSame($guard, $event->getGuard());
     }
-
-    /**
-     * @test
-     * @since Method available since Release 2.0.0
-     */
-    public function checksWhetherAnEventIsProtectedOrNot()
-    {
-        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_ENTRY));
-        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_EXIT));
-        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_START));
-        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_END));
-        $this->assertTrue(TransitionEvent::isProtectedEvent(EventInterface::EVENT_DO));
-        $this->assertFalse(TransitionEvent::isProtectedEvent('foo'));
-    }
-
 }
 
 /*
