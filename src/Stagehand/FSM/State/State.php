@@ -75,7 +75,7 @@ class State implements StateInterface
      */
     public function getEvent($eventID)
     {
-        if ($this->hasEvent($eventID)) {
+        if (array_key_exists($eventID, $this->events)) {
             return $this->events[$eventID];
         } else {
             return null;
@@ -90,14 +90,6 @@ class State implements StateInterface
     public function getStateID()
     {
         return $this->stateID;
-    }
-
-    /**
-     * @since Method available since Release 1.6.0
-     */
-    public function hasEvent($eventID)
-    {
-        return array_key_exists($eventID, $this->events);
     }
 
     /**

@@ -51,33 +51,6 @@ class StateTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     */
-    public function addsAnEvent()
-    {
-        $state = new State('foo');
-        $state->addEvent(new TransitionEvent('foo'));
-        $this->assertTrue($state->hasEvent('foo'));
-
-        $state->addEvent(new TransitionEvent('bar'));
-        $this->assertTrue($state->hasEvent('bar'));
-    }
-
-    /**
-     * @test
-     * @since Method available since Release 1.6.0
-     */
-    public function checksWhetherTheStateHasTheGivenEvent()
-    {
-        $state = new State('foo');
-        $state->addEvent(new TransitionEvent('foo'));
-        $this->assertTrue($state->hasEvent('foo'));
-        $state->addEvent(new TransitionEvent('bar'));
-        $this->assertTrue($state->hasEvent('bar'));
-        $this->assertFalse($state->hasEvent('baz'));
-    }
-
-    /**
-     * @test
      * @since Method available since Release 2.0.0
      */
     public function checksWhetherAnStateIsProtectedOrNot()

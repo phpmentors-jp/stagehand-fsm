@@ -75,14 +75,6 @@ interface StateInterface
      * @return string
      */
     public function getStateID();
-
-    /**
-     * Returns whether the state has an event with a given ID.
-     *
-     * @param  string  $eventID
-     * @return boolean
-     */
-    public function hasEvent($eventID);
 }
 
 /*

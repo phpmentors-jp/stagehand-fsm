@@ -262,31 +262,6 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @since Method available since Release 1.6.0
-     */
-    public function checksWhetherTheCurrentStateHasTheGivenEvent()
-    {
-        $builder = new StateMachineBuilder();
-        $builder->addState('Stop');
-        $builder->addState('Playing');
-        $builder->setStartState('Stop');
-        $builder->addTransition('Stop', 'play', 'Playing');
-        $builder->addTransition('Playing', 'stop', 'Stop');
-        $stateMachine = $builder->getStateMachine();
-        $stateMachine->start();
-
-        $this->assertEquals('Stop', $stateMachine->getCurrentState()->getStateID());
-        $this->assertTrue($stateMachine->getCurrentState()->hasEvent('play'));
-        $this->assertFalse($stateMachine->getCurrentState()->hasEvent('stop'));
-
-        $currentState = $stateMachine->triggerEvent('play');
-        $this->assertEquals('Playing', $currentState->getStateID());
-        $this->assertTrue($stateMachine->getCurrentState()->hasEvent('stop'));
-        $this->assertFalse($stateMachine->getCurrentState()->hasEvent('play'));
-    }
-
-    /**
-     * @test
      * @since Method available since Release 1.7.0
      */
     public function invokesTheActivityOnlyOnceWhenAnStateIsUpdated()
