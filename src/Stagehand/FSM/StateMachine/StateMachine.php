@@ -254,16 +254,6 @@ class StateMachine
     }
 
     /**
-     * Removes the payload from the property.
-     *
-     * @since Method available since Release 1.9.0
-     */
-    public function clearPayload()
-    {
-        unset($this->payload);
-    }
-
-    /**
      * Transitions to the next state.
      *
      * @param  \Stagehand\FSM\Event\TransitionEventInterface                  $event
