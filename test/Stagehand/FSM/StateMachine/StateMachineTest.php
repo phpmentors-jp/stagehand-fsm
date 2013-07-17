@@ -51,205 +51,251 @@ use Stagehand\FSM\State\StateInterface;
 class StateMachineTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @test
+     * @var \Stagehand\FSM\StateMachine\StateMachineBuilder
+     * @since Property available since Release 2.0.0
      */
-    public function addsAState()
+    protected $stateMachineBuilder;
+
+    /**
+     * @var array
+     * @since Property available since Release 2.0.0
+     */
+    protected $actionCalls = array();
+
+    /**
+     * @param \Stagehand\FSM\Event\EventInterface $event
+     * @param callback
+     * @param \Stagehand\FSM\StateMachine\StateMachine $stateMachine
+     * @since Method available since Release 2.0.0
+     */
+    public function logActionCall(EventInterface $event, $payload, StateMachine $stateMachine)
     {
-        $builder = new StateMachineBuilder();
-        $builder->addState('locked');
-        $builder->addState('foo');
-        $builder->addState('bar');
-        $builder->setStartState('locked');
-        $stateMachine = $builder->getStateMachine();
-        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $stateMachine->getState('foo'));
-        $this->assertEquals('foo', $stateMachine->getState('foo')->getStateID());
-        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $stateMachine->getState('bar'));
-        $this->assertEquals('bar', $stateMachine->getState('bar')->getStateID());
+        foreach (debug_backtrace() as $stackFrame) {
+            if ($stackFrame['function'] == 'invokeAction' || $stackFrame['function'] == 'evaluateGuard') {
+                $calledBy = $stackFrame['function'];
+            }
+        }
+
+        $this->actionCalls[] = array(
+            'state' => $stateMachine->getCurrentState()->getStateID(),
+            'event' => $event->getEventID(),
+            'calledBy' => @$calledBy,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp()
+    {
+        $this->stateMachineBuilder = new StateMachineBuilder('Registration');
+        $this->stateMachineBuilder->addState('Input');
+        $this->stateMachineBuilder->addState('Confirmation');
+        $this->stateMachineBuilder->addState('Success');
+        $this->stateMachineBuilder->addState('Validation');
+        $this->stateMachineBuilder->addState('Registration');
+        $this->stateMachineBuilder->setStartState('Input', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->addTransition('Validation', 'valid', 'Confirmation', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->addTransition('Validation', 'invalid', 'Input', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->addTransition('Confirmation', 'next', 'Registration', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->addTransition('Confirmation', 'prev', 'Input', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->addTransition('Registration', 'next', 'Success', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setEndState('Success', 'next', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setEntryAction('Input', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setActivity('Input', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setExitAction('Input', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setEntryAction('Confirmation', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setActivity('Confirmation', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setExitAction('Confirmation', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setEntryAction('Success', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setActivity('Success', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setExitAction('Success', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setEntryAction('Validation', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setActivity('Validation', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setExitAction('Validation', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setEntryAction('Registration', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setActivity('Registration', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setExitAction('Registration', array($this, 'logActionCall'));
     }
 
     /**
      * @test
+     * @since Method available since Release 2.0.0
      */
-    public function setsTheFirstState()
+    public function transitions()
     {
-        $firstStateID = 'locked';
-        $builder = new StateMachineBuilder();
-        $builder->addState($firstStateID);
-        $builder->setStartState($firstStateID);
-        $stateMachine = $builder->getStateMachine();
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
         $stateMachine->start();
-        $this->assertEquals($firstStateID, $stateMachine->getCurrentState()->getStateID());
 
-        $builder = new StateMachineBuilder();
-        $builder->addState($firstStateID);
-        $builder->setStartState($firstStateID);
-        $stateMachine = $builder->getStateMachine();
-        $stateMachine->start();
-        $this->assertEquals($firstStateID, $stateMachine->getCurrentState()->getStateID());
+        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo('Input'));
+        $this->assertThat($stateMachine->getPreviousState()->getStateID(), $this->equalTo(StateInterface::STATE_INITIAL));
+
+        $this->assertThat(count($this->actionCalls), $this->equalTo(3));
+        $this->assertThat($this->actionCalls[0]['state'], $this->equalTo(StateInterface::STATE_INITIAL));
+        $this->assertThat($this->actionCalls[0]['event'], $this->equalTo(EventInterface::EVENT_START));
+        $this->assertThat($this->actionCalls[0]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[1]['state'], $this->equalTo('Input'));
+        $this->assertThat($this->actionCalls[1]['event'], $this->equalTo(EventInterface::EVENT_ENTRY));
+        $this->assertThat($this->actionCalls[1]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[2]['state'], $this->equalTo('Input'));
+        $this->assertThat($this->actionCalls[2]['event'], $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($this->actionCalls[2]['calledBy'], $this->equalTo('invokeAction'));
+
+        $stateMachine->triggerEvent('next');
+
+        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo('Validation'));
+        $this->assertThat($stateMachine->getPreviousState()->getStateID(), $this->equalTo('Input'));
+
+        $this->assertThat(count($this->actionCalls), $this->equalTo(7));
+        $this->assertThat($this->actionCalls[3]['state'], $this->equalTo('Input'));
+        $this->assertThat($this->actionCalls[3]['event'], $this->equalTo(EventInterface::EVENT_EXIT));
+        $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[4]['state'], $this->equalTo('Input'));
+        $this->assertThat($this->actionCalls[4]['event'], $this->equalTo('next'));
+        $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[5]['state'], $this->equalTo('Validation'));
+        $this->assertThat($this->actionCalls[5]['event'], $this->equalTo(EventInterface::EVENT_ENTRY));
+        $this->assertThat($this->actionCalls[5]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[6]['state'], $this->equalTo('Validation'));
+        $this->assertThat($this->actionCalls[6]['event'], $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($this->actionCalls[6]['calledBy'], $this->equalTo('invokeAction'));
     }
 
     /**
      * @test
+     * @since Method available since Release 2.0.0
      */
-    public function triggersAnEvent()
+    public function raisesAnExceptionWhenAnEventIsTriggeredOnTheFinalState()
     {
-        $unlockCalled = false;
-        $lockCalled = false;
-        $alarmCalled = false;
-        $thankCalled = false;
-        $builder = new StateMachineBuilder();
-        $builder->addState('locked');
-        $builder->addState('unlocked');
-        $builder->setStartState('locked');
-        $builder->addTransition('locked', 'insertCoin', 'unlocked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$unlockCalled) {
-            $unlockCalled = true;
-        });
-        $builder->addTransition('unlocked', 'pass', 'locked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$lockCalled) {
-            $lockCalled = true;
-        });
-        $builder->addTransition('locked', 'pass', 'locked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$alarmCalled) {
-            $alarmCalled = true;
-        });
-        $builder->addTransition('unlocked', 'insertCoin', 'unlocked', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$thankCalled) {
-            $thankCalled = true;
-        });
-        $stateMachine = $builder->getStateMachine();
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
         $stateMachine->start();
+        $stateMachine->triggerEvent('next');
+        $stateMachine->triggerEvent('valid');
+        $stateMachine->triggerEvent('next');
+        $stateMachine->triggerEvent('next');
+        $stateMachine->triggerEvent('next');
 
-        $currentState = $stateMachine->triggerEvent('pass');
-        $this->assertEquals('locked', $currentState->getStateID());
-        $this->assertTrue($alarmCalled);
+        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo(StateInterface::STATE_FINAL));
 
-        $currentState = $stateMachine->triggerEvent('insertCoin');
-        $this->assertEquals('unlocked', $currentState->getStateID());
-        $this->assertTrue($unlockCalled);
+        try {
+            $stateMachine->triggerEvent('foo');
+        } catch (StateMachineAlreadyShutdownException $e) {
+            return;
+        }
 
-        $currentState = $stateMachine->triggerEvent('insertCoin');
-        $this->assertEquals('unlocked', $currentState->getStateID());
-        $this->assertTrue($thankCalled);
-
-        $currentState = $stateMachine->triggerEvent('pass');
-        $this->assertEquals('locked', $currentState->getStateID());
-        $this->assertTrue($lockCalled);
+        $this->fail('An expected exception has not been raised.');
     }
 
     /**
      * @test
+     * @since Method available since Release 2.0.0
      */
-    public function supportsGuards()
+    public function transitionsToTheNextStateWhenTheGuardConditionIsTrue()
     {
-        $maxNumberOfCoins = 10;
-        $numberOfCoins = 11;
-        $builder = new StateMachineBuilder();
-        $builder->addState('locked');
-        $builder->addState('unlocked');
-        $builder->setStartState('locked');
-        $builder->addTransition('locked', 'insertCoin', 'unlocked', null, function (EventInterface $event, $payload, StateMachine $stateMachine) use ($maxNumberOfCoins, $numberOfCoins) {
-            return $numberOfCoins <= $maxNumberOfCoins;
+        $self = $this;
+        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', array($this, 'logActionCall'), function (EventInterface $event, $payload, StateMachine $stateMachine) use ($self) {
+            $self->logActionCall($event, $payload, $stateMachine);
+
+            return true;
         });
-        $builder->addTransition('unlocked', 'pass', 'locked');
-        $builder->addTransition('locked', 'pass', 'locked');
-        $builder->addTransition('unlocked', 'insertCoin', 'unlocked');
-        $stateMachine = $builder->getStateMachine();
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
         $stateMachine->start();
-        $currentState = $stateMachine->triggerEvent('insertCoin');
-        $this->assertEquals('locked', $currentState->getStateID());
+        $stateMachine->triggerEvent('next');
+
+        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo('Validation'));
+        $this->assertThat($stateMachine->getPreviousState()->getStateID(), $this->equalTo('Input'));
+        $this->assertThat(count($this->actionCalls), $this->equalTo(8));
+
+        $this->assertThat($this->actionCalls[3]['state'], $this->equalTo('Input'));
+        $this->assertThat($this->actionCalls[3]['event'], $this->equalTo('next'));
+        $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('evaluateGuard'));
+        $this->assertThat($this->actionCalls[4]['state'], $this->equalTo('Input'));
+        $this->assertThat($this->actionCalls[4]['event'], $this->equalTo(EventInterface::EVENT_EXIT));
+        $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('invokeAction'));
     }
 
     /**
      * @test
+     * @since Method available since Release 2.0.0
      */
-    public function setsTheId()
+    public function doesNotTransitionToTheNextStateWhenTheGuardConditionIsFalse()
     {
-        $stateMachine = new StateMachine('foo');
-        $this->assertEquals('foo', $stateMachine->getStateMachineID());
+        $self = $this;
+        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', array($this, 'logActionCall'), function (EventInterface $event, $payload, StateMachine $stateMachine) use ($self) {
+            $self->logActionCall($event, $payload, $stateMachine);
+
+            return false;
+        });
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->start();
+        $stateMachine->triggerEvent('next');
+
+        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo('Input'));
+        $this->assertThat($stateMachine->getPreviousState()->getStateID(), $this->equalTo(StateInterface::STATE_INITIAL));
+        $this->assertThat(count($this->actionCalls), $this->equalTo(5));
+
+        $this->assertThat($this->actionCalls[3]['state'], $this->equalTo('Input'));
+        $this->assertThat($this->actionCalls[3]['event'], $this->equalTo('next'));
+        $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('evaluateGuard'));
+        $this->assertThat($this->actionCalls[4]['state'], $this->equalTo('Input'));
+        $this->assertThat($this->actionCalls[4]['event'], $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('invokeAction'));
     }
 
     /**
      * @test
+     * @since Method available since Release 2.0.0
      */
-    public function getsThePreviousState()
+    public function passesTheUserDefinedPayloadToActions()
     {
-        $builder = new StateMachineBuilder();
-        $builder->addState('Washing');
-        $builder->addState('Rinsing');
-        $builder->addState('Spinning');
-        $builder->setStartState('Washing');
-        $builder->addTransition('Washing', 'w', 'Rinsing');
-        $builder->addTransition('Rinsing', 'r', 'Spinning');
-        $stateMachine = $builder->getStateMachine();
+        $self = $this;
+        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', function (EventInterface $event, $payload, StateMachine $stateMachine) use ($self) {
+            $payload->foo = 'baz';
+
+            return false;
+        });
+        $payload = new \stdClass();
+        $payload->foo = 'bar';
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->setPayload($payload);
         $stateMachine->start();
-        $state = $stateMachine->getPreviousState();
-        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $state);
-        $this->assertEquals(StateInterface::STATE_INITIAL, $state->getStateID());
+        $stateMachine->triggerEvent('next');
 
-        $stateMachine->triggerEvent('w');
-        $state = $stateMachine->getPreviousState();
-
-        $this->assertInstanceOf('\Stagehand\FSM\State\StateInterface', $state);
-        $this->assertEquals('Washing', $state->getStateID());
+        $this->assertThat($payload->foo, $this->equalTo('baz'));
     }
 
     /**
      * @test
+     * @since Method available since Release 2.0.0
      */
-    public function transitionsWhenAnEventIsTriggeredInAnAction()
+    public function passesTheUserDefinedPayloadToGuards()
     {
-        $builder = new StateMachineBuilder();
-        $builder->addState('Washing');
-        $builder->addState('Rinsing');
-        $builder->addState('Spinning');
-        $builder->setStartState('Washing');
-        $test = $this;
-        $builder->setEntryAction('Washing', function (EventInterface $event, $payload, StateMachine $stateMachine) use ($test) {
-            $test->assertEquals('Washing', $stateMachine->getCurrentState()->getStateID());
-            $test->assertEquals(StateInterface::STATE_INITIAL, $stateMachine->getPreviousState()->getStateID());
-            $stateMachine->triggerEvent('w');
+        $self = $this;
+        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', null, function (EventInterface $event, $payload, StateMachine $stateMachine) use ($self) {
+            $payload->foo = 'baz';
+
+            return true;
         });
-        $builder->addTransition('Washing', 'w', 'Rinsing', function (EventInterface $event, $payload, StateMachine $stateMachine) {});
-        $builder->addTransition('Rinsing', 'r', 'Spinning');
-        $stateMachine = $builder->getStateMachine();
+        $payload = new \stdClass();
+        $payload->foo = 'bar';
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->setPayload($payload);
         $stateMachine->start();
-        $this->assertEquals('Rinsing', $stateMachine->getCurrentState()->getStateID());
-        $this->assertEquals('Washing', $stateMachine->getPreviousState()->getStateID());
+        $stateMachine->triggerEvent('next');
+
+        $this->assertThat($payload->foo, $this->equalTo('baz'));
     }
 
     /**
      * @test
-     * @since Method available since Release 1.7.0
+     * @since Method available since Release 2.0.0
      */
-    public function invokesTheActivityOnlyOnceWhenAnStateIsUpdated()
+    public function getsTheIdOfTheStateMachine()
     {
-        $activityForDisplayFormCallCount = 0;
-        $transitionActionForDisplayFormCallCount = 0;
-        $activityForDisplayConfirmationCallCount = 0;
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
 
-        $builder = new StateMachineBuilder();
-        $builder->addState('DisplayForm');
-        $builder->addState('processConfirmForm');
-        $builder->addState('DisplayConfirmation');
-        $builder->setStartState('DisplayForm');
-        $builder->setActivity('DisplayForm', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$activityForDisplayFormCallCount) {
-            ++$activityForDisplayFormCallCount;
-        });
-        $builder->addTransition('DisplayForm', 'confirmForm', 'processConfirmForm', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$transitionActionForDisplayFormCallCount) {
-            ++$transitionActionForDisplayFormCallCount;
-            $stateMachine->queueEvent('goDisplayConfirmation');
-        });
-        $builder->addTransition('processConfirmForm', 'goDisplayConfirmation', 'DisplayConfirmation');
-        $builder->setActivity('DisplayConfirmation', function (EventInterface $event, $payload, StateMachine $stateMachine) use (&$activityForDisplayConfirmationCallCount) {
-            ++$activityForDisplayConfirmationCallCount;
-        });
-        $stateMachine = $builder->getStateMachine();
-        $stateMachine->start();
-
-        $this->assertEquals(1, $activityForDisplayFormCallCount);
-
-        $stateMachine->triggerEvent('confirmForm');
-
-        $this->assertEquals(1, $activityForDisplayFormCallCount);
-        $this->assertEquals(1, $transitionActionForDisplayFormCallCount);
-        $this->assertEquals(1, $activityForDisplayConfirmationCallCount);
+        $this->assertThat($stateMachine->getStateMachineID(), $this->equalTo('Registration'));
     }
 }
 
