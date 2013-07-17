@@ -179,27 +179,21 @@ class StateMachine
     {
         $this->queueEvent($eventID);
 
-        while (true) {
-            if (count($this->eventQueue) == 0) {
-                return $this->getCurrentState();
-            } else {
-                if ($this->currentStateID == StateInterface::STATE_FINAL) {
-                    throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
-                }
-
-                $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));
-                if (!is_null($event) && (is_null($event->getGuard()) || $this->evaluateGuard($event))) {
-                    $this->transition($event);
-                }
-
-                $doEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_DO);
-                if (!is_null($doEvent) && !is_null($doEvent->getAction())) {
-                    $this->invokeAction($doEvent);
-                }
-
-                continue;
+        do {
+            if ($this->currentStateID == StateInterface::STATE_FINAL) {
+                throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
             }
-        }
+
+            $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));
+            if (!is_null($event) && (is_null($event->getGuard()) || $this->evaluateGuard($event))) {
+                $this->transition($event);
+            }
+
+            $doEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_DO);
+            if (!is_null($doEvent) && !is_null($doEvent->getAction())) {
+                $this->invokeAction($doEvent);
+            }
+        } while (count($this->eventQueue) > 0);
     }
 
     /**
