@@ -136,7 +136,7 @@ class StateMachineBuilder
             if (is_callable($activity)) {
                 $event->setAction($activity);
             } else {
-                throw new ActionNotCallableException('The activity for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_DO, $stateID);
+                throw new ActionNotCallableException(sprintf('The activity for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_DO, $stateID));
             }
         }
     }
@@ -196,7 +196,7 @@ class StateMachineBuilder
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
-                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', $eventID, $stateID);
+                throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', $eventID, $stateID));
             }
         }
 
@@ -204,7 +204,7 @@ class StateMachineBuilder
             if (is_callable($guard)) {
                 $event->setGuard($guard);
             } else {
-                throw new ActionNotCallableException('The guard for the event "%s" in the state "%s" is not callable.', $eventID, $stateID);
+                throw new ActionNotCallableException(sprintf('The guard for the event "%s" in the state "%s" is not callable.', $eventID, $stateID));
             }
         }
     }
@@ -234,7 +234,7 @@ class StateMachineBuilder
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
-                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_ENTRY, $stateID);
+                throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_ENTRY, $stateID));
             }
         }
     }
@@ -264,7 +264,7 @@ class StateMachineBuilder
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
-                throw new ActionNotCallableException('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_EXIT, $stateID);
+                throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_EXIT, $stateID));
             }
         }
     }
