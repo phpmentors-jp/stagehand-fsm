@@ -117,7 +117,6 @@ class StateMachineBuilder
      * @param string   $stateID
      * @param callback $activity
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
-     * @throws Stagehand\FSM\StateMachine\EventNotFoundException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setActivity($stateID, $activity)
@@ -127,18 +126,11 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
         }
 
-        $event = $state->getEvent(EventInterface::EVENT_DO);
-        if (is_null($event)) {
-            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', EventInterface::EVENT_DO, $stateID));
+        if (!is_callable($activity)) {
+            throw new ActionNotCallableException(sprintf('The activity for the state "%s" is not callable.', EventInterface::EVENT_DO, $stateID));
         }
 
-        if (!is_null($activity)) {
-            if (is_callable($activity)) {
-                $event->setAction($activity);
-            } else {
-                throw new ActionNotCallableException(sprintf('The activity for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_DO, $stateID));
-            }
-        }
+        $state->getEvent(EventInterface::EVENT_DO)->setAction($activity);
     }
 
     /**
@@ -215,7 +207,6 @@ class StateMachineBuilder
      * @param string   $stateID
      * @param callback $action
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
-     * @throws Stagehand\FSM\StateMachine\EventNotFoundException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setEntryAction($stateID, $action)
@@ -225,18 +216,11 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
         }
 
-        $event = $state->getEvent(EventInterface::EVENT_ENTRY);
-        if (is_null($event)) {
-            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', EventInterface::EVENT_ENTRY, $stateID));
+        if (!is_callable($action)) {
+            throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_ENTRY, $stateID));
         }
 
-        if (!is_null($action)) {
-            if (is_callable($action)) {
-                $event->setAction($action);
-            } else {
-                throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_ENTRY, $stateID));
-            }
-        }
+        $state->getEvent(EventInterface::EVENT_ENTRY)->setAction($action);
     }
 
     /**
@@ -245,7 +229,6 @@ class StateMachineBuilder
      * @param string   $stateID
      * @param callback $action
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
-     * @throws Stagehand\FSM\StateMachine\EventNotFoundException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function setExitAction($stateID, $action)
@@ -255,18 +238,11 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
         }
 
-        $event = $state->getEvent(EventInterface::EVENT_EXIT);
-        if (is_null($event)) {
-            throw new EventNotFoundException(sprintf('The event "%s" is not found in the state "%s".', EventInterface::EVENT_EXIT, $stateID));
+        if (!is_callable($action)) {
+            throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_EXIT, $stateID));
         }
 
-        if (!is_null($action)) {
-            if (is_callable($action)) {
-                $event->setAction($action);
-            } else {
-                throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_EXIT, $stateID));
-            }
-        }
+        $state->getEvent(EventInterface::EVENT_EXIT)->setAction($action);
     }
 }
 
