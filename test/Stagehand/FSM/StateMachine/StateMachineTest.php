@@ -297,6 +297,26 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->assertThat($stateMachine->getStateMachineID(), $this->equalTo('Registration'));
     }
+
+    /**
+     * @test
+     * @since Method available since Release 2.0.0
+     */
+    public function excludesThePayloadPropertyForSerialization()
+    {
+        $stateMachineBuilder = new StateMachineBuilder();
+        $stateMachineBuilder->addState('locked');
+        $stateMachineBuilder->addState('unlocked');
+        $stateMachineBuilder->setStartState('locked');
+        $stateMachineBuilder->addTransition('locked', 'coin', 'unlocked');
+        $stateMachineBuilder->addTransition('unlocked', 'pass', 'locked');
+        $stateMachine = $stateMachineBuilder->getStateMachine();
+        $stateMachine->setPayload(new \stdClass());
+
+        $unserializedStateMachine = unserialize(serialize($stateMachine));
+
+        $this->assertThat($unserializedStateMachine->getPayload(), $this->isNull());
+    }
 }
 
 /*
