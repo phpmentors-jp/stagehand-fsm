@@ -107,11 +107,9 @@ class StateMachine
     protected $eventQueue = array();
 
     /**
-     * @param string $stateMachineID
      */
-    public function __construct($stateMachineID = null)
+    public function __construct()
     {
-        $this->stateMachineID = $stateMachineID;
     }
 
     /**
