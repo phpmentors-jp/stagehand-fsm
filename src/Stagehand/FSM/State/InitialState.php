@@ -54,14 +54,6 @@ class InitialState implements StateInterface
     protected $transitionEvent;
 
     /**
-     * @param \Stagehand\FSM\Event\TransitionEventInterface $transitionEvent
-     */
-    public function __construct(TransitionEventInterface $transitionEvent)
-    {
-        $this->transitionEvent = $transitionEvent;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function getEvent($eventID)
