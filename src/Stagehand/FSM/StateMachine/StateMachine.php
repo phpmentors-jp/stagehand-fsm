@@ -234,6 +234,14 @@ class StateMachine
     }
 
     /**
+     * @param string $stateMachineID
+     */
+    public function setStateMachineID($stateMachineID)
+    {
+        $this->stateMachineID = $stateMachineID;
+    }
+
+    /**
      * Gets the ID of the state machine.
      *
      * @return string
