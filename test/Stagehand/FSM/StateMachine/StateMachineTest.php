@@ -307,7 +307,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $stateMachineBuilder->addState('locked');
         $stateMachineBuilder->addState('unlocked');
         $stateMachineBuilder->setStartState('locked');
-        $stateMachineBuilder->addTransition('locked', 'coin', 'unlocked');
+        $stateMachineBuilder->addTransition('locked', 'insertCoin', 'unlocked');
         $stateMachineBuilder->addTransition('unlocked', 'pass', 'locked');
         $stateMachine = $stateMachineBuilder->getStateMachine();
         $stateMachine->setPayload(new \stdClass());
