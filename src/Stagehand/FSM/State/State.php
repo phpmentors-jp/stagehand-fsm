@@ -82,8 +82,16 @@ class State implements StateInterface
         }
     }
 
+    /**
+     * @param  \Stagehand\FSM\Event\EventInterface          $event
+     * @throws \Stagehand\FSM\State\DuplicateEventException
+     */
     public function addEvent(EventInterface $event)
     {
+        if (array_key_exists($event->getEventID(), $this->events)) {
+            throw new DuplicateEventException(sprintf('The event "%s" already exists in the state "%s".', $event->getEventID(), $this->getStateID()));
+        }
+
         $this->events[ $event->getEventID() ] = $event;
     }
 
