@@ -38,6 +38,7 @@
 namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
+use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 
 /**
@@ -315,6 +316,23 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $unserializedStateMachine = unserialize(serialize($stateMachine));
 
         $this->assertThat($unserializedStateMachine->getPayload(), $this->isNull());
+    }
+
+    /**
+     * @test
+     */
+    public function raisesAnExceptionIfTheStateIsAlreadyDefinedWhenAddingAState()
+    {
+        $stateMachine = new StateMachine();
+        $stateMachine->addState(new State('foo'));
+
+        try {
+            $stateMachine->addState(new State('foo'));
+        } catch (DuplicateStateException $e) {
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
     }
 }
 
