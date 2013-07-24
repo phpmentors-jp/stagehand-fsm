@@ -113,6 +113,7 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
             $stateMachineBuilder->addTransition('foo', 'bar', 'baz');
         } catch (StateNotFoundException $e) {
             $this->assertThat($e->getMessage(), $this->stringContains('"foo"'));
+
             return;
         }
 
@@ -131,6 +132,7 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
             $stateMachineBuilder->addTransition('foo', 'bar', 'baz');
         } catch (StateNotFoundException $e) {
             $this->assertThat($e->getMessage(), $this->stringContains('"baz"'));
+
             return;
         }
 
@@ -150,6 +152,7 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
             $stateMachineBuilder->addTransition('foo', 'bar', 'baz', array($this, 'nonExistingMethod'));
         } catch (ActionNotCallableException $e) {
             $this->assertThat($e->getMessage(), $this->stringStartsWith('The action'));
+
             return;
         }
 
@@ -169,6 +172,7 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
             $stateMachineBuilder->addTransition('foo', 'bar', 'baz', null, array($this, 'nonExistingMethod'));
         } catch (ActionNotCallableException $e) {
             $this->assertThat($e->getMessage(), $this->stringStartsWith('The guard'));
+
             return;
         }
 

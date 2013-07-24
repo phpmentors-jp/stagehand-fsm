@@ -92,7 +92,7 @@ class TransitionEvent implements TransitionEventInterface
     /**
      * Sets the action the event.
      *
-     * @param  callback                                  $action
+     * @param callback $action
      */
     public function setAction($action)
     {
@@ -102,7 +102,7 @@ class TransitionEvent implements TransitionEventInterface
     /**
      * Sets the guard the event.
      *
-     * @param  callback                                  $guard
+     * @param callback $guard
      */
     public function setGuard($guard)
     {

@@ -153,7 +153,7 @@ class StateMachine
      * Triggers the given event in the current state.
      * <i>Note: Do not call this method directly from actions.</i>
      *
-     * @param  string                                     $eventID
+     * @param  string                                                           $eventID
      * @return \Stagehand\FSM\State\StateInterface
      * @throws \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
      */
@@ -192,7 +192,7 @@ class StateMachine
     /**
      * Finds and returns the state with the given ID.
      *
-     * @param  string                        $stateID
+     * @param  string                              $stateID
      * @return \Stagehand\FSM\State\StateInterface
      */
     public function getState($stateID)
@@ -245,7 +245,7 @@ class StateMachine
     /**
      * Transitions to the next state.
      *
-     * @param  \Stagehand\FSM\Event\TransitionEventInterface                  $event
+     * @param  \Stagehand\FSM\Event\TransitionEventInterface $event
      * @throws \Stagehand\FSM\StateNotFoundException
      */
     protected function transition(TransitionEventInterface $event)
@@ -279,7 +279,7 @@ class StateMachine
     /**
      * Evaluates the guard for an event.
      *
-     * @param \Stagehand\FSM\Event\EventInterface $event
+     * @param  \Stagehand\FSM\Event\EventInterface $event
      * @return boolean
      * @since Method available since Release 2.0.0
      */

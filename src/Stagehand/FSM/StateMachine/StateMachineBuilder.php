@@ -84,7 +84,7 @@ class StateMachineBuilder
     /**
      * Sets the given state as the first state.
      *
-     * @param string $stateID
+     * @param string   $stateID
      * @param callback $action
      * @param callback $guard
      */
@@ -96,8 +96,8 @@ class StateMachineBuilder
     /**
      * Sets the given state as an end state.
      *
-     * @param string $stateID
-     * @param string $eventID
+     * @param string   $stateID
+     * @param string   $eventID
      * @param callback $action
      * @param callback $guard
      */
@@ -113,8 +113,8 @@ class StateMachineBuilder
     /**
      * Sets the activity to the state.
      *
-     * @param string   $stateID
-     * @param callback $activity
+     * @param  string                                                $stateID
+     * @param  callback                                              $activity
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
@@ -149,11 +149,11 @@ class StateMachineBuilder
     /**
      * Adds the state transition.
      *
-     * @param string   $stateID
-     * @param string   $eventID
-     * @param string   $nextStateID
-     * @param callback $action
-     * @param callback $guard
+     * @param  string                                                $stateID
+     * @param  string                                                $eventID
+     * @param  string                                                $nextStateID
+     * @param  callback                                              $action
+     * @param  callback                                              $guard
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
@@ -202,8 +202,8 @@ class StateMachineBuilder
     /**
      * Sets the entry action to the state.
      *
-     * @param string   $stateID
-     * @param callback $action
+     * @param  string                                                $stateID
+     * @param  callback                                              $action
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
@@ -224,8 +224,8 @@ class StateMachineBuilder
     /**
      * Sets the exit action to the state.
      *
-     * @param string   $stateID
-     * @param callback $action
+     * @param  string                                                $stateID
+     * @param  callback                                              $action
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
