@@ -66,7 +66,7 @@ class StateMachineBuilder
      */
     public function __construct($stateMachineID = null)
     {
-        $this->stateMachine = new StateMachine(new InitialState(new TransitionEvent(EventInterface::EVENT_START)));
+        $this->stateMachine = new StateMachine(new InitialState());
 
         if (!is_null($stateMachineID)) {
             $this->stateMachine->setStateMachineID($stateMachineID);
@@ -90,6 +90,12 @@ class StateMachineBuilder
      */
     public function setStartState($stateID, $action = null, $guard = null)
     {
+        $state = $this->stateMachine->getState(StateInterface::STATE_INITIAL);
+        $event = $state->getEvent(EventInterface::EVENT_START);
+        if (is_null($event)) {
+            $state->setTransitionEvent(new TransitionEvent(EventInterface::EVENT_START));
+        }
+
         $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateID, $action, $guard);
     }
 

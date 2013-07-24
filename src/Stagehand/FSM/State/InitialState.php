@@ -66,7 +66,7 @@ class InitialState implements StateInterface
      */
     public function getEvent($eventID)
     {
-        if ($eventID == $this->transitionEvent->getEventID()) {
+        if (!is_null($this->transitionEvent) && $eventID == $this->transitionEvent->getEventID()) {
             return $this->transitionEvent;
         } else {
             return null;
@@ -79,6 +79,14 @@ class InitialState implements StateInterface
     public function getStateID()
     {
         return StateInterface::STATE_INITIAL;
+    }
+
+    /**
+     * @param \Stagehand\FSM\Event\TransitionEventInterface $transitionEvent
+     */
+    public function setTransitionEvent(TransitionEventInterface $transitionEvent)
+    {
+        $this->transitionEvent = $transitionEvent;
     }
 }
 
