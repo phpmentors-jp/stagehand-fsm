@@ -49,8 +49,8 @@ interface StateInterface
     /*
      * Constants for pseudo states.
      */
-    const STATE_INITIAL = '__initial';
-    const STATE_FINAL = '__final';
+    const STATE_INITIAL = '__INITIAL__';
+    const STATE_FINAL = '__FINAL__';
 
     /**
      * Finds and returns the event with the given ID.

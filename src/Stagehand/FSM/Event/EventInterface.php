@@ -49,10 +49,10 @@ interface EventInterface
     /*
      * Constants for special events.
      */
-    const EVENT_ENTRY = '__entry';
-    const EVENT_EXIT = '__exit';
-    const EVENT_START = '__start';
-    const EVENT_DO = '__do';
+    const EVENT_ENTRY = '__ENTRY__';
+    const EVENT_EXIT = '__EXIT__';
+    const EVENT_START = '__START__';
+    const EVENT_DO = '__DO__';
 
     /**
      * Gets the ID of the event.
