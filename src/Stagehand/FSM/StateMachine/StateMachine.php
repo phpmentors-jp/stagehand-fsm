@@ -207,10 +207,15 @@ class StateMachine
     /**
      * Adds the state with the given ID.
      *
-     * @param \Stagehand\FSM\State\StateInterface $state
+     * @param  \Stagehand\FSM\State\StateInterface                 $state
+     * @throws \Stagehand\FSM\StateMachine\DuplicateStateException
      */
     public function addState(StateInterface $state)
     {
+        if (array_key_exists($state->getStateID(), $this->states)) {
+            throw new DuplicateStateException(sprintf('The state "%s" already exists.', $state->getStateID()));
+        }
+
         $this->states[ $state->getStateID() ] = $state;
     }
 
