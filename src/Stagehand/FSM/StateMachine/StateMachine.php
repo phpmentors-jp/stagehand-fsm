@@ -46,18 +46,6 @@ use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
 
 /**
- * A Finite State Machine.
- *
- * Stagehand_FSM provides a self configuring Finite State Machine(FSM).
- * The following is a list of features of Stagehand_FSM.
- * o Transition action
- * o Entry and Exit state actions
- * o Initial and Final pseudo states
- * o Nested FSM
- * o History Marker
- * o Activity
- * o User defined payload
- *
  * @package    Stagehand_FSM
  * @copyright  2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
