@@ -190,8 +190,7 @@ class StateMachine
     }
 
     /**
-     * Finds and returns the state with the given ID. This method finds the
-     * state recursively if child FSMs exists.
+     * Finds and returns the state with the given ID.
      *
      * @param  string                        $stateID
      * @return \Stagehand\FSM\State\StateInterface

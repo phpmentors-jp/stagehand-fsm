@@ -154,7 +154,6 @@ class StateMachineBuilder
      * @param string   $nextStateID
      * @param callback $action
      * @param callback $guard
-     * @param boolean  $historyMarker
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
