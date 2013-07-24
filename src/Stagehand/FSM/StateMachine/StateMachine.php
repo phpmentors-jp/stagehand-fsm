@@ -89,11 +89,11 @@ class StateMachine
     protected $eventQueue = array();
 
     /**
-     * @param \Stagehand\FSM\State\StateInterface $initialState
+     * @param string $stateMachineID
      */
-    public function __construct(StateInterface $initialState)
+    public function __construct($stateMachineID = null)
     {
-        $this->addState($initialState);
+        $this->stateMachineID = $stateMachineID;
     }
 
     /**
@@ -212,14 +212,6 @@ class StateMachine
     public function addState(StateInterface $state)
     {
         $this->states[ $state->getStateID() ] = $state;
-    }
-
-    /**
-     * @param string $stateMachineID
-     */
-    public function setStateMachineID($stateMachineID)
-    {
-        $this->stateMachineID = $stateMachineID;
     }
 
     /**
