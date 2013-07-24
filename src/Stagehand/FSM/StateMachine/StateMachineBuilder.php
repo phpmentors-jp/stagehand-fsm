@@ -66,7 +66,11 @@ class StateMachineBuilder
      */
     public function __construct($stateMachineID = null)
     {
-        $this->stateMachine = new StateMachine($stateMachineID);
+        $this->stateMachine = new StateMachine();
+
+        if (!is_null($stateMachineID)) {
+            $this->stateMachine->setStateMachineID($stateMachineID);
+        }
     }
 
     /**
