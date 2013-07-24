@@ -52,7 +52,6 @@ interface EventInterface
     const EVENT_ENTRY = '__entry';
     const EVENT_EXIT = '__exit';
     const EVENT_START = '__start';
-    const EVENT_END = '__end';
     const EVENT_DO = '__do';
 
     /**
