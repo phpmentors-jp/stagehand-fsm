@@ -107,9 +107,11 @@ class StateMachine
     protected $eventQueue = array();
 
     /**
+     * @param \Stagehand\FSM\State\StateInterface $initialState
      */
-    public function __construct()
+    public function __construct(StateInterface $initialState)
     {
+        $this->addState($initialState);
     }
 
     /**
