@@ -149,7 +149,7 @@ class StateMachineBuilder
         $state = new State($stateID);
         $state->setEntryEvent(new EntryEvent());
         $state->setExitEvent(new ExitEvent());
-        $state->addEvent(new DoEvent());
+        $state->setDoEvent(new DoEvent());
         $this->stateMachine->addState($state);
     }
 
