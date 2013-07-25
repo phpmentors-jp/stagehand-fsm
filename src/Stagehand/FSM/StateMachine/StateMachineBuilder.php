@@ -147,7 +147,7 @@ class StateMachineBuilder
     public function addState($stateID)
     {
         $state = new State($stateID);
-        $state->addEvent(new EntryEvent());
+        $state->setEntryEvent(new EntryEvent());
         $state->addEvent(new ExitEvent());
         $state->addEvent(new DoEvent());
         $this->stateMachine->addState($state);
