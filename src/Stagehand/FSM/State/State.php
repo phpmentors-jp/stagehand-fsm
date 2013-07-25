@@ -99,6 +99,20 @@ class State implements StateInterface
     }
 
     /**
+     * @param  \Stagehand\FSM\Event\EventInterface        $event
+     * @throws \Stagehand\FSM\State\InvalidEventException
+     * @since Method available since Release 2.0.0
+     */
+    public function setDoEvent(EventInterface $event)
+    {
+        if ($event->getEventID() != EventInterface::EVENT_DO) {
+            throw new InvalidEventException(sprintf('The event "%s" is not a do event. "%s" must be set as the ID for an do event ', $event->getEventID(), EventInterface::EVENT_DO));
+        }
+
+        $this->events[ $event->getEventID() ] = $event;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getEvent($eventID)
