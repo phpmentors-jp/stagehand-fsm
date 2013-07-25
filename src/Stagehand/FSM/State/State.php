@@ -71,6 +71,20 @@ class State implements StateInterface
     }
 
     /**
+     * @param  \Stagehand\FSM\Event\EventInterface        $event
+     * @throws \Stagehand\FSM\State\InvalidEventException
+     * @since Method available since Release 2.0.0
+     */
+    public function setEntryEvent(EventInterface $event)
+    {
+        if ($event->getEventID() != EventInterface::EVENT_ENTRY) {
+            throw new InvalidEventException(sprintf('The event "%s" is not an entry event. "%s" must be set as the ID for an entry event ', $event->getEventID(), EventInterface::EVENT_ENTRY));
+        }
+
+        $this->events[ $event->getEventID() ] = $event;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getEvent($eventID)
