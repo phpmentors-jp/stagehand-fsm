@@ -96,6 +96,22 @@ class StateTest extends \PHPUnit_Framework_TestCase
 
         $this->fail('An expected exception has not been raised.');
     }
+
+    /**
+     * @test
+     */
+    public function raisesAnExceptionIfTheEventIdIsInvalidWhenSettingTheDoEvent()
+    {
+        $state = new State('foo');
+
+        try {
+            $state->setDoEvent(new TransitionEvent('bar'));
+        } catch (InvalidEventException $e) {
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
 }
 
 /*
