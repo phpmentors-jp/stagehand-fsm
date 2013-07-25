@@ -179,7 +179,7 @@ class StateMachineBuilder
         $event = $state->getEvent($eventID);
         if (is_null($event)) {
             $event = new TransitionEvent($eventID);
-            $state->addEvent($event);
+            $state->addTransitionEvent($event);
         }
 
         $nextState = $this->stateMachine->getState($nextStateID);

@@ -54,10 +54,10 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function raisesAnExceptionIfTheEventIsAlreadyDefinedWhenAddingAnEvent()
     {
         $state = new State('foo');
-        $state->addEvent(new TransitionEvent('bar'));
+        $state->addTransitionEvent(new TransitionEvent('bar'));
 
         try {
-            $state->addEvent(new TransitionEvent('bar'));
+            $state->addTransitionEvent(new TransitionEvent('bar'));
         } catch (DuplicateEventException $e) {
             return;
         }
