@@ -167,7 +167,7 @@ class StateMachine
             }
 
             $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));
-            if (!is_null($event) && (is_null($event->getGuard()) || $this->evaluateGuard($event))) {
+            if ($event instanceof TransitionEventInterface && (is_null($event->getGuard()) || $this->evaluateGuard($event))) {
                 $this->transition($event);
             }
 
