@@ -38,6 +38,7 @@
 namespace Stagehand\FSM\State;
 
 use Stagehand\FSM\Event\EventInterface;
+use Stagehand\FSM\Event\TransitionEventInterface;
 
 /**
  * A state class which builds initial structure of the state which consists
@@ -125,10 +126,10 @@ class State implements StateInterface
     }
 
     /**
-     * @param  \Stagehand\FSM\Event\EventInterface          $event
+     * @param \Stagehand\FSM\Event\TransitionEventInterface $event
      * @throws \Stagehand\FSM\State\DuplicateEventException
      */
-    public function addEvent(EventInterface $event)
+    public function addEvent(TransitionEventInterface $event)
     {
         if (array_key_exists($event->getEventID(), $this->events)) {
             throw new DuplicateEventException(sprintf('The event "%s" already exists in the state "%s".', $event->getEventID(), $this->getStateID()));
