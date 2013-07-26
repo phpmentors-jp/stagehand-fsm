@@ -4,7 +4,7 @@
     "description": "A finite state machine",
     "keywords": ["fsm", "state machine"],
     "homepage": "http://piece-framework.com/projects/stagehand-fsm",
-    "license": "BSD-2",
+    "license": "BSD-2-Clause",
     "authors": [
         {
             "name": "KUBO Atsuhiro",
