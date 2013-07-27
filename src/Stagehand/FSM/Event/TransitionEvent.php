@@ -80,7 +80,7 @@ class TransitionEvent implements TransitionEventInterface
     }
 
     /**
-     * Sets the next state of the event.
+     * Sets the next state to the event.
      *
      * @param \Stagehand\FSM\State\StateInterface $state
      */
@@ -90,7 +90,7 @@ class TransitionEvent implements TransitionEventInterface
     }
 
     /**
-     * Sets the action the event.
+     * Sets the action for the event.
      *
      * @param callback $action
      */
@@ -100,7 +100,7 @@ class TransitionEvent implements TransitionEventInterface
     }
 
     /**
-     * Sets the guard the event.
+     * Sets the guard for the event.
      *
      * @param callback $guard
      */
@@ -110,9 +110,7 @@ class TransitionEvent implements TransitionEventInterface
     }
 
     /**
-     * Gets the ID of the event.
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getEventID()
     {
@@ -128,9 +126,7 @@ class TransitionEvent implements TransitionEventInterface
     }
 
     /**
-     * Gets the action the event.
-     *
-     * @return callback
+     * {@inheritDoc}
      */
     public function getAction()
     {

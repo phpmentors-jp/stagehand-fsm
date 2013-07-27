@@ -78,7 +78,7 @@ class StateMachineBuilder
     }
 
     /**
-     * Sets the given state as the first state.
+     * Sets the given state as the start state of the state machine.
      *
      * @param string   $stateID
      * @param callback $action
@@ -101,7 +101,7 @@ class StateMachineBuilder
     }
 
     /**
-     * Sets the given state as an end state.
+     * Sets the given state as an end state of the state machine.
      *
      * @param string   $stateID
      * @param string   $eventID
@@ -140,7 +140,7 @@ class StateMachineBuilder
     }
 
     /**
-     * Adds the state with the given ID.
+     * Adds a state to the state machine.
      *
      * @param string $stateID
      */
@@ -154,7 +154,7 @@ class StateMachineBuilder
     }
 
     /**
-     * Adds the state transition.
+     * Adds an state transition to the state machine.
      *
      * @param  string                                                $stateID
      * @param  string                                                $eventID

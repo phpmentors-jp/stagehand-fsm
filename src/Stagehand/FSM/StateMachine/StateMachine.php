@@ -111,7 +111,7 @@ class StateMachine
     }
 
     /**
-     * Starts the Finite State Machine.
+     * Starts the state machine.
      */
     public function start()
     {
@@ -120,7 +120,7 @@ class StateMachine
     }
 
     /**
-     * Gets the current state.
+     * Gets the current state of the state machine.
      *
      * @return \Stagehand\FSM\State\StateInterface
      */
@@ -130,7 +130,7 @@ class StateMachine
     }
 
     /**
-     * Gets the previous state.
+     * Gets the previous state of the state machine.
      *
      * @return \Stagehand\FSM\State\StateInterface
      */
@@ -150,7 +150,7 @@ class StateMachine
     }
 
     /**
-     * Triggers the given event in the current state.
+     * Triggers an event in the current state.
      * <i>Note: Do not call this method directly from actions.</i>
      *
      * @param  string                                                           $eventID
@@ -190,7 +190,7 @@ class StateMachine
     }
 
     /**
-     * Finds and returns the state with the given ID.
+     * Gets the state according to the given ID.
      *
      * @param  string                              $stateID
      * @return \Stagehand\FSM\State\StateInterface
@@ -205,7 +205,7 @@ class StateMachine
     }
 
     /**
-     * Adds the state with the given ID.
+     * Adds a state to the state machine.
      *
      * @param  \Stagehand\FSM\State\StateInterface                 $state
      * @throws \Stagehand\FSM\StateMachine\DuplicateStateException
@@ -230,7 +230,7 @@ class StateMachine
     }
 
     /**
-     * Sets the given payload.
+     * Sets the payload to the state machine.
      *
      * @param mixed $payload
      */
@@ -274,7 +274,7 @@ class StateMachine
     }
 
     /**
-     * Evaluates the guard for an event.
+     * Evaluates the guard for the given event.
      *
      * @param  \Stagehand\FSM\Event\EventInterface $event
      * @return boolean
@@ -286,7 +286,7 @@ class StateMachine
     }
 
     /**
-     * Invokes the action for an event.
+     * Invokes the action for the given event.
      *
      * @param \Stagehand\FSM\Event\EventInterface $event
      * @since Method available since Release 2.0.0

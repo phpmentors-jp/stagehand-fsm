@@ -126,7 +126,7 @@ class State implements StateInterface
     }
 
     /**
-     * @param \Stagehand\FSM\Event\TransitionEventInterface $event
+     * @param  \Stagehand\FSM\Event\TransitionEventInterface $event
      * @throws \Stagehand\FSM\State\DuplicateEventException
      */
     public function addTransitionEvent(TransitionEventInterface $event)
@@ -138,6 +138,9 @@ class State implements StateInterface
         $this->events[ $event->getEventID() ] = $event;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getStateID()
     {
         return $this->stateID;

@@ -46,14 +46,11 @@ namespace Stagehand\FSM\State;
  */
 interface StateInterface
 {
-    /*
-     * Constants for pseudo states.
-     */
     const STATE_INITIAL = '__INITIAL__';
     const STATE_FINAL = '__FINAL__';
 
     /**
-     * Finds and returns the event with the given ID.
+     * Gets the event according to the given ID.
      *
      * @param  string                              $eventID
      * @return \Stagehand\FSM\Event\EventInterface
