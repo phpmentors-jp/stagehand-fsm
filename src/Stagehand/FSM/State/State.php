@@ -41,10 +41,6 @@ use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 
 /**
- * A state class which builds initial structure of the state which consists
- * entry/exit actions and an activity, and behaves as event holder of the
- * state.
- *
  * @package    Stagehand_FSM
  * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License

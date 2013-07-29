@@ -40,9 +40,6 @@ namespace Stagehand\FSM\Event;
 use Stagehand\FSM\State\StateInterface;
 
 /**
- * An event class which manages an event such as a event which triggers
- * transition and entry/exit/do special events.
- *
  * @package    Stagehand_FSM
  * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
