@@ -30,7 +30,7 @@
  *
  * @package    Stagehand_FSM
  * @copyright  2012 KUBO Atsuhiro <kubo@iteman.jp>
- * @license    http://www.opensource.org/licenses/bsd-license.php  New BSD License
+ * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      File available since Release 2.0.0
  */
