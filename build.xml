@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+     * Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+     * Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in the
+       documentation and/or other materials provided with the distribution.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+-->
+<project name="Stagehand_FSM" basedir="." default="build">
+  <taskdef classname="phing.tasks.ext.d51PearPkg2Task" name="d51pearpkg2"/>
+
+  <property name="package.releaseversion">2.0.0</property>
+  <property name="package.releasestability">stable</property>
+  <property name="package.apiversion">2.0.0</property>
+  <property name="package.apistability">stable</property>
+  <property name="package.notes"><![CDATA[What's New in ${phing.project.name} ${package.releaseversion}
+
+Migration to PHP 5.3
+
+ (Issue #2)
+
+ Stagehand_FSM has been migrated to PHP 5.3. As of this version, it only works with PHP 5.3.2+.
+
+New and Improved API
+
+ (Issue #3)
+
+ Stagehand_FSM v2 has introduced new and improved API. The following code shows how to create a state machine and how to activate the state machine.
+
+ ---
+ <?php
+ use Stagehand\FSM\StateMachine\StateMachineBuilder;
+
+ $stateMachineBuilder = new StateMachineBuilder();
+ $stateMachineBuilder->addState('locked');
+ $stateMachineBuilder->addState('unlocked');
+ $stateMachineBuilder->setStartState('locked');
+ $stateMachineBuilder->addTransition('locked', 'insertCoin', 'unlocked');
+ $stateMachineBuilder->addTransition('unlocked', 'pass', 'locked');
+ $stateMachine = $stateMachineBuilder->getStateMachine();
+
+ $stateMachine->start();
+ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "locked"
+ $stateMachine->triggerEvent('insertCoin');
+ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "unlocked"
+ $stateMachine->triggerEvent('pass');
+ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "locked"
+ ---
+
+ For more information, see the StateMachineTest class.
+
+End of Support for Nested State Machine and History Marker
+
+ (Issue #4)
+
+ Stagehand_FSM v2 no longer supports Nested State Machine and History Marker.
+]]></property>
+  <property name="package.name">${phing.project.name}</property>
+  <property name="package.summary">A finite state machine</property>
+  <property name="package.description"><![CDATA[Stagehand_FSM is a finite state machine.
+
+Manual state management makes code complex, decreases intentionality. By using Stagehand_FSM, state management code can be declaratively represented in the form of FSM. This makes code simpler, increases intentionality.
+
+Stagehand_FSM can be used as an infrastructure for domain-specific languages (DSLs). Examples are workflow engines, page flow engines such as Piece_Flow.]]></property>
+  <property name="package.license.name">The BSD 2-Clause License</property>
+  <property name="package.license.uri">http://opensource.org/licenses/BSD-2-Clause</property>
+  <property name="package.license.file">LICENSE</property>
+  <property name="package.channel">pear.piece-framework.com</property>
+  <property name="package.phpdep">5.3.2</property>
+  <property name="package.pearinstallerdep">1.4.3</property>
+  <property name="package.packagefile">package.xml</property>
+
+  <property name="doc.dir" value="doc"/>
+  <property name="src.dir" value="src"/>
+
+  <property name="build.dir" value="build"/>
+  <property name="dist.dir" value="dist"/>
+
+  <target name="prepare">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dist.dir}"/>
+    <copy file="${package.packagefile}" todir="${build.dir}"/>
+    <copy file="${package.license.file}" todir="${build.dir}/${doc.dir}"/>
+    <copy todir="${build.dir}">
+      <fileset dir="${src.dir}"/>
+      <filterchain>
+        <replacetokens begintoken="@" endtoken="@">
+          <token key="package_version" value="${package.releaseversion}"/>
+        </replacetokens>
+      </filterchain>
+    </copy>
+  </target>
+
+  <target name="build" depends="prepare">
+    <d51pearpkg2 dir="${build.dir}" baseinstalldir="/">
+      <name>${package.name}</name>
+      <summary>${package.summary}</summary>
+      <channel>${package.channel}</channel>
+      <description>${package.description}</description>
+      <notes>${package.notes}</notes>
+      <license uri="${package.license.uri}">${package.license.name}</license>
+      <version release="${package.releaseversion}" api="${package.apiversion}"/>
+      <stability release="${package.releasestability}" api="${package.apistability}"/>
+      <lead user="iteman" name="KUBO Atsuhiro" email="kubo@iteman.jp"/>
+      <dirroles key="doc" value="doc"/>
+      <dirroles key="Stagehand" value="php"/>
+      <dependencies>
+        <extension type="required" name="SPL"/>
+        <php minimum_version="${package.phpdep}"/>
+        <pear minimum_version="${package.pearinstallerdep}"/>
+      </dependencies>
+    </d51pearpkg2>
+  </target>
+
+  <target name="dist" depends="build">
+    <mkdir dir="${dist.dir}/${package.name}-${package.releaseversion}/${package.name}-${package.releaseversion}"/>
+    <copy todir="${dist.dir}/${package.name}-${package.releaseversion}/${package.name}-${package.releaseversion}">
+      <fileset dir="${build.dir}">
+        <exclude name="${package.packagefile}"/>
+      </fileset>
+    </copy>
+    <copy file="${build.dir}/${package.packagefile}" todir="${dist.dir}/${package.name}-${package.releaseversion}"/>
+    <delete file="${dist.dir}/${package.name}-${package.releaseversion}.tgz"/>
+    <tar compression="gzip" destfile="${dist.dir}/${package.name}-${package.releaseversion}.tgz" basedir="${dist.dir}/${package.name}-${package.releaseversion}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+</project>
