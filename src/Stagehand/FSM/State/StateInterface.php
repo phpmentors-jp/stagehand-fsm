@@ -63,6 +63,13 @@ interface StateInterface
      * @return string
      */
     public function getStateID();
+
+    /**
+     * Checks whether the state is connected to the final state or not.
+     *
+     * @return boolean
+     */
+    public function isEndState();
 }
 
 /*

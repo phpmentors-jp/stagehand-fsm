@@ -61,6 +61,14 @@ class FinalState implements StateInterface
     {
         return StateInterface::STATE_FINAL;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isEndState()
+    {
+        return false;
+    }
 }
 
 /*

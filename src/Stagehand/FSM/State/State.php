@@ -141,6 +141,22 @@ class State implements StateInterface
     {
         return $this->stateID;
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.1.0
+     */
+    public function isEndState()
+    {
+        foreach (array_values($this->events) as $event) {
+            if ($event instanceof TransitionEventInterface && $event->isEndEvent()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 /*

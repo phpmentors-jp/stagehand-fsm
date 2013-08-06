@@ -80,6 +80,14 @@ class InitialState implements StateInterface
     {
         $this->transitionEvent = $transitionEvent;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isEndState()
+    {
+        return !is_null($this->transitionEvent) && $this->transitionEvent->isEndEvent();
+    }
 }
 
 /*
