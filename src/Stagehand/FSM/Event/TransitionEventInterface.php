@@ -59,6 +59,13 @@ interface TransitionEventInterface extends EventInterface
      * @return callback
      */
     public function getGuard();
+
+    /**
+     * Checks whether the event is connected to the final state or not.
+     *
+     * @return boolean
+     */
+    public function isEndEvent();
 }
 
 /*

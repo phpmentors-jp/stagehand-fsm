@@ -137,6 +137,16 @@ class TransitionEvent implements TransitionEventInterface
     {
         return $this->guard;
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.1.0
+     */
+    public function isEndEvent()
+    {
+        return !is_null($this->getNextState()) && $this->getNextState()->getStateID() == StateInterface::STATE_FINAL;
+    }
 }
 
 /*
