@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-include_path=5;org.eclipse.dltk.USER_LIBRARY/PHPUnit
+include_path=5;org.eclipse.dltk.USER_LIBRARY/PHPUnit\u00055;org.eclipse.dltk.USER_LIBRARY/Phake
