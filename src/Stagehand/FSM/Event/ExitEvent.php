@@ -52,6 +52,13 @@ class ExitEvent implements EventInterface
     protected $action;
 
     /**
+     * @since Method available since Release 2.1.0
+     */
+    public function __construct()
+    {
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getEventID()
