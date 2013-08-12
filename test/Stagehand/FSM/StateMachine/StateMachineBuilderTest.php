@@ -178,6 +178,19 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->fail('An expected exception has not been raised.');
     }
+
+    /**
+     * @test
+     * @since Method available since Release 2.1.0
+     */
+    public function setsTheStateMachineObject()
+    {
+        $stateMachine1 = \Phake::mock('Stagehand\FSM\StateMachine\StateMachine');
+        $stateMachineBuilder = new StateMachineBuilder($stateMachine1);
+        $stateMachine2 = $stateMachineBuilder->getStateMachine();
+
+        $this->assertThat($stateMachine2, $this->identicalTo($stateMachine1));
+    }
 }
 
 /*
