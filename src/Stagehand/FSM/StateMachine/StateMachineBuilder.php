@@ -62,11 +62,15 @@ class StateMachineBuilder
     protected $stateMachine;
 
     /**
-     * @param string $stateMachineID
+     * @param string|\Stagehand\FSM\StateMachine\StateMachine $stateMachineID
      */
     public function __construct($stateMachineID = null)
     {
-        $this->stateMachine = new StateMachine($stateMachineID);
+        if ($stateMachineID instanceof StateMachine) {
+            $this->stateMachine = $stateMachineID;
+        } else {
+            $this->stateMachine = new StateMachine($stateMachineID);
+        }
     }
 
     /**
