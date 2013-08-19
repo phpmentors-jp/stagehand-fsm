@@ -17,6 +17,7 @@
     "autoload": {
         "psr-0": { "Stagehand\\FSM": "src/" }
     },
+    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "2.1.x-dev"
