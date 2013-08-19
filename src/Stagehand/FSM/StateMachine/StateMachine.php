@@ -41,6 +41,8 @@
 
 namespace Stagehand\FSM\StateMachine;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
@@ -89,6 +91,12 @@ class StateMachine
     protected $eventQueue = array();
 
     /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     * @since Property available since Release 2.1.0
+     */
+    protected $eventDispatcher;
+
+    /**
      * @param string $stateMachineID
      */
     public function __construct($stateMachineID = null)
@@ -108,6 +116,15 @@ class StateMachine
             'stateMachineID',
             'eventQueue',
         );
+    }
+
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @since Method available since Release 2.1.0
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher = null)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -167,11 +184,17 @@ class StateMachine
             }
 
             $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));
+            if (!is_null($this->eventDispatcher)) {
+                $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->getCurrentState(), $event));
+            }
             if ($event instanceof TransitionEventInterface && (is_null($event->getGuard()) || $this->evaluateGuard($event))) {
                 $this->transition($event);
             }
 
             $doEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_DO);
+            if (!is_null($this->eventDispatcher)) {
+                $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_DO, new StateMachineEvent($this, $this->getCurrentState(), $doEvent));
+            }
             if (!is_null($doEvent) && !is_null($doEvent->getAction())) {
                 $this->invokeAction($doEvent);
             }
@@ -248,10 +271,16 @@ class StateMachine
     protected function transition(TransitionEventInterface $event)
     {
         $exitEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_EXIT);
+        if (!is_null($this->eventDispatcher)) {
+            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $this->getCurrentState(), $exitEvent));
+        }
         if (!is_null($exitEvent) && !is_null($exitEvent->getAction())) {
             $this->invokeAction($exitEvent);
         }
 
+        if (!is_null($this->eventDispatcher)) {
+            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, $this->getCurrentState(), $event));
+        }
         if (!is_null($event->getAction())) {
             $this->invokeAction($event);
         }
@@ -260,6 +289,9 @@ class StateMachine
         $this->currentStateID = $event->getNextState()->getStateID();
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
+        if (!is_null($this->eventDispatcher)) {
+            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $this->getCurrentState(), $entryEvent));
+        }
         if (!is_null($entryEvent) && !is_null($entryEvent->getAction())) {
             $this->invokeAction($entryEvent);
         }
