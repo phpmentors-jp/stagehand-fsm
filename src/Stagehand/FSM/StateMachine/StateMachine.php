@@ -171,7 +171,6 @@ class StateMachine
      * <i>Note: Do not call this method directly from actions.</i>
      *
      * @param  string                                                           $eventID
-     * @return \Stagehand\FSM\State\StateInterface
      * @throws \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
      */
     public function triggerEvent($eventID)
