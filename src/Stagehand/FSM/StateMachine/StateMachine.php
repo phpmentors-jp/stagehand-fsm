@@ -315,6 +315,8 @@ class StateMachine
     protected function initialize()
     {
         $this->currentStateID = StateInterface::STATE_INITIAL;
+        $this->previousStateID = null;
+        $this->eventQueue = array();
     }
 
     /**
