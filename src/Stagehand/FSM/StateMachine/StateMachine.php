@@ -143,6 +143,10 @@ class StateMachine
      */
     public function getCurrentState()
     {
+        if (is_null($this->currentStateID)) {
+            return null;
+        }
+
         return $this->getState($this->currentStateID);
     }
 
@@ -153,6 +157,10 @@ class StateMachine
      */
     public function getPreviousState()
     {
+        if (is_null($this->previousStateID)) {
+            return null;
+        }
+
         return $this->getState($this->previousStateID);
     }
 

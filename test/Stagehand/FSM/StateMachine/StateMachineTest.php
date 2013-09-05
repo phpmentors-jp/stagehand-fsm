@@ -430,6 +430,28 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($events[9]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
         $this->assertThat($events[9]->getEvent()->getEventID(), $this->equalTo(EventInterface::EVENT_DO));
     }
+
+    /**
+     * @test
+     * @since Method available since Release 2.1.0
+     */
+    public function returnsNullAsTheCurrentStateBeforeStartingTheStateMachine()
+    {
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+
+        $this->assertThat($stateMachine->getCurrentState(), $this->isNull());
+    }
+
+    /**
+     * @test
+     * @since Method available since Release 2.1.0
+     */
+    public function returnsNullAsThePreviousStateBeforeStartingTheStateMachine()
+    {
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+
+        $this->assertThat($stateMachine->getPreviousState(), $this->isNull());
+    }
 }
 
 /*
