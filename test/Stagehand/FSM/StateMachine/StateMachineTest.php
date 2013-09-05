@@ -452,6 +452,23 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->assertThat($stateMachine->getPreviousState(), $this->isNull());
     }
+
+    /**
+     * @test
+     * @since Method available since Release 2.1.0
+     */
+    public function raisesAnExceptionWhenAnEventIsTriggeredBeforeStartingTheStateMachine()
+    {
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+
+        try {
+            $stateMachine->triggerEvent('foo');
+        } catch (StateMachineNotStartedException $e) {
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
 }
 
 /*

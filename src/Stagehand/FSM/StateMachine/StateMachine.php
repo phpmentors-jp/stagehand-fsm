@@ -180,12 +180,17 @@ class StateMachine
      *
      * @param  string                                                           $eventID
      * @throws \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
+     * @throws \Stagehand\FSM\StateMachine\StateMachineNotStartedException
      */
     public function triggerEvent($eventID)
     {
         $this->queueEvent($eventID);
 
         do {
+            if (is_null($this->getCurrentState())) {
+                throw new StateMachineNotStartedException('The state machine is not started yet.');
+            }
+
             if ($this->currentStateID == StateInterface::STATE_FINAL) {
                 throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
             }
