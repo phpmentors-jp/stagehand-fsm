@@ -469,6 +469,24 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->fail('An expected exception has not been raised.');
     }
+
+    /**
+     * @test
+     * @since Method available since Release 2.1.0
+     */
+    public function raisesAnExceptionWhenStartingTheStateMachineIfItIsAlreadyStarted()
+    {
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->start();
+
+        try {
+            $stateMachine->start();
+        } catch (StateMachineAlreadyStartedException $e) {
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
 }
 
 /*

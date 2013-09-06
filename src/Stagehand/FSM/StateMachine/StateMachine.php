@@ -129,9 +129,15 @@ class StateMachine
 
     /**
      * Starts the state machine.
+     *
+     * @throws \Stagehand\FSM\StateMachine\StateMachineAlreadyStartedException
      */
     public function start()
     {
+        if (!is_null($this->getCurrentState())) {
+            throw new StateMachineAlreadyStartedException('The state machine is already started.');
+        }
+
         $this->initialize();
         $this->triggerEvent(EventInterface::EVENT_START);
     }
