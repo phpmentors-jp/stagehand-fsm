@@ -1,4 +1,11 @@
-# Stagehand_FSM - A finite state machine
+# Stagehand_FSM
+
+A finite state machine
+
+[![Total Downloads](https://poser.pugx.org/piece/stagehand-fsm/downloads.png)](https://packagist.org/packages/piece/stagehand-fsm)
+[![Latest Stable Version](https://poser.pugx.org/piece/stagehand-fsm/v/stable.png)](https://packagist.org/packages/piece/stagehand-fsm)
+[![Latest Unstable Version](https://poser.pugx.org/piece/stagehand-fsm/v/unstable.png)](https://packagist.org/packages/piece/stagehand-fsm)
+[![Build Status](https://travis-ci.org/piece/stagehand-fsm.svg?branch=master)](https://travis-ci.org/piece/stagehand-fsm)
 
 Stagehand_FSM is a [finite state machine](https://en.wikipedia.org/wiki/Finite-state_machine).
 
@@ -39,16 +46,14 @@ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "locked"
 
 ## Installation
 
-Stagehand_FSM can be installed using [Composer](http://getcomposer.org/) or [PEAR](http://pear.php.net/). The following sections explain how to install Stagehand_FSM.
-
-### Composer
+Stagehand_FSM can be installed using [Composer](http://getcomposer.org/).
 
 First, add the dependency to **piece/stagehand-fsm** into your **composer.json** file as the following:
 
 ```json
 {
-    "require": {
-        "piece/stagehand-fsm": ">=2.0.0"
+    "require-dev": {
+        "piece/stagehand-fsm": "~2.1@dev"
     }
 }
 ```
@@ -59,20 +64,13 @@ Second, update your dependencies as the following:
 composer update piece/stagehand-fsm
 ```
 
-### PEAR
-
-```console
-pear config-set auto_discover 1
-pear install pear.piece-framework.com/Stagehand_FSM
-```
-
 ## Support
 
-If you find a bug or have a question, or want to request a feature, create an issue or pull request for it on GitHub.
+If you find a bug or have a question, or want to request a feature, create an issue or pull request for it on [Issues](https://github.com/piece/stagehand-fsm/issues).
 
 ## Copyright
 
-Copyright (c) 2006-2008, 2011-2013 KUBO Atsuhiro &lt;kubo@iteman.jp&gt;, All rights reserved.
+Copyright (c) 2006-2008, 2011-2013 KUBO Atsuhiro, All rights reserved.
 
 ## License
 
