@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -41,7 +41,7 @@ use Stagehand\FSM\State\StateInterface;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
@@ -51,7 +51,7 @@ class TransitionEvent implements TransitionEventInterface
     /**
      * @var string
      */
-    protected $eventID;
+    protected $eventId;
 
     /**
      * @var \Stagehand\FSM\State\StateInterface
@@ -69,11 +69,11 @@ class TransitionEvent implements TransitionEventInterface
     protected $guard;
 
     /**
-     * @param string $eventID
+     * @param string $eventId
      */
-    public function __construct($eventID)
+    public function __construct($eventId)
     {
-        $this->eventID = $eventID;
+        $this->eventId = $eventId;
     }
 
     /**
@@ -109,9 +109,9 @@ class TransitionEvent implements TransitionEventInterface
     /**
      * {@inheritDoc}
      */
-    public function getEventID()
+    public function getEventId()
     {
-        return $this->eventID;
+        return $this->eventId;
     }
 
     /**
@@ -145,7 +145,7 @@ class TransitionEvent implements TransitionEventInterface
      */
     public function isEndEvent()
     {
-        return !is_null($this->getNextState()) && $this->getNextState()->getStateID() == StateInterface::STATE_FINAL;
+        return !is_null($this->getNextState()) && $this->getNextState()->getStateId() == StateInterface::STATE_FINAL;
     }
 }
 

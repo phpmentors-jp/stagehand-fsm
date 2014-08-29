@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      File available since Release 2.0.0
@@ -39,7 +39,7 @@ namespace Stagehand\FSM\Event;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      Class available since Release 2.0.0
@@ -61,7 +61,7 @@ class ExitEvent implements EventInterface
     /**
      * {@inheritDoc}
      */
-    public function getEventID()
+    public function getEventId()
     {
         return EventInterface::EVENT_EXIT;
     }

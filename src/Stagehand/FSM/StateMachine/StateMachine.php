@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2008, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2008, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
@@ -49,7 +49,7 @@ use Stagehand\FSM\State\StateInterface;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2008, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       http://en.wikipedia.org/wiki/Finite_state_machine
@@ -63,12 +63,12 @@ class StateMachine
     /**
      * @var string
      */
-    protected $currentStateID;
+    protected $currentStateId;
 
     /**
      * @var string
      */
-    protected $previousStateID;
+    protected $previousStateId;
 
     /**
      * @var array
@@ -78,7 +78,7 @@ class StateMachine
     /**
      * @var string
      */
-    protected $stateMachineID;
+    protected $stateMachineId;
 
     /**
      * @var mixed
@@ -97,11 +97,11 @@ class StateMachine
     protected $eventDispatcher;
 
     /**
-     * @param string $stateMachineID
+     * @param string $stateMachineId
      */
-    public function __construct($stateMachineID = null)
+    public function __construct($stateMachineId = null)
     {
-        $this->stateMachineID = $stateMachineID;
+        $this->stateMachineId = $stateMachineId;
     }
 
     /**
@@ -110,10 +110,10 @@ class StateMachine
     public function __sleep()
     {
         return array(
-            'currentStateID',
-            'previousStateID',
+            'currentStateId',
+            'previousStateId',
             'states',
-            'stateMachineID',
+            'stateMachineId',
             'eventQueue',
         );
     }
@@ -149,11 +149,11 @@ class StateMachine
      */
     public function getCurrentState()
     {
-        if (is_null($this->currentStateID)) {
+        if (is_null($this->currentStateId)) {
             return null;
         }
 
-        return $this->getState($this->currentStateID);
+        return $this->getState($this->currentStateId);
     }
 
     /**
@@ -163,11 +163,11 @@ class StateMachine
      */
     public function getPreviousState()
     {
-        if (is_null($this->previousStateID)) {
+        if (is_null($this->previousStateId)) {
             return null;
         }
 
-        return $this->getState($this->previousStateID);
+        return $this->getState($this->previousStateId);
     }
 
     /**
@@ -184,20 +184,20 @@ class StateMachine
      * Triggers an event in the current state.
      * <i>Note: Do not call this method directly from actions.</i>
      *
-     * @param  string                                                           $eventID
+     * @param  string                                                           $eventId
      * @throws \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
      * @throws \Stagehand\FSM\StateMachine\StateMachineNotStartedException
      */
-    public function triggerEvent($eventID)
+    public function triggerEvent($eventId)
     {
-        $this->queueEvent($eventID);
+        $this->queueEvent($eventId);
 
         do {
             if (is_null($this->getCurrentState())) {
                 throw new StateMachineNotStartedException('The state machine is not started yet.');
             }
 
-            if ($this->currentStateID == StateInterface::STATE_FINAL) {
+            if ($this->currentStateId == StateInterface::STATE_FINAL) {
                 throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
             }
 
@@ -222,24 +222,24 @@ class StateMachine
     /**
      * Queues an event to the event queue.
      *
-     * @param string $eventID
+     * @param string $eventId
      * @since Method available since Release 1.7.0
      */
-    public function queueEvent($eventID)
+    public function queueEvent($eventId)
     {
-        $this->eventQueue[] = $eventID;
+        $this->eventQueue[] = $eventId;
     }
 
     /**
      * Gets the state according to the given ID.
      *
-     * @param  string                              $stateID
+     * @param  string                              $stateId
      * @return \Stagehand\FSM\State\StateInterface
      */
-    public function getState($stateID)
+    public function getState($stateId)
     {
-        if (array_key_exists($stateID, $this->states)) {
-            return $this->states[$stateID];
+        if (array_key_exists($stateId, $this->states)) {
+            return $this->states[$stateId];
         } else {
             return null;
         }
@@ -253,11 +253,11 @@ class StateMachine
      */
     public function addState(StateInterface $state)
     {
-        if (array_key_exists($state->getStateID(), $this->states)) {
-            throw new DuplicateStateException(sprintf('The state "%s" already exists.', $state->getStateID()));
+        if (array_key_exists($state->getStateId(), $this->states)) {
+            throw new DuplicateStateException(sprintf('The state "%s" already exists.', $state->getStateId()));
         }
 
-        $this->states[ $state->getStateID() ] = $state;
+        $this->states[ $state->getStateId() ] = $state;
     }
 
     /**
@@ -265,9 +265,9 @@ class StateMachine
      *
      * @return string
      */
-    public function getStateMachineID()
+    public function getStateMachineId()
     {
-        return $this->stateMachineID;
+        return $this->stateMachineId;
     }
 
     /**
@@ -303,8 +303,8 @@ class StateMachine
             $this->invokeAction($event);
         }
 
-        $this->previousStateID = $this->currentStateID;
-        $this->currentStateID = $event->getNextState()->getStateID();
+        $this->previousStateId = $this->currentStateId;
+        $this->currentStateId = $event->getNextState()->getStateId();
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
         if (!is_null($this->eventDispatcher)) {
@@ -320,8 +320,8 @@ class StateMachine
      */
     protected function initialize()
     {
-        $this->currentStateID = StateInterface::STATE_INITIAL;
-        $this->previousStateID = null;
+        $this->currentStateId = StateInterface::STATE_INITIAL;
+        $this->previousStateId = null;
         $this->eventQueue = array();
     }
 

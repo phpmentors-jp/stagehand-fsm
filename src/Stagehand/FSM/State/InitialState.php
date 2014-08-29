@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      File available since Release 2.0.0
@@ -41,7 +41,7 @@ use Stagehand\FSM\Event\TransitionEventInterface;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      Class available since Release 2.0.0
@@ -63,9 +63,9 @@ class InitialState implements StateInterface
     /**
      * {@inheritDoc}
      */
-    public function getEvent($eventID)
+    public function getEvent($eventId)
     {
-        if (!is_null($this->transitionEvent) && $eventID == $this->transitionEvent->getEventID()) {
+        if (!is_null($this->transitionEvent) && $eventId == $this->transitionEvent->getEventId()) {
             return $this->transitionEvent;
         } else {
             return null;
@@ -75,7 +75,7 @@ class InitialState implements StateInterface
     /**
      * {@inheritDoc}
      */
-    public function getStateID()
+    public function getStateId()
     {
         return StateInterface::STATE_INITIAL;
     }

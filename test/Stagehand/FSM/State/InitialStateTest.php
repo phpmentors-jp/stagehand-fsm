@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      File available since Release 2.1.0
@@ -39,7 +39,7 @@ namespace Stagehand\FSM\State;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      Class available since Release 2.1.0
@@ -63,7 +63,7 @@ class InitialStateTest extends \PHPUnit_Framework_TestCase
     public function isNotAnEndStateIfTheTransitionEventIsNotAnEndEvent()
     {
         $event = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event)->getEventID()->thenReturn('foo');
+        \Phake::when($event)->getEventId()->thenReturn('foo');
         \Phake::when($event)->isEndEvent()->thenReturn(false);
         $state = new InitialState();
         $state->setTransitionEvent($event);
@@ -80,7 +80,7 @@ class InitialStateTest extends \PHPUnit_Framework_TestCase
     public function isAnEndStateIfTheTransitionEventIsAnEndEvent()
     {
         $event = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event)->getEventID()->thenReturn('foo');
+        \Phake::when($event)->getEventId()->thenReturn('foo');
         \Phake::when($event)->isEndEvent()->thenReturn(true);
         $state = new InitialState();
         $state->setTransitionEvent($event);

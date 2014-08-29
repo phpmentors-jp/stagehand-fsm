@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2008, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2008, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -44,7 +44,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2006-2008, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2008, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
@@ -78,8 +78,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->actionCalls[] = array(
-            'state' => $stateMachine->getCurrentState()->getStateID(),
-            'event' => $event->getEventID(),
+            'state' => $stateMachine->getCurrentState()->getStateId(),
+            'event' => $event->getEventId(),
             'calledBy' => @$calledBy,
         );
     }
@@ -129,8 +129,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $stateMachine = $this->stateMachineBuilder->getStateMachine();
         $stateMachine->start();
 
-        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo('Input'));
-        $this->assertThat($stateMachine->getPreviousState()->getStateID(), $this->equalTo(StateInterface::STATE_INITIAL));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('Input'));
+        $this->assertThat($stateMachine->getPreviousState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
 
         $this->assertThat(count($this->actionCalls), $this->equalTo(3));
         $this->assertThat($this->actionCalls[0]['state'], $this->equalTo(StateInterface::STATE_INITIAL));
@@ -145,8 +145,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
         $stateMachine->triggerEvent('next');
 
-        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo('Validation'));
-        $this->assertThat($stateMachine->getPreviousState()->getStateID(), $this->equalTo('Input'));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('Validation'));
+        $this->assertThat($stateMachine->getPreviousState()->getStateId(), $this->equalTo('Input'));
 
         $this->assertThat(count($this->actionCalls), $this->equalTo(7));
         $this->assertThat($this->actionCalls[3]['state'], $this->equalTo('Input'));
@@ -177,7 +177,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $stateMachine->triggerEvent('next');
         $stateMachine->triggerEvent('next');
 
-        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo(StateInterface::STATE_FINAL));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo(StateInterface::STATE_FINAL));
 
         try {
             $stateMachine->triggerEvent('foo');
@@ -204,8 +204,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $stateMachine->start();
         $stateMachine->triggerEvent('next');
 
-        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo('Validation'));
-        $this->assertThat($stateMachine->getPreviousState()->getStateID(), $this->equalTo('Input'));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('Validation'));
+        $this->assertThat($stateMachine->getPreviousState()->getStateId(), $this->equalTo('Input'));
         $this->assertThat(count($this->actionCalls), $this->equalTo(8));
 
         $this->assertThat($this->actionCalls[3]['state'], $this->equalTo('Input'));
@@ -232,8 +232,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $stateMachine->start();
         $stateMachine->triggerEvent('next');
 
-        $this->assertThat($stateMachine->getCurrentState()->getStateID(), $this->equalTo('Input'));
-        $this->assertThat($stateMachine->getPreviousState()->getStateID(), $this->equalTo(StateInterface::STATE_INITIAL));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('Input'));
+        $this->assertThat($stateMachine->getPreviousState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
         $this->assertThat(count($this->actionCalls), $this->equalTo(5));
 
         $this->assertThat($this->actionCalls[3]['state'], $this->equalTo('Input'));
@@ -296,7 +296,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     {
         $stateMachine = $this->stateMachineBuilder->getStateMachine();
 
-        $this->assertThat($stateMachine->getStateMachineID(), $this->equalTo('Registration'));
+        $this->assertThat($stateMachine->getStateMachineId(), $this->equalTo('Registration'));
     }
 
     /**
@@ -373,62 +373,62 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->assertThat($events[0]->getName(), $this->equalTo(StateMachineEvents::EVENT_PROCESS));
         $this->assertThat($events[0]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[0]->getState()->getStateID(), $this->equalTo(StateInterface::STATE_INITIAL));
+        $this->assertThat($events[0]->getState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
         $this->assertThat($events[0]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\TransitionEventInterface'));
-        $this->assertThat($events[0]->getEvent()->getEventID(), $this->equalTo(EventInterface::EVENT_START));
+        $this->assertThat($events[0]->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_START));
 
         $this->assertThat($events[1]->getName(), $this->equalTo(StateMachineEvents::EVENT_EXIT));
         $this->assertThat($events[1]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[1]->getState()->getStateID(), $this->equalTo(StateInterface::STATE_INITIAL));
+        $this->assertThat($events[1]->getState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
         $this->assertThat($events[1]->getEvent(), $this->isNull());
 
         $this->assertThat($events[2]->getName(), $this->equalTo(StateMachineEvents::EVENT_TRANSITION));
         $this->assertThat($events[2]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[2]->getState()->getStateID(), $this->equalTo(StateInterface::STATE_INITIAL));
+        $this->assertThat($events[2]->getState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
         $this->assertThat($events[2]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\TransitionEventInterface'));
-        $this->assertThat($events[2]->getEvent()->getEventID(), $this->equalTo(EventInterface::EVENT_START));
+        $this->assertThat($events[2]->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_START));
 
         $this->assertThat($events[3]->getName(), $this->equalTo(StateMachineEvents::EVENT_ENTRY));
         $this->assertThat($events[3]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[3]->getState()->getStateID(), $this->equalTo('locked'));
+        $this->assertThat($events[3]->getState()->getStateId(), $this->equalTo('locked'));
         $this->assertThat($events[3]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[3]->getEvent()->getEventID(), $this->equalTo(EventInterface::EVENT_ENTRY));
+        $this->assertThat($events[3]->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_ENTRY));
 
         $this->assertThat($events[4]->getName(), $this->equalTo(StateMachineEvents::EVENT_DO));
         $this->assertThat($events[4]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[4]->getState()->getStateID(), $this->equalTo('locked'));
+        $this->assertThat($events[4]->getState()->getStateId(), $this->equalTo('locked'));
         $this->assertThat($events[4]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[4]->getEvent()->getEventID(), $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($events[4]->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_DO));
 
         $this->assertThat($events[5]->getName(), $this->equalTo(StateMachineEvents::EVENT_PROCESS));
         $this->assertThat($events[5]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[5]->getState()->getStateID(), $this->equalTo('locked'));
+        $this->assertThat($events[5]->getState()->getStateId(), $this->equalTo('locked'));
         $this->assertThat($events[5]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\TransitionEventInterface'));
-        $this->assertThat($events[5]->getEvent()->getEventID(), $this->equalTo('insertCoin'));
+        $this->assertThat($events[5]->getEvent()->getEventId(), $this->equalTo('insertCoin'));
 
         $this->assertThat($events[6]->getName(), $this->equalTo(StateMachineEvents::EVENT_EXIT));
         $this->assertThat($events[6]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[6]->getState()->getStateID(), $this->equalTo('locked'));
+        $this->assertThat($events[6]->getState()->getStateId(), $this->equalTo('locked'));
         $this->assertThat($events[6]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[6]->getEvent()->getEventID(), $this->equalTo(EventInterface::EVENT_EXIT));
+        $this->assertThat($events[6]->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_EXIT));
 
         $this->assertThat($events[7]->getName(), $this->equalTo(StateMachineEvents::EVENT_TRANSITION));
         $this->assertThat($events[7]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[7]->getState()->getStateID(), $this->equalTo('locked'));
+        $this->assertThat($events[7]->getState()->getStateId(), $this->equalTo('locked'));
         $this->assertThat($events[7]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\TransitionEventInterface'));
-        $this->assertThat($events[7]->getEvent()->getEventID(), $this->equalTo('insertCoin'));
+        $this->assertThat($events[7]->getEvent()->getEventId(), $this->equalTo('insertCoin'));
 
         $this->assertThat($events[8]->getName(), $this->equalTo(StateMachineEvents::EVENT_ENTRY));
         $this->assertThat($events[8]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[8]->getState()->getStateID(), $this->equalTo('unlocked'));
+        $this->assertThat($events[8]->getState()->getStateId(), $this->equalTo('unlocked'));
         $this->assertThat($events[8]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[8]->getEvent()->getEventID(), $this->equalTo(EventInterface::EVENT_ENTRY));
+        $this->assertThat($events[8]->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_ENTRY));
 
         $this->assertThat($events[9]->getName(), $this->equalTo(StateMachineEvents::EVENT_DO));
         $this->assertThat($events[9]->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[9]->getState()->getStateID(), $this->equalTo('unlocked'));
+        $this->assertThat($events[9]->getState()->getStateId(), $this->equalTo('unlocked'));
         $this->assertThat($events[9]->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[9]->getEvent()->getEventID(), $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($events[9]->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_DO));
     }
 
     /**

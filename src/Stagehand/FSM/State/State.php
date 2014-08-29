@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      File available since Release 0.1.0
@@ -42,7 +42,7 @@ use Stagehand\FSM\Event\TransitionEventInterface;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2006-2007, 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2006-2007, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      Class available since Release 0.1.0
@@ -52,7 +52,7 @@ class State implements StateInterface
     /**
      * @var string
      */
-     protected $stateID;
+     protected $stateId;
 
     /**
      * @var array
@@ -60,11 +60,11 @@ class State implements StateInterface
     protected $events = array();
 
     /**
-     * @param string $stateID
+     * @param string $stateId
      */
-    public function __construct($stateID)
+    public function __construct($stateId)
     {
-        $this->stateID = $stateID;
+        $this->stateId = $stateId;
     }
 
     /**
@@ -74,11 +74,11 @@ class State implements StateInterface
      */
     public function setEntryEvent(EventInterface $event)
     {
-        if ($event->getEventID() != EventInterface::EVENT_ENTRY) {
-            throw new InvalidEventException(sprintf('The event "%s" is not an entry event. "%s" must be set as the ID for an entry event ', $event->getEventID(), EventInterface::EVENT_ENTRY));
+        if ($event->getEventId() != EventInterface::EVENT_ENTRY) {
+            throw new InvalidEventException(sprintf('The event "%s" is not an entry event. "%s" must be set as the ID for an entry event ', $event->getEventId(), EventInterface::EVENT_ENTRY));
         }
 
-        $this->events[ $event->getEventID() ] = $event;
+        $this->events[ $event->getEventId() ] = $event;
     }
 
     /**
@@ -88,11 +88,11 @@ class State implements StateInterface
      */
     public function setExitEvent(EventInterface $event)
     {
-        if ($event->getEventID() != EventInterface::EVENT_EXIT) {
-            throw new InvalidEventException(sprintf('The event "%s" is not an exit event. "%s" must be set as the ID for an exit event ', $event->getEventID(), EventInterface::EVENT_EXIT));
+        if ($event->getEventId() != EventInterface::EVENT_EXIT) {
+            throw new InvalidEventException(sprintf('The event "%s" is not an exit event. "%s" must be set as the ID for an exit event ', $event->getEventId(), EventInterface::EVENT_EXIT));
         }
 
-        $this->events[ $event->getEventID() ] = $event;
+        $this->events[ $event->getEventId() ] = $event;
     }
 
     /**
@@ -102,20 +102,20 @@ class State implements StateInterface
      */
     public function setDoEvent(EventInterface $event)
     {
-        if ($event->getEventID() != EventInterface::EVENT_DO) {
-            throw new InvalidEventException(sprintf('The event "%s" is not a do event. "%s" must be set as the ID for an do event ', $event->getEventID(), EventInterface::EVENT_DO));
+        if ($event->getEventId() != EventInterface::EVENT_DO) {
+            throw new InvalidEventException(sprintf('The event "%s" is not a do event. "%s" must be set as the ID for an do event ', $event->getEventId(), EventInterface::EVENT_DO));
         }
 
-        $this->events[ $event->getEventID() ] = $event;
+        $this->events[ $event->getEventId() ] = $event;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getEvent($eventID)
+    public function getEvent($eventId)
     {
-        if (array_key_exists($eventID, $this->events)) {
-            return $this->events[$eventID];
+        if (array_key_exists($eventId, $this->events)) {
+            return $this->events[$eventId];
         } else {
             return null;
         }
@@ -127,19 +127,19 @@ class State implements StateInterface
      */
     public function addTransitionEvent(TransitionEventInterface $event)
     {
-        if (array_key_exists($event->getEventID(), $this->events)) {
-            throw new DuplicateEventException(sprintf('The event "%s" already exists in the state "%s".', $event->getEventID(), $this->getStateID()));
+        if (array_key_exists($event->getEventId(), $this->events)) {
+            throw new DuplicateEventException(sprintf('The event "%s" already exists in the state "%s".', $event->getEventId(), $this->getStateId()));
         }
 
-        $this->events[ $event->getEventID() ] = $event;
+        $this->events[ $event->getEventId() ] = $event;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getStateID()
+    public function getStateId()
     {
-        return $this->stateID;
+        return $this->stateId;
     }
 
     /**

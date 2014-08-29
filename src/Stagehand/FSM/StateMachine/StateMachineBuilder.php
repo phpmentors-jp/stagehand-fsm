@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2011-2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      File available since Release 2.0.0
@@ -49,7 +49,7 @@ use Stagehand\FSM\State\StateInterface;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2011-2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2011-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      Class available since Release 2.0.0
@@ -62,14 +62,14 @@ class StateMachineBuilder
     protected $stateMachine;
 
     /**
-     * @param string|\Stagehand\FSM\StateMachine\StateMachine $stateMachineID
+     * @param string|\Stagehand\FSM\StateMachine\StateMachine $stateMachineId
      */
-    public function __construct($stateMachineID = null)
+    public function __construct($stateMachineId = null)
     {
-        if ($stateMachineID instanceof StateMachine) {
-            $this->stateMachine = $stateMachineID;
+        if ($stateMachineId instanceof StateMachine) {
+            $this->stateMachine = $stateMachineId;
         } else {
-            $this->stateMachine = new StateMachine($stateMachineID);
+            $this->stateMachine = new StateMachine($stateMachineId);
         }
     }
 
@@ -84,11 +84,11 @@ class StateMachineBuilder
     /**
      * Sets the given state as the start state of the state machine.
      *
-     * @param string   $stateID
+     * @param string   $stateId
      * @param callback $action
      * @param callback $guard
      */
-    public function setStartState($stateID, $action = null, $guard = null)
+    public function setStartState($stateId, $action = null, $guard = null)
     {
         $state = $this->stateMachine->getState(StateInterface::STATE_INITIAL);
         if (is_null($state)) {
@@ -101,43 +101,43 @@ class StateMachineBuilder
             $state->setTransitionEvent(new TransitionEvent(EventInterface::EVENT_START));
         }
 
-        $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateID, $action, $guard);
+        $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateId, $action, $guard);
     }
 
     /**
      * Sets the given state as an end state of the state machine.
      *
-     * @param string   $stateID
-     * @param string   $eventID
+     * @param string   $stateId
+     * @param string   $eventId
      * @param callback $action
      * @param callback $guard
      */
-    public function setEndState($stateID, $eventID, $action = null, $guard = null)
+    public function setEndState($stateId, $eventId, $action = null, $guard = null)
     {
         if (is_null($this->stateMachine->getState(StateInterface::STATE_FINAL))) {
             $this->stateMachine->addState(new FinalState());
         }
 
-        $this->addTransition($stateID, $eventID, StateInterface::STATE_FINAL, $action, $guard);
+        $this->addTransition($stateId, $eventId, StateInterface::STATE_FINAL, $action, $guard);
     }
 
     /**
      * Sets the activity to the state.
      *
-     * @param  string                                                $stateID
+     * @param  string                                                $stateId
      * @param  callback                                              $activity
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
-    public function setActivity($stateID, $activity)
+    public function setActivity($stateId, $activity)
     {
-        $state = $this->stateMachine->getState($stateID);
+        $state = $this->stateMachine->getState($stateId);
         if (is_null($state)) {
-            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
+            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateId, $this->stateMachine->getStateMachineId()));
         }
 
         if (!is_callable($activity)) {
-            throw new ActionNotCallableException(sprintf('The activity for the state "%s" is not callable.', EventInterface::EVENT_DO, $stateID));
+            throw new ActionNotCallableException(sprintf('The activity for the state "%s" is not callable.', EventInterface::EVENT_DO, $stateId));
         }
 
         $state->getEvent(EventInterface::EVENT_DO)->setAction($activity);
@@ -146,11 +146,11 @@ class StateMachineBuilder
     /**
      * Adds a state to the state machine.
      *
-     * @param string $stateID
+     * @param string $stateId
      */
-    public function addState($stateID)
+    public function addState($stateId)
     {
-        $state = new State($stateID);
+        $state = new State($stateId);
         $state->setEntryEvent(new EntryEvent());
         $state->setExitEvent(new ExitEvent());
         $state->setDoEvent(new DoEvent());
@@ -160,35 +160,35 @@ class StateMachineBuilder
     /**
      * Adds an state transition to the state machine.
      *
-     * @param  string                                                $stateID
-     * @param  string                                                $eventID
-     * @param  string                                                $nextStateID
+     * @param  string                                                $stateId
+     * @param  string                                                $eventId
+     * @param  string                                                $nextStateId
      * @param  callback                                              $action
      * @param  callback                                              $guard
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
     public function addTransition(
-        $stateID,
-        $eventID,
-        $nextStateID,
+        $stateId,
+        $eventId,
+        $nextStateId,
         $action = null,
         $guard = null)
     {
-        $state = $this->stateMachine->getState($stateID);
+        $state = $this->stateMachine->getState($stateId);
         if (is_null($state)) {
-            throw new StateNotFoundException(sprintf('The state "%s" is not found.', $stateID));
+            throw new StateNotFoundException(sprintf('The state "%s" is not found.', $stateId));
         }
 
-        $event = $state->getEvent($eventID);
+        $event = $state->getEvent($eventId);
         if (is_null($event)) {
-            $event = new TransitionEvent($eventID);
+            $event = new TransitionEvent($eventId);
             $state->addTransitionEvent($event);
         }
 
-        $nextState = $this->stateMachine->getState($nextStateID);
+        $nextState = $this->stateMachine->getState($nextStateId);
         if (is_null($nextState)) {
-            throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateID));
+            throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateId));
         }
 
         $event->setNextState($nextState);
@@ -197,7 +197,7 @@ class StateMachineBuilder
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
-                throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', $eventID, $stateID));
+                throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', $eventId, $stateId));
             }
         }
 
@@ -205,7 +205,7 @@ class StateMachineBuilder
             if (is_callable($guard)) {
                 $event->setGuard($guard);
             } else {
-                throw new ActionNotCallableException(sprintf('The guard for the event "%s" in the state "%s" is not callable.', $eventID, $stateID));
+                throw new ActionNotCallableException(sprintf('The guard for the event "%s" in the state "%s" is not callable.', $eventId, $stateId));
             }
         }
     }
@@ -213,20 +213,20 @@ class StateMachineBuilder
     /**
      * Sets the entry action to the state.
      *
-     * @param  string                                                $stateID
+     * @param  string                                                $stateId
      * @param  callback                                              $action
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
-    public function setEntryAction($stateID, $action)
+    public function setEntryAction($stateId, $action)
     {
-        $state = $this->stateMachine->getState($stateID);
+        $state = $this->stateMachine->getState($stateId);
         if (is_null($state)) {
-            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
+            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateId, $this->stateMachine->getStateMachineId()));
         }
 
         if (!is_callable($action)) {
-            throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_ENTRY, $stateID));
+            throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_ENTRY, $stateId));
         }
 
         $state->getEvent(EventInterface::EVENT_ENTRY)->setAction($action);
@@ -235,20 +235,20 @@ class StateMachineBuilder
     /**
      * Sets the exit action to the state.
      *
-     * @param  string                                                $stateID
+     * @param  string                                                $stateId
      * @param  callback                                              $action
      * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
      * @throws Stagehand\FSM\StateMachine\StateNotFoundException
      */
-    public function setExitAction($stateID, $action)
+    public function setExitAction($stateId, $action)
     {
-        $state = $this->stateMachine->getState($stateID);
+        $state = $this->stateMachine->getState($stateId);
         if (is_null($state)) {
-            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateID, $this->stateMachine->getStateMachineID()));
+            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateId, $this->stateMachine->getStateMachineId()));
         }
 
         if (!is_callable($action)) {
-            throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_EXIT, $stateID));
+            throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_EXIT, $stateId));
         }
 
         $state->getEvent(EventInterface::EVENT_EXIT)->setAction($action);

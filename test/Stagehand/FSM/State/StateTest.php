@@ -4,7 +4,7 @@
 /**
  * PHP version 5.3
  *
- * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    Stagehand_FSM
- * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      File available since Release 2.0.0
@@ -41,7 +41,7 @@ use Stagehand\FSM\Event\TransitionEvent;
 
 /**
  * @package    Stagehand_FSM
- * @copyright  2013 KUBO Atsuhiro <kubo@iteman.jp>
+ * @copyright  2013-2014 KUBO Atsuhiro <kubo@iteman.jp>
  * @license    http://opensource.org/licenses/BSD-2-Clause  The BSD 2-Clause License
  * @version    Release: @package_version@
  * @since      Class available since Release 2.0.0
@@ -120,7 +120,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function isNotAnEndStateIfNoEndEventsAreFound()
     {
         $event = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event)->getEventID()->thenReturn('bar');
+        \Phake::when($event)->getEventId()->thenReturn('bar');
         \Phake::when($event)->isEndEvent()->thenReturn(false);
         $state = new State('foo');
         $state->addTransitionEvent($event);
@@ -137,10 +137,10 @@ class StateTest extends \PHPUnit_Framework_TestCase
     public function isAnEndStateIfAtLeastATransitionEventIsAnEndEvent()
     {
         $event1 = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event1)->getEventID()->thenReturn('bar');
+        \Phake::when($event1)->getEventId()->thenReturn('bar');
         \Phake::when($event1)->isEndEvent()->thenReturn(false);
         $event2 = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event2)->getEventID()->thenReturn('baz');
+        \Phake::when($event2)->getEventId()->thenReturn('baz');
         \Phake::when($event2)->isEndEvent()->thenReturn(true);
         $state = new State('foo');
         $state->addTransitionEvent($event1);
