@@ -12,16 +12,13 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "symfony/event-dispatcher": "~2.1",
     },
     "require-dev": {
-        "symfony/event-dispatcher": "~2.1",
         "phake/phake": "~1.0",
         "phpunit/phpunit": "~4.0",
         "piece/stagehand-testrunner": "~4.0"
-    },
-    "suggest": {
-        "symfony/event-dispatcher": ""
     },
     "autoload": {
         "psr-0": { "Stagehand\\FSM": "src/" }
