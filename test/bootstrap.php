@@ -35,9 +35,9 @@
  * @since      File available since Release 2.0.0
  */
 
-error_reporting(E_ALL | E_STRICT | E_DEPRECATED);
+error_reporting(E_ALL | E_STRICT);
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
 /*
  * Local Variables:
