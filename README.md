@@ -11,7 +11,7 @@ Stagehand_FSM is a [finite state machine](https://en.wikipedia.org/wiki/Finite-s
 
 Manual state management makes code complex, decreases intentionality. By using Stagehand_FSM, state management code can be declaratively represented in the form of FSM. This makes code simpler, increases intentionality.
 
-Stagehand_FSM can be used as an infrastructure for [domain-specific languages](http://en.wikipedia.org/wiki/Domain-specific_language) (DSLs). Examples are workflow engines, page flow engines such as [Piece_Flow](https://github.com/piece/piece-flow).
+Stagehand_FSM can be used as an infrastructure for [domain-specific languages](http://en.wikipedia.org/wiki/Domain-specific_language) (DSLs). Examples are workflow engines, pageflow engines such as [PHPMentorsPageflowerBundle](https://github.com/phpmentors-jp/pageflower-bundle).
 
 ```php
 <?php
@@ -35,24 +35,25 @@ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "locked"
 
 ## Features
 
-* Activities (Do Actions)
-* Entry Actions
-* Exit Actions
-* Transition Actions
+* Activities (do actions)
+* Entry actions
+* Exit actions
+* Transition actions
 * Guards
-* Initial Pseudo State
-* Final State
-* User-Defined Payload
+* Initial pseudo state
+* Final state
+* User-defined payload
+* User-defined event dispatcher for the state machine events
 
 ## Installation
 
-Stagehand_FSM can be installed using [Composer](http://getcomposer.org/).
+`Stagehand_FSM` can be installed using [Composer](http://getcomposer.org/).
 
-First, add the dependency to **piece/stagehand-fsm** into your **composer.json** file as the following:
+First, add the dependency to `piece/stagehand-fsm` into your `composer.json` file as the following:
 
 ```json
 {
-    "require-dev": {
+    "require": {
         "piece/stagehand-fsm": "~2.1@dev"
     }
 }
@@ -70,7 +71,7 @@ If you find a bug or have a question, or want to request a feature, create an is
 
 ## Copyright
 
-Copyright (c) 2006-2008, 2011-2013 KUBO Atsuhiro, All rights reserved.
+Copyright (c) 2006-2008, 2011-2014 KUBO Atsuhiro, All rights reserved.
 
 ## License
 
