@@ -36,7 +36,7 @@ class InitialState implements StateInterface
      */
     public function getEvent($eventId)
     {
-        if (!is_null($this->transitionEvent) && $eventId == $this->transitionEvent->getEventId()) {
+        if ($this->transitionEvent !== null && $eventId == $this->transitionEvent->getEventId()) {
             return $this->transitionEvent;
         } else {
             return null;
@@ -64,6 +64,6 @@ class InitialState implements StateInterface
      */
     public function isEndState()
     {
-        return !is_null($this->transitionEvent) && $this->transitionEvent->isEndEvent();
+        return $this->transitionEvent !== null && $this->transitionEvent->isEndEvent();
     }
 }

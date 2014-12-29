@@ -62,13 +62,13 @@ class StateMachineBuilder
     public function setStartState($stateId, $action = null, $guard = null)
     {
         $state = $this->stateMachine->getState(StateInterface::STATE_INITIAL);
-        if (is_null($state)) {
+        if ($state === null) {
             $state = new InitialState();
             $this->stateMachine->addState($state);
         }
 
         $event = $state->getEvent(EventInterface::EVENT_START);
-        if (is_null($event)) {
+        if ($event === null) {
             $state->setTransitionEvent(new TransitionEvent(EventInterface::EVENT_START));
         }
 
@@ -85,7 +85,7 @@ class StateMachineBuilder
      */
     public function setEndState($stateId, $eventId, $action = null, $guard = null)
     {
-        if (is_null($this->stateMachine->getState(StateInterface::STATE_FINAL))) {
+        if ($this->stateMachine->getState(StateInterface::STATE_FINAL) === null) {
             $this->stateMachine->addState(new FinalState());
         }
 
@@ -103,7 +103,7 @@ class StateMachineBuilder
     public function setActivity($stateId, $activity)
     {
         $state = $this->stateMachine->getState($stateId);
-        if (is_null($state)) {
+        if ($state === null) {
             throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateId, $this->stateMachine->getStateMachineId()));
         }
 
@@ -147,24 +147,24 @@ class StateMachineBuilder
         $guard = null)
     {
         $state = $this->stateMachine->getState($stateId);
-        if (is_null($state)) {
+        if ($state === null) {
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $stateId));
         }
 
         $event = $state->getEvent($eventId);
-        if (is_null($event)) {
+        if ($event === null) {
             $event = new TransitionEvent($eventId);
             $state->addTransitionEvent($event);
         }
 
         $nextState = $this->stateMachine->getState($nextStateId);
-        if (is_null($nextState)) {
+        if ($nextState === null) {
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateId));
         }
 
         $event->setNextState($nextState);
 
-        if (!is_null($action)) {
+        if ($action !== null) {
             if (is_callable($action)) {
                 $event->setAction($action);
             } else {
@@ -172,7 +172,7 @@ class StateMachineBuilder
             }
         }
 
-        if (!is_null($guard)) {
+        if ($guard !== null) {
             if (is_callable($guard)) {
                 $event->setGuard($guard);
             } else {
@@ -192,7 +192,7 @@ class StateMachineBuilder
     public function setEntryAction($stateId, $action)
     {
         $state = $this->stateMachine->getState($stateId);
-        if (is_null($state)) {
+        if ($state === null) {
             throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateId, $this->stateMachine->getStateMachineId()));
         }
 
@@ -214,7 +214,7 @@ class StateMachineBuilder
     public function setExitAction($stateId, $action)
     {
         $state = $this->stateMachine->getState($stateId);
-        if (is_null($state)) {
+        if ($state === null) {
             throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateId, $this->stateMachine->getStateMachineId()));
         }
 

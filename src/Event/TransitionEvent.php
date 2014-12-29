@@ -116,6 +116,6 @@ class TransitionEvent implements TransitionEventInterface
      */
     public function isEndEvent()
     {
-        return !is_null($this->getNextState()) && $this->getNextState()->getStateId() == StateInterface::STATE_FINAL;
+        return $this->getNextState() !== null && $this->getNextState()->getStateId() == StateInterface::STATE_FINAL;
     }
 }

@@ -101,7 +101,7 @@ class StateMachine
      */
     public function start()
     {
-        if (!is_null($this->getCurrentState())) {
+        if ($this->getCurrentState() !== null) {
             throw new StateMachineAlreadyStartedException('The state machine is already started.');
         }
 
@@ -116,7 +116,7 @@ class StateMachine
      */
     public function getCurrentState()
     {
-        if (is_null($this->currentStateId)) {
+        if ($this->currentStateId === null) {
             return null;
         }
 
@@ -130,7 +130,7 @@ class StateMachine
      */
     public function getPreviousState()
     {
-        if (is_null($this->previousStateId)) {
+        if ($this->previousStateId === null) {
             return null;
         }
 
@@ -160,7 +160,7 @@ class StateMachine
         $this->queueEvent($eventId);
 
         do {
-            if (is_null($this->getCurrentState())) {
+            if ($this->getCurrentState() === null) {
                 throw new StateMachineNotStartedException('The state machine is not started yet.');
             }
 
@@ -169,18 +169,18 @@ class StateMachine
             }
 
             $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));
-            if (!is_null($this->eventDispatcher)) {
+            if ($this->eventDispatcher !== null) {
                 $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->getCurrentState(), $event));
             }
-            if ($event instanceof TransitionEventInterface && (is_null($event->getGuard()) || $this->evaluateGuard($event))) {
+            if ($event instanceof TransitionEventInterface && ($event->getGuard() === null || $this->evaluateGuard($event))) {
                 $this->transition($event);
             }
 
             $doEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_DO);
-            if (!is_null($this->eventDispatcher)) {
+            if ($this->eventDispatcher !== null) {
                 $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_DO, new StateMachineEvent($this, $this->getCurrentState(), $doEvent));
             }
-            if (!is_null($doEvent) && !is_null($doEvent->getAction())) {
+            if ($doEvent !== null && $doEvent->getAction() !== null) {
                 $this->invokeAction($doEvent);
             }
         } while (count($this->eventQueue) > 0);
@@ -256,17 +256,17 @@ class StateMachine
     private function transition(TransitionEventInterface $event)
     {
         $exitEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_EXIT);
-        if (!is_null($this->eventDispatcher)) {
+        if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $this->getCurrentState(), $exitEvent));
         }
-        if (!is_null($exitEvent) && !is_null($exitEvent->getAction())) {
+        if ($exitEvent !== null && $exitEvent->getAction() !== null) {
             $this->invokeAction($exitEvent);
         }
 
-        if (!is_null($this->eventDispatcher)) {
+        if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, $this->getCurrentState(), $event));
         }
-        if (!is_null($event->getAction())) {
+        if ($event->getAction() !== null) {
             $this->invokeAction($event);
         }
 
@@ -274,10 +274,10 @@ class StateMachine
         $this->currentStateId = $event->getNextState()->getStateId();
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
-        if (!is_null($this->eventDispatcher)) {
+        if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $this->getCurrentState(), $entryEvent));
         }
-        if (!is_null($entryEvent) && !is_null($entryEvent->getAction())) {
+        if ($entryEvent !== null && $entryEvent->getAction() !== null) {
             $this->invokeAction($entryEvent);
         }
     }
