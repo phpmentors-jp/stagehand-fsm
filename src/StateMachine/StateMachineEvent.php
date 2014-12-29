@@ -23,24 +23,24 @@ use Stagehand\FSM\State\StateInterface;
 class StateMachineEvent extends Event
 {
     /**
-     * @var \Stagehand\FSM\StateMachine\StateMachine
+     * @var StateMachine
      */
     protected $stateMachine;
 
     /**
-     * @var \Stagehand\FSM\State\StateInterface
+     * @var StateInterface
      */
     protected $state;
 
     /**
-     * @var \Stagehand\FSM\Event\EventInterface
+     * @var EventInterface
      */
     protected $event;
 
     /**
-     * @param \Stagehand\FSM\StateMachine\StateMachine $stateMachine
-     * @param \Stagehand\FSM\State\StateInterface      $state
-     * @param \Stagehand\FSM\Event\EventInterface      $event
+     * @param StateMachine   $stateMachine
+     * @param StateInterface $state
+     * @param EventInterface $event
      */
     public function __construct(StateMachine $stateMachine, StateInterface $state, EventInterface $event = null)
     {
@@ -50,7 +50,7 @@ class StateMachineEvent extends Event
     }
 
     /**
-     * @return \Stagehand\FSM\StateMachine\StateMachine
+     * @return StateMachine
      */
     public function getStateMachine()
     {
@@ -58,7 +58,7 @@ class StateMachineEvent extends Event
     }
 
     /**
-     * @return \Stagehand\FSM\State\StateInterface
+     * @return StateInterface
      */
     public function getState()
     {
@@ -66,7 +66,7 @@ class StateMachineEvent extends Event
     }
 
     /**
-     * @return \Stagehand\FSM\Event\EventInterface
+     * @return EventInterface
      */
     public function getEvent()
     {

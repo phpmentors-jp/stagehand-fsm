@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class StateMachineTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Stagehand\FSM\StateMachine\StateMachineBuilder
+     * @var StateMachineBuilder
      * @since Property available since Release 2.0.0
      */
     protected $stateMachineBuilder;
@@ -35,9 +35,9 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     protected $actionCalls = array();
 
     /**
-     * @param \Stagehand\FSM\Event\EventInterface $event
+     * @param EventInterface $event
      * @param callback
-     * @param \Stagehand\FSM\StateMachine\StateMachine $stateMachine
+     * @param StateMachine $stateMachine
      * @since Method available since Release 2.0.0
      */
     public function logActionCall(EventInterface $event, $payload, StateMachine $stateMachine)

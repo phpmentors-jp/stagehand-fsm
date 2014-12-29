@@ -58,7 +58,7 @@ class StateMachine
     protected $eventQueue = array();
 
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     * @var EventDispatcherInterface
      * @since Property available since Release 2.1.0
      */
     protected $eventDispatcher;
@@ -86,7 +86,7 @@ class StateMachine
     }
 
     /**
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      * @since Method available since Release 2.1.0
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher = null)
@@ -97,7 +97,7 @@ class StateMachine
     /**
      * Starts the state machine.
      *
-     * @throws \Stagehand\FSM\StateMachine\StateMachineAlreadyStartedException
+     * @throws StateMachineAlreadyStartedException
      */
     public function start()
     {
@@ -112,7 +112,7 @@ class StateMachine
     /**
      * Gets the current state of the state machine.
      *
-     * @return \Stagehand\FSM\State\StateInterface
+     * @return StateInterface
      */
     public function getCurrentState()
     {
@@ -126,7 +126,7 @@ class StateMachine
     /**
      * Gets the previous state of the state machine.
      *
-     * @return \Stagehand\FSM\State\StateInterface
+     * @return StateInterface
      */
     public function getPreviousState()
     {
@@ -151,9 +151,9 @@ class StateMachine
      * Triggers an event in the current state.
      * <i>Note: Do not call this method directly from actions.</i>
      *
-     * @param  string                                                           $eventId
-     * @throws \Stagehand\FSM\StateMachine\StateMachineAlreadyShutdownException
-     * @throws \Stagehand\FSM\StateMachine\StateMachineNotStartedException
+     * @param  string                               $eventId
+     * @throws StateMachineAlreadyShutdownException
+     * @throws StateMachineNotStartedException
      */
     public function triggerEvent($eventId)
     {
@@ -200,8 +200,8 @@ class StateMachine
     /**
      * Gets the state according to the given ID.
      *
-     * @param  string                              $stateId
-     * @return \Stagehand\FSM\State\StateInterface
+     * @param  string         $stateId
+     * @return StateInterface
      */
     public function getState($stateId)
     {
@@ -215,8 +215,8 @@ class StateMachine
     /**
      * Adds a state to the state machine.
      *
-     * @param  \Stagehand\FSM\State\StateInterface                 $state
-     * @throws \Stagehand\FSM\StateMachine\DuplicateStateException
+     * @param  StateInterface          $state
+     * @throws DuplicateStateException
      */
     public function addState(StateInterface $state)
     {
@@ -250,8 +250,8 @@ class StateMachine
     /**
      * Transitions to the next state.
      *
-     * @param  \Stagehand\FSM\Event\TransitionEventInterface $event
-     * @throws \Stagehand\FSM\StateNotFoundException
+     * @param  TransitionEventInterface $event
+     * @throws StateNotFoundException
      */
     protected function transition(TransitionEventInterface $event)
     {
@@ -295,7 +295,7 @@ class StateMachine
     /**
      * Evaluates the guard for the given event.
      *
-     * @param  \Stagehand\FSM\Event\EventInterface $event
+     * @param  EventInterface $event
      * @return boolean
      * @since Method available since Release 2.0.0
      */
@@ -307,7 +307,7 @@ class StateMachine
     /**
      * Invokes the action for the given event.
      *
-     * @param \Stagehand\FSM\Event\EventInterface $event
+     * @param EventInterface $event
      * @since Method available since Release 2.0.0
      */
     protected function invokeAction(EventInterface $event)

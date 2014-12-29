@@ -28,12 +28,12 @@ use Stagehand\FSM\State\StateInterface;
 class StateMachineBuilder
 {
     /**
-     * @var \Stagehand\FSM\StateMachine\StateMachine
+     * @var StateMachine
      */
     protected $stateMachine;
 
     /**
-     * @param string|\Stagehand\FSM\StateMachine\StateMachine $stateMachineId
+     * @param string|StateMachine $stateMachineId
      */
     public function __construct($stateMachineId = null)
     {
@@ -45,7 +45,7 @@ class StateMachineBuilder
     }
 
     /**
-     * @return \Stagehand\FSM\StateMachine\StateMachine
+     * @return StateMachine
      */
     public function getStateMachine()
     {
@@ -95,10 +95,10 @@ class StateMachineBuilder
     /**
      * Sets the activity to the state.
      *
-     * @param  string                                                $stateId
-     * @param  callback                                              $activity
-     * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
-     * @throws Stagehand\FSM\StateMachine\StateNotFoundException
+     * @param  string                     $stateId
+     * @param  callback                   $activity
+     * @throws ActionNotCallableException
+     * @throws StateNotFoundException
      */
     public function setActivity($stateId, $activity)
     {
@@ -131,13 +131,13 @@ class StateMachineBuilder
     /**
      * Adds an state transition to the state machine.
      *
-     * @param  string                                                $stateId
-     * @param  string                                                $eventId
-     * @param  string                                                $nextStateId
-     * @param  callback                                              $action
-     * @param  callback                                              $guard
-     * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
-     * @throws Stagehand\FSM\StateMachine\StateNotFoundException
+     * @param  string                     $stateId
+     * @param  string                     $eventId
+     * @param  string                     $nextStateId
+     * @param  callback                   $action
+     * @param  callback                   $guard
+     * @throws ActionNotCallableException
+     * @throws StateNotFoundException
      */
     public function addTransition(
         $stateId,
@@ -184,10 +184,10 @@ class StateMachineBuilder
     /**
      * Sets the entry action to the state.
      *
-     * @param  string                                                $stateId
-     * @param  callback                                              $action
-     * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
-     * @throws Stagehand\FSM\StateMachine\StateNotFoundException
+     * @param  string                     $stateId
+     * @param  callback                   $action
+     * @throws ActionNotCallableException
+     * @throws StateNotFoundException
      */
     public function setEntryAction($stateId, $action)
     {
@@ -206,10 +206,10 @@ class StateMachineBuilder
     /**
      * Sets the exit action to the state.
      *
-     * @param  string                                                $stateId
-     * @param  callback                                              $action
-     * @throws Stagehand\FSM\StateMachine\ActionNotCallableException
-     * @throws Stagehand\FSM\StateMachine\StateNotFoundException
+     * @param  string                     $stateId
+     * @param  callback                   $action
+     * @throws ActionNotCallableException
+     * @throws StateNotFoundException
      */
     public function setExitAction($stateId, $action)
     {

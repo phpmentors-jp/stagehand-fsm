@@ -23,8 +23,8 @@ interface StateInterface
     /**
      * Gets the event according to the given ID.
      *
-     * @param  string                              $eventId
-     * @return \Stagehand\FSM\Event\EventInterface
+     * @param  string          $eventId
+     * @return EventInterfacee
      */
     public function getEvent($eventId);
 

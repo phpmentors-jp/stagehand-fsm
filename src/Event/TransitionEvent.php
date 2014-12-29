@@ -25,7 +25,7 @@ class TransitionEvent implements TransitionEventInterface
     protected $eventId;
 
     /**
-     * @var \Stagehand\FSM\State\StateInterface
+     * @var StateInterface
      */
     protected $nextState;
 
@@ -50,7 +50,7 @@ class TransitionEvent implements TransitionEventInterface
     /**
      * Sets the next state to the event.
      *
-     * @param \Stagehand\FSM\State\StateInterface $state
+     * @param StateInterface $state
      */
     public function setNextState(StateInterface $state)
     {

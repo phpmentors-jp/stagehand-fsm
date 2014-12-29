@@ -20,7 +20,7 @@ use Stagehand\FSM\Event\TransitionEventInterface;
 class InitialState implements StateInterface
 {
     /**
-     * @var \Stagehand\FSM\Event\TransitionEventInterface
+     * @var TransitionEventInterface
      */
     protected $transitionEvent;
 
@@ -52,7 +52,7 @@ class InitialState implements StateInterface
     }
 
     /**
-     * @param \Stagehand\FSM\Event\TransitionEventInterface $transitionEvent
+     * @param TransitionEventInterface $transitionEvent
      */
     public function setTransitionEvent(TransitionEventInterface $transitionEvent)
     {

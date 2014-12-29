@@ -39,8 +39,8 @@ class State implements StateInterface
     }
 
     /**
-     * @param  \Stagehand\FSM\Event\EventInterface        $event
-     * @throws \Stagehand\FSM\State\InvalidEventException
+     * @param  EventInterface        $event
+     * @throws InvalidEventException
      * @since Method available since Release 2.0.0
      */
     public function setEntryEvent(EventInterface $event)
@@ -53,8 +53,8 @@ class State implements StateInterface
     }
 
     /**
-     * @param  \Stagehand\FSM\Event\EventInterface        $event
-     * @throws \Stagehand\FSM\State\InvalidEventException
+     * @param  EventInterface        $event
+     * @throws InvalidEventException
      * @since Method available since Release 2.0.0
      */
     public function setExitEvent(EventInterface $event)
@@ -67,8 +67,8 @@ class State implements StateInterface
     }
 
     /**
-     * @param  \Stagehand\FSM\Event\EventInterface        $event
-     * @throws \Stagehand\FSM\State\InvalidEventException
+     * @param  EventInterface        $event
+     * @throws InvalidEventException
      * @since Method available since Release 2.0.0
      */
     public function setDoEvent(EventInterface $event)
@@ -93,8 +93,8 @@ class State implements StateInterface
     }
 
     /**
-     * @param  \Stagehand\FSM\Event\TransitionEventInterface $event
-     * @throws \Stagehand\FSM\State\DuplicateEventException
+     * @param  TransitionEventInterface $event
+     * @throws DuplicateEventException
      */
     public function addTransitionEvent(TransitionEventInterface $event)
     {
