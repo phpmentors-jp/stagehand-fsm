@@ -30,7 +30,7 @@ class StateMachineBuilder
     /**
      * @var StateMachine
      */
-    protected $stateMachine;
+    private $stateMachine;
 
     /**
      * @param string|StateMachine $stateMachineId

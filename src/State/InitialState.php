@@ -22,7 +22,7 @@ class InitialState implements StateInterface
     /**
      * @var TransitionEventInterface
      */
-    protected $transitionEvent;
+    private $transitionEvent;
 
     /**
      * @since Method available since Release 2.1.0

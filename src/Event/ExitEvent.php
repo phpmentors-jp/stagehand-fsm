@@ -20,7 +20,7 @@ class ExitEvent implements EventInterface
     /**
      * @var callback
      */
-    protected $action;
+    private $action;
 
     /**
      * @since Method available since Release 2.1.0

@@ -23,12 +23,12 @@ class State implements StateInterface
     /**
      * @var string
      */
-     protected $stateId;
+    private $stateId;
 
     /**
      * @var array
      */
-    protected $events = array();
+    private $events = array();
 
     /**
      * @param string $stateId

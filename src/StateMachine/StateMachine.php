@@ -30,38 +30,38 @@ class StateMachine
     /**
      * @var string
      */
-    protected $currentStateId;
+    private $currentStateId;
 
     /**
      * @var string
      */
-    protected $previousStateId;
+    private $previousStateId;
 
     /**
      * @var array
      */
-    protected $states = array();
+    private $states = array();
 
     /**
      * @var string
      */
-    protected $stateMachineId;
+    private $stateMachineId;
 
     /**
      * @var mixed
      */
-    protected $payload;
+    private $payload;
 
     /**
      * @var array
      */
-    protected $eventQueue = array();
+    private $eventQueue = array();
 
     /**
      * @var EventDispatcherInterface
      * @since Property available since Release 2.1.0
      */
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
     /**
      * @param string $stateMachineId
@@ -253,7 +253,7 @@ class StateMachine
      * @param  TransitionEventInterface $event
      * @throws StateNotFoundException
      */
-    protected function transition(TransitionEventInterface $event)
+    private function transition(TransitionEventInterface $event)
     {
         $exitEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_EXIT);
         if (!is_null($this->eventDispatcher)) {
@@ -285,7 +285,7 @@ class StateMachine
     /**
      * Initializes the state machine.
      */
-    protected function initialize()
+    private function initialize()
     {
         $this->currentStateId = StateInterface::STATE_INITIAL;
         $this->previousStateId = null;
@@ -299,7 +299,7 @@ class StateMachine
      * @return boolean
      * @since Method available since Release 2.0.0
      */
-    protected function evaluateGuard(EventInterface $event)
+    private function evaluateGuard(EventInterface $event)
     {
         return call_user_func($event->getGuard(), $event, $this->getPayload(), $this);
     }
@@ -310,7 +310,7 @@ class StateMachine
      * @param EventInterface $event
      * @since Method available since Release 2.0.0
      */
-    protected function invokeAction(EventInterface $event)
+    private function invokeAction(EventInterface $event)
     {
         call_user_func($event->getAction(), $event, $this->getPayload(), $this);
     }

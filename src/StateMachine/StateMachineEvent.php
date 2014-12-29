@@ -25,17 +25,17 @@ class StateMachineEvent extends Event
     /**
      * @var StateMachine
      */
-    protected $stateMachine;
+    private $stateMachine;
 
     /**
      * @var StateInterface
      */
-    protected $state;
+    private $state;
 
     /**
      * @var EventInterface
      */
-    protected $event;
+    private $event;
 
     /**
      * @param StateMachine   $stateMachine

@@ -22,22 +22,22 @@ class TransitionEvent implements TransitionEventInterface
     /**
      * @var string
      */
-    protected $eventId;
+    private $eventId;
 
     /**
      * @var StateInterface
      */
-    protected $nextState;
+    private $nextState;
 
     /**
      * @var callback
      */
-    protected $action;
+    private $action;
 
     /**
      * @var callback
      */
-    protected $guard;
+    private $guard;
 
     /**
      * @param string $eventId
