@@ -172,7 +172,7 @@ class StateMachine
             if ($this->eventDispatcher !== null) {
                 $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->getCurrentState(), $event));
             }
-            if ($event instanceof TransitionEventInterface && ($event->getGuard() === null || $this->evaluateGuard($event))) {
+            if ($event instanceof TransitionEventInterface && $this->evaluateGuard($event)) {
                 $this->transition($event);
             }
 
@@ -291,8 +291,12 @@ class StateMachine
      * @return boolean
      * @since Method available since Release 2.0.0
      */
-    private function evaluateGuard(EventInterface $event)
+    private function evaluateGuard(TransitionEventInterface $event)
     {
+        if ($event->getGuard() === null) {
+            return true;
+        }
+
         return call_user_func($event->getGuard(), $event, $this->getPayload(), $this);
     }
 
