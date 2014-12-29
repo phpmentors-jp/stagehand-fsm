@@ -180,9 +180,7 @@ class StateMachine
             if ($this->eventDispatcher !== null) {
                 $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_DO, new StateMachineEvent($this, $this->getCurrentState(), $doEvent));
             }
-            if ($doEvent !== null && $doEvent->getAction() !== null) {
-                $this->invokeAction($doEvent);
-            }
+            $this->invokeAction($doEvent);
         } while (count($this->eventQueue) > 0);
     }
 
@@ -259,16 +257,12 @@ class StateMachine
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $this->getCurrentState(), $exitEvent));
         }
-        if ($exitEvent !== null && $exitEvent->getAction() !== null) {
-            $this->invokeAction($exitEvent);
-        }
+        $this->invokeAction($exitEvent);
 
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, $this->getCurrentState(), $event));
         }
-        if ($event->getAction() !== null) {
-            $this->invokeAction($event);
-        }
+        $this->invokeAction($event);
 
         $this->previousStateId = $this->currentStateId;
         $this->currentStateId = $event->getNextState()->getStateId();
@@ -277,9 +271,7 @@ class StateMachine
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $this->getCurrentState(), $entryEvent));
         }
-        if ($entryEvent !== null && $entryEvent->getAction() !== null) {
-            $this->invokeAction($entryEvent);
-        }
+        $this->invokeAction($entryEvent);
     }
 
     /**
@@ -310,8 +302,10 @@ class StateMachine
      * @param EventInterface $event
      * @since Method available since Release 2.0.0
      */
-    private function invokeAction(EventInterface $event)
+    private function invokeAction(EventInterface $event = null)
     {
-        call_user_func($event->getAction(), $event, $this->getPayload(), $this);
+        if ($event !== null && $event->getAction() !== null) {
+            call_user_func($event->getAction(), $event, $this->getPayload(), $this);
+        }
     }
 }
