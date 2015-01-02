@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -65,11 +65,6 @@ class StateMachineBuilder
         if ($state === null) {
             $state = new InitialState();
             $this->stateMachine->addState($state);
-        }
-
-        $event = $state->getEvent(EventInterface::EVENT_START);
-        if ($event === null) {
-            $state->setTransitionEvent(new TransitionEvent(EventInterface::EVENT_START));
         }
 
         $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateId, $action, $guard);
@@ -154,7 +149,6 @@ class StateMachineBuilder
         $event = $state->getEvent($eventId);
         if ($event === null) {
             $event = new TransitionEvent($eventId);
-            $state->addTransitionEvent($event);
         }
 
         $nextState = $this->stateMachine->getState($nextStateId);
@@ -162,23 +156,19 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateId));
         }
 
-        $event->setNextState($nextState);
-
         if ($action !== null) {
-            if (is_callable($action)) {
-                $event->setAction($action);
-            } else {
+            if (!is_callable($action)) {
                 throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', $eventId, $stateId));
             }
         }
 
         if ($guard !== null) {
-            if (is_callable($guard)) {
-                $event->setGuard($guard);
-            } else {
+            if (!is_callable($guard)) {
                 throw new ActionNotCallableException(sprintf('The guard for the event "%s" in the state "%s" is not callable.', $eventId, $stateId));
             }
         }
+
+        $this->stateMachine->addTransition($state, $event, $nextState, $action, $guard);
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -12,6 +12,7 @@
 
 namespace Stagehand\FSM\State;
 
+use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 
 /**
@@ -54,9 +55,23 @@ class InitialState implements StateInterface
     /**
      * @param TransitionEventInterface $transitionEvent
      */
-    public function setTransitionEvent(TransitionEventInterface $transitionEvent)
+    private function setTransitionEvent(TransitionEventInterface $transitionEvent)
     {
         $this->transitionEvent = $transitionEvent;
+    }
+
+    /**
+     * @param  TransitionEventInterface $event
+     * @throws InvalidEventException
+     * @since Method available since Release 2.2.0
+     */
+    public function addTransitionEvent(TransitionEventInterface $event)
+    {
+        if ($event->getEventId() != EventInterface::EVENT_START) {
+            throw new InvalidEventException(sprintf('The transition event for the state "%s" should be "%s", "%s" is specified.', $this->getStateId(), EventInterface::EVENT_START, $event->getEventId()));
+        }
+
+        $this->setTransitionEvent($event);
     }
 
     /**

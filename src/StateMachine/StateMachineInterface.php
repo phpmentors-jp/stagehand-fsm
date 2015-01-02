@@ -12,6 +12,7 @@
 
 namespace Stagehand\FSM\StateMachine;
 
+use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
 
 /**
@@ -68,6 +69,15 @@ interface StateMachineInterface
      * @return string
      */
     public function getStateMachineId();
+
+    /**
+     * @param StateInterface           $state
+     * @param TransitionEventInterface $event
+     * @param StateInterface           $nextState
+     * @param callable                 $action
+     * @param callable                 $guard
+     */
+    public function addTransition(StateInterface $state, TransitionEventInterface $event, StateInterface $nextState, $action, $guard);
 
     /**
      * Starts the state machine.

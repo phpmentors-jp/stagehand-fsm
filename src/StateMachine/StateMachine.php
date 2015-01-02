@@ -25,7 +25,7 @@ use Stagehand\FSM\State\StateInterface;
  * @link  http://www.generation5.org/content/2003/FSM_Tutorial.asp
  * @since Class available since Release 0.1.0
  */
-class StateMachine
+class StateMachine implements StateMachineInterface
 {
     /**
      * @var string
@@ -95,9 +95,7 @@ class StateMachine
     }
 
     /**
-     * Starts the state machine.
-     *
-     * @throws StateMachineAlreadyStartedException
+     * {@inheritDoc}
      */
     public function start()
     {
@@ -110,9 +108,7 @@ class StateMachine
     }
 
     /**
-     * Gets the current state of the state machine.
-     *
-     * @return StateInterface
+     * {@inheritDoc}
      */
     public function getCurrentState()
     {
@@ -124,9 +120,7 @@ class StateMachine
     }
 
     /**
-     * Gets the previous state of the state machine.
-     *
-     * @return StateInterface
+     * {@inheritDoc}
      */
     public function getPreviousState()
     {
@@ -138,9 +132,7 @@ class StateMachine
     }
 
     /**
-     * Gets the payload.
-     *
-     * @return mixed $payload
+     * {@inheritDoc}
      */
     public function getPayload()
     {
@@ -148,12 +140,7 @@ class StateMachine
     }
 
     /**
-     * Triggers an event in the current state.
-     * <i>Note: Do not call this method directly from actions.</i>
-     *
-     * @param  string                               $eventId
-     * @throws StateMachineAlreadyShutdownException
-     * @throws StateMachineNotStartedException
+     * {@inheritDoc}
      */
     public function triggerEvent($eventId)
     {
@@ -185,9 +172,8 @@ class StateMachine
     }
 
     /**
-     * Queues an event to the event queue.
+     * {@inheritDoc}
      *
-     * @param string $eventId
      * @since Method available since Release 1.7.0
      */
     public function queueEvent($eventId)
@@ -196,10 +182,7 @@ class StateMachine
     }
 
     /**
-     * Gets the state according to the given ID.
-     *
-     * @param  string         $stateId
-     * @return StateInterface
+     * {@inheritDoc}
      */
     public function getState($stateId)
     {
@@ -211,9 +194,7 @@ class StateMachine
     }
 
     /**
-     * Adds a state to the state machine.
-     *
-     * @param  StateInterface          $state
+     * {@inheritDoc}
      */
     public function addState(StateInterface $state)
     {
@@ -221,9 +202,7 @@ class StateMachine
     }
 
     /**
-     * Gets the ID of the state machine.
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getStateMachineId()
     {
@@ -231,13 +210,22 @@ class StateMachine
     }
 
     /**
-     * Sets the payload to the state machine.
-     *
-     * @param mixed $payload
+     * {@inheritDoc}
      */
     public function setPayload($payload)
     {
         $this->payload = $payload;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addTransition(StateInterface $state, TransitionEventInterface $event, StateInterface $nextState, $action, $guard)
+    {
+        $event->setNextState($nextState);
+        $event->setAction($action);
+        $event->setGuard($guard);
+        $state->addTransitionEvent($event);
     }
 
     /**

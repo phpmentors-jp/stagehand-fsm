@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -11,6 +11,9 @@
  */
 
 namespace Stagehand\FSM\State;
+
+use Stagehand\FSM\Event\EventInterface;
+use Stagehand\FSM\Event\TransitionEvent;
 
 /**
  * @since Class available since Release 2.1.0
@@ -34,10 +37,10 @@ class InitialStateTest extends \PHPUnit_Framework_TestCase
     public function isNotAnEndStateIfTheTransitionEventIsNotAnEndEvent()
     {
         $event = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event)->getEventId()->thenReturn('foo');
+        \Phake::when($event)->getEventId()->thenReturn(EventInterface::EVENT_START);
         \Phake::when($event)->isEndEvent()->thenReturn(false);
         $state = new InitialState();
-        $state->setTransitionEvent($event);
+        $state->addTransitionEvent($event);
         $result = $state->isEndState();
 
         $this->assertThat($result, $this->isFalse());
@@ -51,13 +54,29 @@ class InitialStateTest extends \PHPUnit_Framework_TestCase
     public function isAnEndStateIfTheTransitionEventIsAnEndEvent()
     {
         $event = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event)->getEventId()->thenReturn('foo');
+        \Phake::when($event)->getEventId()->thenReturn(EventInterface::EVENT_START);
         \Phake::when($event)->isEndEvent()->thenReturn(true);
         $state = new InitialState();
-        $state->setTransitionEvent($event);
+        $state->addTransitionEvent($event);
         $result = $state->isEndState();
 
-        $this->assertThat($result, $this->isTrue());
         \Phake::verify($event)->isEndEvent();
+    }
+
+    /**
+     * @test
+     * @since Method available since Release 2.2.0
+     */
+    public function raisesAnExceptionIfTheEventIdIsInvalidWhenSettingTheTransitionEvent()
+    {
+        $state = new InitialState();
+
+        try {
+            $state->addTransitionEvent(new TransitionEvent('foo'));
+        } catch (InvalidEventException $e) {
+            return;
+        }
+
+        $this->fail('An expected exception has not been raised.');
     }
 }
