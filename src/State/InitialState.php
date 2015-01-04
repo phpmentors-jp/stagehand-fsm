@@ -18,7 +18,7 @@ use Stagehand\FSM\Event\TransitionEventInterface;
 /**
  * @since Class available since Release 2.0.0
  */
-class InitialState implements StateInterface
+class InitialState implements TransitionalStateInterface
 {
     /**
      * @var TransitionEventInterface

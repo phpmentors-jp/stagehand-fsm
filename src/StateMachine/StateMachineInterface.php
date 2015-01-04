@@ -14,6 +14,7 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
+use Stagehand\FSM\State\TransitionalStateInterface;
 
 /**
  * @since Class available since Release 2.2.0
@@ -71,13 +72,13 @@ interface StateMachineInterface
     public function getStateMachineId();
 
     /**
-     * @param StateInterface           $state
-     * @param TransitionEventInterface $event
-     * @param StateInterface           $nextState
-     * @param callable                 $action
-     * @param callable                 $guard
+     * @param TransitionalStateInterface $state
+     * @param TransitionEventInterface   $event
+     * @param StateInterface             $nextState
+     * @param callable                   $action
+     * @param callable                   $guard
      */
-    public function addTransition(StateInterface $state, TransitionEventInterface $event, StateInterface $nextState, $action, $guard);
+    public function addTransition(TransitionalStateInterface $state, TransitionEventInterface $event, StateInterface $nextState, $action, $guard);
 
     /**
      * Starts the state machine.

@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
+use Stagehand\FSM\State\TransitionalStateInterface;
 
 /**
  * @link  http://en.wikipedia.org/wiki/Finite_state_machine
@@ -220,7 +221,7 @@ class StateMachine implements StateMachineInterface
     /**
      * {@inheritDoc}
      */
-    public function addTransition(StateInterface $state, TransitionEventInterface $event, StateInterface $nextState, $action, $guard)
+    public function addTransition(TransitionalStateInterface $state, TransitionEventInterface $event, StateInterface $nextState, $action, $guard)
     {
         $event->setNextState($nextState);
         $event->setAction($action);
