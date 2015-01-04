@@ -53,14 +53,6 @@ class InitialState implements StateInterface
     }
 
     /**
-     * @param TransitionEventInterface $transitionEvent
-     */
-    private function setTransitionEvent(TransitionEventInterface $transitionEvent)
-    {
-        $this->transitionEvent = $transitionEvent;
-    }
-
-    /**
      * @param  TransitionEventInterface $event
      * @throws InvalidEventException
      * @since Method available since Release 2.2.0
@@ -71,7 +63,7 @@ class InitialState implements StateInterface
             throw new InvalidEventException(sprintf('The transition event for the state "%s" should be "%s", "%s" is specified.', $this->getStateId(), EventInterface::EVENT_START, $event->getEventId()));
         }
 
-        $this->setTransitionEvent($event);
+        $this->transitionEvent = $event;
     }
 
     /**
