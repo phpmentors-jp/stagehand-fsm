@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2006-2008, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2008, 2011-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -214,14 +214,9 @@ class StateMachine
      * Adds a state to the state machine.
      *
      * @param  StateInterface          $state
-     * @throws DuplicateStateException
      */
     public function addState(StateInterface $state)
     {
-        if (array_key_exists($state->getStateId(), $this->states)) {
-            throw new DuplicateStateException(sprintf('The state "%s" already exists.', $state->getStateId()));
-        }
-
         $this->states[ $state->getStateId() ] = $state;
     }
 

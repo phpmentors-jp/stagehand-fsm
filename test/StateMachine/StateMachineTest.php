@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2006-2008, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2008, 2011-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -288,23 +288,6 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $unserializedStateMachine = unserialize(serialize($stateMachine));
 
         $this->assertThat($unserializedStateMachine->getPayload(), $this->isNull());
-    }
-
-    /**
-     * @test
-     */
-    public function raisesAnExceptionIfTheStateIsAlreadyDefinedWhenAddingAState()
-    {
-        $stateMachine = new StateMachine();
-        $stateMachine->addState(new State('foo'));
-
-        try {
-            $stateMachine->addState(new State('foo'));
-        } catch (DuplicateStateException $e) {
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
     }
 
     /**
