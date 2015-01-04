@@ -18,42 +18,19 @@ use Stagehand\FSM\Event\TransitionEventInterface;
 /**
  * @since Class available since Release 2.0.0
  */
-class InitialState implements TransitionalStateInterface
+class InitialState extends State
 {
-    /**
-     * @var TransitionEventInterface
-     */
-    private $transitionEvent;
-
     /**
      * @since Method available since Release 2.1.0
      */
     public function __construct()
     {
+        parent::__construct(StateInterface::STATE_INITIAL);
     }
 
     /**
      * {@inheritDoc}
-     */
-    public function getEvent($eventId)
-    {
-        if ($this->transitionEvent !== null && $eventId == $this->transitionEvent->getEventId()) {
-            return $this->transitionEvent;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getStateId()
-    {
-        return StateInterface::STATE_INITIAL;
-    }
-
-    /**
-     * @param  TransitionEventInterface $event
+     *
      * @throws InvalidEventException
      * @since Method available since Release 2.2.0
      */
@@ -63,14 +40,6 @@ class InitialState implements TransitionalStateInterface
             throw new InvalidEventException(sprintf('The transition event for the state "%s" should be "%s", "%s" is specified.', $this->getStateId(), EventInterface::EVENT_START, $event->getEventId()));
         }
 
-        $this->transitionEvent = $event;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function isEndState()
-    {
-        return $this->transitionEvent !== null && $this->transitionEvent->isEndEvent();
+        parent::addTransitionEvent($event);
     }
 }
