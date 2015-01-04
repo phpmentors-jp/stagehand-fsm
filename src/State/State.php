@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2006-2007, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -93,15 +93,10 @@ class State implements StateInterface
     }
 
     /**
-     * @param  TransitionEventInterface $event
-     * @throws DuplicateEventException
+     * @param TransitionEventInterface $event
      */
     public function addTransitionEvent(TransitionEventInterface $event)
     {
-        if (array_key_exists($event->getEventId(), $this->events)) {
-            throw new DuplicateEventException(sprintf('The event "%s" already exists in the state "%s".', $event->getEventId(), $this->getStateId()));
-        }
-
         $this->events[ $event->getEventId() ] = $event;
     }
 

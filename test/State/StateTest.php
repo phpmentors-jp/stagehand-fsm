@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -19,23 +19,6 @@ use Stagehand\FSM\Event\TransitionEvent;
  */
 class StateTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @test
-     */
-    public function raisesAnExceptionIfTheEventIsAlreadyDefinedWhenAddingAnEvent()
-    {
-        $state = new State('foo');
-        $state->addTransitionEvent(new TransitionEvent('bar'));
-
-        try {
-            $state->addTransitionEvent(new TransitionEvent('bar'));
-        } catch (DuplicateEventException $e) {
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
-    }
-
     /**
      * @test
      */
