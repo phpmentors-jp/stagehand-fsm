@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2013-2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -12,10 +12,12 @@
 
 namespace Stagehand\FSM\Event;
 
+use PHPMentors\DomainKata\Entity\EntityInterface;
+
 /**
  * @since Class available since Release 2.0.0
  */
-interface EventInterface
+interface EventInterface extends EntityInterface
 {
     /*
      * Constants for special events.

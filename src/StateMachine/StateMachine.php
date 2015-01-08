@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
 
@@ -26,7 +27,7 @@ use Stagehand\FSM\State\TransitionalStateInterface;
  * @link  http://www.generation5.org/content/2003/FSM_Tutorial.asp
  * @since Class available since Release 0.1.0
  */
-class StateMachine implements StateMachineInterface
+class StateMachine implements StateMachineInterface, \Serializable
 {
     /**
      * @var string
@@ -40,8 +41,15 @@ class StateMachine implements StateMachineInterface
 
     /**
      * @var array
+     * @deprecated Deprecated since version 2.2.0, to be removed in 3.0.0.
      */
     private $states = array();
+
+    /**
+     * @var StateCollection
+     * @since Property available since Release 2.2.0
+     */
+    private $stateCollection;
 
     /**
      * @var string
@@ -65,25 +73,46 @@ class StateMachine implements StateMachineInterface
     private $eventDispatcher;
 
     /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.2.0
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            'currentStateId' => $this->currentStateId,
+            'previousStateId' => $this->previousStateId,
+            'stateCollection' => $this->stateCollection,
+            'stateMachineId' => $this->stateMachineId,
+            'eventQueue' => $this->eventQueue,
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.2.0
+     */
+    public function unserialize($serialized)
+    {
+        foreach (unserialize($serialized) as $name => $value) {
+            if ($name == 'states') {
+                $this->stateCollection = new StateCollection($value);
+            } else {
+                if (property_exists($this, $name)) {
+                    $this->$name = $value;
+                }
+            }
+        }
+    }
+
+    /**
      * @param string $stateMachineId
      */
     public function __construct($stateMachineId = null)
     {
+        $this->stateCollection = new StateCollection();
         $this->stateMachineId = $stateMachineId;
-    }
-
-    /**
-     * @return array
-     */
-    public function __sleep()
-    {
-        return array(
-            'currentStateId',
-            'previousStateId',
-            'states',
-            'stateMachineId',
-            'eventQueue',
-        );
     }
 
     /**
@@ -187,11 +216,7 @@ class StateMachine implements StateMachineInterface
      */
     public function getState($stateId)
     {
-        if (array_key_exists($stateId, $this->states)) {
-            return $this->states[$stateId];
-        } else {
-            return null;
-        }
+        return $this->stateCollection->get($stateId);
     }
 
     /**
@@ -199,7 +224,7 @@ class StateMachine implements StateMachineInterface
      */
     public function addState(StateInterface $state)
     {
-        $this->states[ $state->getStateId() ] = $state;
+        $this->stateCollection->add($state);
     }
 
     /**

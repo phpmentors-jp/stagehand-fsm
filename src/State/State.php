@@ -12,13 +12,14 @@
 
 namespace Stagehand\FSM\State;
 
+use Stagehand\FSM\Event\EventCollection;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 
 /**
  * @since Class available since Release 0.1.0
  */
-class State implements TransitionalStateInterface
+class State implements TransitionalStateInterface, \Serializable
 {
     /**
      * @var string
@@ -27,14 +28,50 @@ class State implements TransitionalStateInterface
 
     /**
      * @var array
+     * @deprecated Deprecated since version 2.2.0, to be removed in 3.0.0.
      */
     private $events = array();
+
+    /**
+     * @var EventCollection
+     * @since Property available since Release 2.2.0
+     */
+    private $eventCollection;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.2.0
+     */
+    public function serialize()
+    {
+        return serialize(get_object_vars($this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.2.0
+     */
+    public function unserialize($serialized)
+    {
+        foreach (unserialize($serialized) as $name => $value) {
+            if ($name == 'events') {
+                $this->eventCollection = new EventCollection($value);
+            } else {
+                if (property_exists($this, $name)) {
+                    $this->$name = $value;
+                }
+            }
+        }
+    }
 
     /**
      * @param string $stateId
      */
     public function __construct($stateId)
     {
+        $this->eventCollection = new EventCollection();
         $this->stateId = $stateId;
     }
 
@@ -49,7 +86,7 @@ class State implements TransitionalStateInterface
             throw new InvalidEventException(sprintf('The event "%s" is not an entry event. "%s" must be set as the ID for an entry event ', $event->getEventId(), EventInterface::EVENT_ENTRY));
         }
 
-        $this->events[ $event->getEventId() ] = $event;
+        $this->eventCollection->add($event);
     }
 
     /**
@@ -63,7 +100,7 @@ class State implements TransitionalStateInterface
             throw new InvalidEventException(sprintf('The event "%s" is not an exit event. "%s" must be set as the ID for an exit event ', $event->getEventId(), EventInterface::EVENT_EXIT));
         }
 
-        $this->events[ $event->getEventId() ] = $event;
+        $this->eventCollection->add($event);
     }
 
     /**
@@ -77,7 +114,7 @@ class State implements TransitionalStateInterface
             throw new InvalidEventException(sprintf('The event "%s" is not a do event. "%s" must be set as the ID for an do event ', $event->getEventId(), EventInterface::EVENT_DO));
         }
 
-        $this->events[ $event->getEventId() ] = $event;
+        $this->eventCollection->add($event);
     }
 
     /**
@@ -85,11 +122,7 @@ class State implements TransitionalStateInterface
      */
     public function getEvent($eventId)
     {
-        if (array_key_exists($eventId, $this->events)) {
-            return $this->events[$eventId];
-        } else {
-            return null;
-        }
+        return $this->eventCollection->get($eventId);
     }
 
     /**
@@ -97,7 +130,7 @@ class State implements TransitionalStateInterface
      */
     public function addTransitionEvent(TransitionEventInterface $event)
     {
-        $this->events[ $event->getEventId() ] = $event;
+        $this->eventCollection->add($event);
     }
 
     /**
@@ -115,7 +148,7 @@ class State implements TransitionalStateInterface
      */
     public function isEndState()
     {
-        foreach (array_values($this->events) as $event) {
+        foreach ($this->eventCollection as $event) {
             if ($event instanceof TransitionEventInterface && $event->isEndEvent()) {
                 return true;
             }

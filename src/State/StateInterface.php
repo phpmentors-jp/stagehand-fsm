@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2011-2012, 2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2011-2012, 2014-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -12,10 +12,12 @@
 
 namespace Stagehand\FSM\State;
 
+use PHPMentors\DomainKata\Entity\EntityInterface;
+
 /**
  * @since Class available since Release 2.0.0
  */
-interface StateInterface
+interface StateInterface extends EntityInterface
 {
     const STATE_INITIAL = '__INITIAL__';
     const STATE_FINAL = '__FINAL__';
