@@ -13,6 +13,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
+        "phpmentors/domain-kata": "~1.3",
         "symfony/event-dispatcher": "~2.3"
     },
     "require-dev": {
