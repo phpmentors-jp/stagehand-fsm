@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2006-2007, 2011-2014 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2006-2007, 2011-2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -17,7 +17,7 @@ use Stagehand\FSM\State\StateInterface;
 /**
  * @since Class available since Release 0.1.0
  */
-class TransitionEvent implements TransitionEventInterface
+class TransitionEvent implements TransitionEventInterface, \Serializable
 {
     /**
      * @var string
@@ -38,6 +38,34 @@ class TransitionEvent implements TransitionEventInterface
      * @var callback
      */
     private $guard;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.2.0
+     */
+    public function serialize()
+    {
+        return serialize(get_object_vars($this));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.2.0
+     */
+    public function unserialize($serialized)
+    {
+        foreach (unserialize($serialized) as $name => $value) {
+            if ($name == 'eventID') {
+                $this->eventId = $value;
+            } else {
+                if (property_exists($this, $name)) {
+                    $this->$name = $value;
+                }
+            }
+        }
+    }
 
     /**
      * @param string $eventId

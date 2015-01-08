@@ -58,6 +58,8 @@ class State implements TransitionalStateInterface, \Serializable
         foreach (unserialize($serialized) as $name => $value) {
             if ($name == 'events') {
                 $this->eventCollection = new EventCollection($value);
+            } elseif ($name == 'stateID') {
+                $this->stateId = $value;
             } else {
                 if (property_exists($this, $name)) {
                     $this->$name = $value;

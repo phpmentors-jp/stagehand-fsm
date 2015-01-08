@@ -98,6 +98,12 @@ class StateMachine implements StateMachineInterface, \Serializable
         foreach (unserialize($serialized) as $name => $value) {
             if ($name == 'states') {
                 $this->stateCollection = new StateCollection($value);
+            } elseif ($name == 'currentStateID') {
+                $this->currentStateId = $value;
+            } elseif ($name == 'previousStateID') {
+                $this->previousStateId = $value;
+            } elseif ($name == 'stateMachineID') {
+                $this->stateMachineId = $value;
             } else {
                 if (property_exists($this, $name)) {
                     $this->$name = $value;
