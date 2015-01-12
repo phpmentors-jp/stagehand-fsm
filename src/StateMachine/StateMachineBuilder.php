@@ -37,7 +37,7 @@ class StateMachineBuilder
      */
     public function __construct($stateMachineId = null)
     {
-        if ($stateMachineId instanceof StateMachine) {
+        if ($stateMachineId instanceof StateMachineInterface) {
             $this->stateMachine = $stateMachineId;
         } else {
             $this->stateMachine = new StateMachine($stateMachineId);

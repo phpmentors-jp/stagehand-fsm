@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2013 KUBO Atsuhiro <kubo@iteman.jp>,
+ * Copyright (c) 2013, 2015 KUBO Atsuhiro <kubo@iteman.jp>,
  * All rights reserved.
  *
  * This file is part of Stagehand_FSM.
@@ -156,7 +156,7 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function setsTheStateMachineObject()
     {
-        $stateMachine1 = \Phake::mock('Stagehand\FSM\StateMachine\StateMachine');
+        $stateMachine1 = \Phake::mock('Stagehand\FSM\StateMachine\StateMachineInterface');
         $stateMachineBuilder = new StateMachineBuilder($stateMachine1);
         $stateMachine2 = $stateMachineBuilder->getStateMachine();
 
