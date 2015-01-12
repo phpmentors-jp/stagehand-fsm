@@ -31,19 +31,31 @@ class StateMachine implements StateMachineInterface, \Serializable
 {
     /**
      * @var string
+     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
      */
-    private $currentStateId;
+    protected $currentStateID;
 
     /**
      * @var string
      */
-    private $previousStateId;
+    protected $currentStateId;
+
+    /**
+     * @var string
+     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
+     */
+    protected $previousStateID;
+
+    /**
+     * @var string
+     */
+    protected $previousStateId;
 
     /**
      * @var array
      * @deprecated Deprecated since version 2.2.0, to be removed in 3.0.0.
      */
-    private $states = array();
+    protected $states = array();
 
     /**
      * @var StateCollection
@@ -54,7 +66,13 @@ class StateMachine implements StateMachineInterface, \Serializable
     /**
      * @var string
      */
-    private $stateMachineId;
+    protected $stateMachineId;
+
+    /**
+     * @var string
+     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
+     */
+    protected $stateMachineID;
 
     /**
      * @var mixed
@@ -64,7 +82,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     /**
      * @var array
      */
-    private $eventQueue = array();
+    protected $eventQueue = array();
 
     /**
      * @var EventDispatcherInterface
@@ -96,19 +114,33 @@ class StateMachine implements StateMachineInterface, \Serializable
     public function unserialize($serialized)
     {
         foreach (unserialize($serialized) as $name => $value) {
-            if ($name == 'states') {
-                $this->stateCollection = new StateCollection($value);
-            } elseif ($name == 'currentStateID') {
-                $this->currentStateId = $value;
-            } elseif ($name == 'previousStateID') {
-                $this->previousStateId = $value;
-            } elseif ($name == 'stateMachineID') {
-                $this->stateMachineId = $value;
-            } else {
-                if (property_exists($this, $name)) {
-                    $this->$name = $value;
-                }
+            if (property_exists($this, $name)) {
+                $this->$name = $value;
             }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.2.0
+     */
+    public function __wakeup()
+    {
+        if (count($this->states) > 0) {
+            $this->stateCollection = new StateCollection($this->states);
+        }
+
+        if ($this->currentStateID !== null) {
+            $this->currentStateId = $this->currentStateID;
+        }
+
+        if ($this->previousStateID !== null) {
+            $this->previousStateId = $this->previousStateID;
+        }
+
+        if ($this->stateMachineID !== null) {
+            $this->stateMachineId = $this->stateMachineID;
         }
     }
 

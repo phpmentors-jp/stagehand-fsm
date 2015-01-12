@@ -21,23 +21,29 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
 {
     /**
      * @var string
+     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
      */
-    private $eventId;
+    protected $eventID;
+
+    /**
+     * @var string
+     */
+    protected $eventId;
 
     /**
      * @var StateInterface
      */
-    private $nextState;
+    protected $nextState;
 
     /**
      * @var callback
      */
-    private $action;
+    protected $action;
 
     /**
      * @var callback
      */
-    private $guard;
+    protected $guard;
 
     /**
      * {@inheritDoc}
@@ -57,13 +63,21 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     public function unserialize($serialized)
     {
         foreach (unserialize($serialized) as $name => $value) {
-            if ($name == 'eventID') {
-                $this->eventId = $value;
-            } else {
-                if (property_exists($this, $name)) {
-                    $this->$name = $value;
-                }
+            if (property_exists($this, $name)) {
+                $this->$name = $value;
             }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since Method available since Release 2.2.0
+     */
+    public function __wakeup()
+    {
+        if ($this->eventID !== null) {
+            $this->eventId = $this->eventID;
         }
     }
 

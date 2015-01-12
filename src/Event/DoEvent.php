@@ -20,7 +20,7 @@ class DoEvent implements EventInterface
     /**
      * @var callback
      */
-    private $action;
+    protected $action;
 
     /**
      * @since Method available since Release 2.1.0
