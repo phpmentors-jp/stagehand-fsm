@@ -49,20 +49,10 @@ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "locked"
 
 `Stagehand_FSM` can be installed using [Composer](http://getcomposer.org/).
 
-First, add the dependency to `piece/stagehand-fsm` into your `composer.json` file as the following:
+Add the dependency to `piece/stagehand-fsm` into your `composer.json` file as the following:
 
-```json
-{
-    "require": {
-        "piece/stagehand-fsm": "~2.3@dev"
-    }
-}
 ```
-
-Second, update your dependencies as the following:
-
-```console
-composer update piece/stagehand-fsm
+composer require piece/stagehand-fsm "~2.3@dev"
 ```
 
 ## Support
