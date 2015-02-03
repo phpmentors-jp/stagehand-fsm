@@ -54,7 +54,7 @@ First, add the dependency to `piece/stagehand-fsm` into your `composer.json` fil
 ```json
 {
     "require": {
-        "piece/stagehand-fsm": "~2.2@dev"
+        "piece/stagehand-fsm": "2.2.*"
     }
 }
 ```
