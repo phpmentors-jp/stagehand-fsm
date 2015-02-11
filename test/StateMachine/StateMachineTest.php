@@ -445,6 +445,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since Method available since Release 2.2.0
      */
     public function migratesFromAStateMachine20()
     {
