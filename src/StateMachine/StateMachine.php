@@ -284,6 +284,10 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function queueEvent($eventId)
     {
+        if (!$this->active) {
+            throw new StateMachineNotStartedException('The state machine is not started yet.');
+        }
+
         $this->eventQueue[] = $eventId;
     }
 

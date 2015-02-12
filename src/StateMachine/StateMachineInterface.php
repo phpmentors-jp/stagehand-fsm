@@ -102,7 +102,8 @@ interface StateMachineInterface extends EntityInterface
     /**
      * Queues an event to the event queue.
      *
-     * @param string $eventId
+     * @param  string                          $eventId
+     * @throws StateMachineNotStartedException
      */
     public function queueEvent($eventId);
 }
