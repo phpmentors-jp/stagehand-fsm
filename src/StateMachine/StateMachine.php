@@ -251,7 +251,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     public function triggerEvent($eventId)
     {
         if (!$this->active) {
-            throw new StateMachineNotStartedException('The state machine is not started yet.');
+            throw $this->createStateMachineNotStartedException();
         }
 
         $this->queueEvent($eventId);
@@ -285,7 +285,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     public function queueEvent($eventId)
     {
         if (!$this->active) {
-            throw new StateMachineNotStartedException('The state machine is not started yet.');
+            throw $this->createStateMachineNotStartedException();
         }
 
         $this->eventQueue[] = $eventId;
@@ -417,5 +417,14 @@ class StateMachine implements StateMachineInterface, \Serializable
     private function createTransitionLog(StateInterface $toState, StateInterface $fromState = null, TransitionEventInterface $event = null)
     {
         return new TransitionLog($toState, $fromState, $event, new \DateTime());
+    }
+
+    /**
+     * @return StateMachineNotStartedException
+     * @since Method available since Release 2.3.0
+     */
+    private function createStateMachineNotStartedException()
+    {
+        return new StateMachineNotStartedException('The state machine is not started yet.');
     }
 }
