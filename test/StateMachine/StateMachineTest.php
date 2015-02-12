@@ -477,4 +477,38 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
         $this->assertThat($stateMachine20->getCurrentState()->getStateId(), $this->equalTo(StateInterface::STATE_FINAL));
     }
+
+    /**
+     * @test
+     * @since Method available since Release 2.3.0
+     */
+    public function logsTransitions()
+    {
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->start();
+        $stateMachine->triggerEvent('next');
+        $stateMachine->triggerEvent('valid');
+        $stateMachine->triggerEvent('next');
+        $stateMachine->triggerEvent('next');
+        $stateMachine->triggerEvent('next');
+        $transitionLogs = $stateMachine->getTransitionLogs();
+
+        $expectedTransitionLogs = array(
+            array(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, 'Input'),
+            array('Input', 'next', 'Validation'),
+            array('Validation', 'valid', 'Confirmation'),
+            array('Confirmation', 'next', 'Registration'),
+            array('Registration', 'next', 'Success'),
+            array('Success', 'next', StateInterface::STATE_FINAL),
+        );
+
+        $this->assertThat(count($transitionLogs), $this->equalTo(count($expectedTransitionLogs)));
+
+        for ($i = 0; $i < count($transitionLogs); ++$i) {
+            $this->assertThat($transitionLogs[$i]->getFromState()->getStateId(), $this->equalTo($expectedTransitionLogs[$i][0]));
+            $this->assertThat($transitionLogs[$i]->getEvent()->getEventId(), $this->equalTo($expectedTransitionLogs[$i][1]));
+            $this->assertThat($transitionLogs[$i]->getToState()->getStateId(), $this->equalTo($expectedTransitionLogs[$i][2]));
+            $this->assertThat($transitionLogs[$i]->getTransitionDate(), $this->isInstanceOf('DateTime'));
+        }
+    }
 }

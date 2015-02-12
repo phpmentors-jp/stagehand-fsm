@@ -37,6 +37,7 @@ class StateMachine implements StateMachineInterface, \Serializable
 
     /**
      * @var string
+     * @deprecated Deprecated since version 2.3.0, to be removed in 3.0.0.
      */
     protected $currentStateId;
 
@@ -48,6 +49,7 @@ class StateMachine implements StateMachineInterface, \Serializable
 
     /**
      * @var string
+     * @deprecated Deprecated since version 2.3.0, to be removed in 3.0.0.
      */
     protected $previousStateId;
 
@@ -91,6 +93,18 @@ class StateMachine implements StateMachineInterface, \Serializable
     private $eventDispatcher;
 
     /**
+     * @var bool
+     * @since Property available since Release 2.3.0
+     */
+    private $active = false;
+
+    /**
+     * @var TransitionLog[]
+     * @since Property available since Release 2.3.0
+     */
+    private $transitionLogs = array();
+
+    /**
      * {@inheritDoc}
      *
      * @since Method available since Release 2.2.0
@@ -98,11 +112,11 @@ class StateMachine implements StateMachineInterface, \Serializable
     public function serialize()
     {
         return serialize(array(
-            'currentStateId' => $this->currentStateId,
-            'previousStateId' => $this->previousStateId,
             'stateCollection' => $this->stateCollection,
             'stateMachineId' => $this->stateMachineId,
             'eventQueue' => $this->eventQueue,
+            'transitionLogs' => $this->transitionLogs,
+            'active' => $this->active,
         ));
     }
 
@@ -132,11 +146,27 @@ class StateMachine implements StateMachineInterface, \Serializable
         }
 
         if ($this->currentStateID !== null) {
-            $this->currentStateId = $this->currentStateID;
+            $currentState = $this->getState($this->currentStateID);
+        } elseif ($this->currentStateId !== null) {
+            $currentState = $this->getState($this->currentStateId);
+        } else {
+            $currentState = null;
         }
 
-        if ($this->previousStateID !== null) {
-            $this->previousStateId = $this->previousStateID;
+        if ($currentState !== null) {
+            $this->active = true;
+
+            if ($this->previousStateID !== null) {
+                $previousState = $this->getState($this->previousStateID);
+            } elseif ($this->previousStateId !== null) {
+                $previousState = $this->getState($this->previousStateId);
+            } else {
+                $previousState = null;
+            }
+
+            if ($previousState !== null) {
+                $this->transitionLogs[] = $this->createTransitionLog($currentState, $previousState);
+            }
         }
 
         if ($this->stateMachineID !== null) {
@@ -167,11 +197,11 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function start()
     {
-        if ($this->getCurrentState() !== null) {
+        if ($this->active) {
             throw new StateMachineAlreadyStartedException('The state machine is already started.');
         }
 
-        $this->initialize();
+        $this->active = true;
         $this->triggerEvent(EventInterface::EVENT_START);
     }
 
@@ -180,11 +210,15 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function getCurrentState()
     {
-        if ($this->currentStateId === null) {
+        if (!$this->active) {
             return null;
         }
 
-        return $this->getState($this->currentStateId);
+        if (count($this->transitionLogs) == 0) {
+            return $this->getState(StateInterface::STATE_INITIAL);
+        }
+
+        return $this->transitionLogs[count($this->transitionLogs) - 1]->getToState();
     }
 
     /**
@@ -192,11 +226,15 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function getPreviousState()
     {
-        if ($this->previousStateId === null) {
+        if (!$this->active) {
             return null;
         }
 
-        return $this->getState($this->previousStateId);
+        if (count($this->transitionLogs) == 0) {
+            return null;
+        }
+
+        return $this->transitionLogs[count($this->transitionLogs) - 1]->getFromState();
     }
 
     /**
@@ -215,11 +253,11 @@ class StateMachine implements StateMachineInterface, \Serializable
         $this->queueEvent($eventId);
 
         do {
-            if ($this->getCurrentState() === null) {
+            if (!$this->active) {
                 throw new StateMachineNotStartedException('The state machine is not started yet.');
             }
 
-            if ($this->currentStateId == StateInterface::STATE_FINAL) {
+            if ($this->getCurrentState()->getStateId() == StateInterface::STATE_FINAL) {
                 throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
             }
 
@@ -293,6 +331,23 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
+     * @return TransitionLog[]
+     */
+    public function getTransitionLogs()
+    {
+        return $this->transitionLogs;
+    }
+
+    /**
+     * @return bool
+     * @since Method available since Release 2.3.0
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
      * Transitions to the next state.
      *
      * @param  TransitionEventInterface $event
@@ -311,24 +366,13 @@ class StateMachine implements StateMachineInterface, \Serializable
         }
         $this->invokeAction($event);
 
-        $this->previousStateId = $this->currentStateId;
-        $this->currentStateId = $event->getNextState()->getStateId();
+        $this->transitionLogs[] = $this->createTransitionLog($event->getNextState(), $this->getCurrentState(), $event);
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $this->getCurrentState(), $entryEvent));
         }
         $this->invokeAction($entryEvent);
-    }
-
-    /**
-     * Initializes the state machine.
-     */
-    private function initialize()
-    {
-        $this->currentStateId = StateInterface::STATE_INITIAL;
-        $this->previousStateId = null;
-        $this->eventQueue = array();
     }
 
     /**
@@ -358,5 +402,16 @@ class StateMachine implements StateMachineInterface, \Serializable
         if ($event !== null && $event->getAction() !== null) {
             call_user_func($event->getAction(), $event, $this->getPayload(), $this);
         }
+    }
+
+    /**
+     * @param  StateInterface           $toState
+     * @param  StateInterface           $fromState
+     * @param  TransitionEventInterface $event
+     * @return TransitionLog
+     */
+    private function createTransitionLog(StateInterface $toState, StateInterface $fromState = null, TransitionEventInterface $event = null)
+    {
+        return new TransitionLog($toState, $fromState, $event, new \DateTime());
     }
 }
