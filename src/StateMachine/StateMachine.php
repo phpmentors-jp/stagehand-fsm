@@ -250,13 +250,13 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function triggerEvent($eventId)
     {
+        if (!$this->active) {
+            throw new StateMachineNotStartedException('The state machine is not started yet.');
+        }
+
         $this->queueEvent($eventId);
 
         do {
-            if (!$this->active) {
-                throw new StateMachineNotStartedException('The state machine is not started yet.');
-            }
-
             if ($this->getCurrentState()->getStateId() == StateInterface::STATE_FINAL) {
                 throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
             }
