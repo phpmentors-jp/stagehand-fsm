@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
@@ -105,6 +106,12 @@ class StateMachine implements StateMachineInterface, \Serializable
     private $transitionLogs = array();
 
     /**
+     * @var array
+     * @since Property available since Release 2.3.0
+     */
+    private $transitionMap = array();
+
+    /**
      * {@inheritDoc}
      *
      * @since Method available since Release 2.2.0
@@ -117,6 +124,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             'eventQueue' => $this->eventQueue,
             'transitionLogs' => $this->transitionLogs,
             'active' => $this->active,
+            'transitionMap' => $this->transitionMap,
         ));
     }
 
@@ -143,6 +151,21 @@ class StateMachine implements StateMachineInterface, \Serializable
     {
         if (count($this->states) > 0) {
             $this->stateCollection = new StateCollection($this->states);
+        }
+
+        foreach ($this->stateCollection as $state) {
+            if ($state instanceof State) {
+                $stateClass = new \ReflectionClass($state);
+                $eventCollectionProperty = $stateClass->getProperty('eventCollection');
+                $eventCollectionProperty->setAccessible(true);
+                $eventCollection = $eventCollectionProperty->getValue($state);
+                $eventCollectionProperty->setAccessible(false);
+                foreach ($eventCollection as $event) {
+                    if ($event instanceof TransitionEventInterface) {
+                        $this->transitionMap[$state->getStateId()][$event->getEventId()] = $event->getNextState();
+                    }
+                }
+            }
         }
 
         if ($this->currentStateID !== null) {
@@ -332,6 +355,8 @@ class StateMachine implements StateMachineInterface, \Serializable
         $event->setAction($action);
         $event->setGuard($guard);
         $state->addTransitionEvent($event);
+
+        $this->transitionMap[$state->getStateId()][$event->getEventId()] = $nextState;
     }
 
     /**
@@ -370,7 +395,7 @@ class StateMachine implements StateMachineInterface, \Serializable
         }
         $this->invokeAction($event);
 
-        $this->transitionLogs[] = $this->createTransitionLog($event->getNextState(), $this->getCurrentState(), $event);
+        $this->transitionLogs[] = $this->createTransitionLog($this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()], $this->getCurrentState(), $event);
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
         if ($this->eventDispatcher !== null) {

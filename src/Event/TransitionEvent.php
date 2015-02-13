@@ -52,7 +52,11 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
      */
     public function serialize()
     {
-        return serialize(get_object_vars($this));
+        return serialize(array(
+            'eventId' => $this->eventId,
+            'action' => $this->action,
+            'guard' => $this->guard,
+        ));
     }
 
     /**
