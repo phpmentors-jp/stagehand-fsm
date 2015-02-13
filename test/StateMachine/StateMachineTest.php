@@ -452,6 +452,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         return array(
             array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/StateMachine20.txt'))),
             array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/StateMachine22.txt'))),
+            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/StateMachine23.txt'))),
         );
     }
 
