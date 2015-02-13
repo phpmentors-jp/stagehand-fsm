@@ -148,6 +148,8 @@ class StateMachine implements StateMachineInterface, \Serializable
             $currentState = null;
         }
 
+        $this->rebuildTransitionEvents($this->stateCollection);
+
         if ($currentState !== null) {
             $this->active = true;
 
@@ -477,6 +479,34 @@ class StateMachine implements StateMachineInterface, \Serializable
                 foreach ($eventCollection as $event) {
                     if ($event instanceof TransitionEventInterface) {
                         $this->transitionMap[$state->getStateId()][$event->getEventId()] = $event->getNextState();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param StateCollection $stateCollection
+     * @since Method available since Release 2.3.0
+     */
+    private function rebuildTransitionEvents(StateCollection $stateCollection)
+    {
+        foreach ($stateCollection as $state) {
+            if ($state instanceof State) {
+                $stateClass = new \ReflectionClass($state);
+                $eventCollectionProperty = $stateClass->getProperty('eventCollection');
+                $eventCollectionProperty->setAccessible(true);
+                $eventCollection = $eventCollectionProperty->getValue($state);
+                $eventCollectionProperty->setAccessible(false);
+                foreach ($eventCollection as $event) {
+                    if ($event instanceof TransitionEventInterface) {
+                        if ($event->getNextState() === null) {
+                            $eventClass = new \ReflectionClass($event);
+                            $nextStateProperty = $eventClass->getProperty('nextState');
+                            $nextStateProperty->setAccessible(true);
+                            $nextStateProperty->setValue($event, $this->transitionMap[$state->getStateId()][$event->getEventId()]);
+                            $nextStateProperty->setAccessible(false);
+                        }
                     }
                 }
             }

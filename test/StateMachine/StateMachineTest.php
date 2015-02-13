@@ -469,6 +469,10 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('input'));
         $this->assertThat($stateMachine->getPreviousState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
         $this->assertThat($stateMachine->getState(StateInterface::STATE_INITIAL)->getEvent(EventInterface::EVENT_START), $this->logicalNot($this->isNull()));
+        $this->assertThat($stateMachine->getState(StateInterface::STATE_INITIAL)->getEvent(EventInterface::EVENT_START)->getNextState(), $this->logicalNot($this->isNull()));
+        $this->assertThat($stateMachine->getState('input')->getEvent('confirmation')->getNextState(), $this->logicalNot($this->isNull()));
+        $this->assertThat($stateMachine->getState('confirmation')->getEvent('success')->getNextState(), $this->logicalNot($this->isNull()));
+        $this->assertThat($stateMachine->getState('success')->getEvent(StateInterface::STATE_FINAL)->getNextState(), $this->logicalNot($this->isNull()));
 
         $stateMachine->triggerEvent('confirmation');
 
