@@ -140,6 +140,41 @@ class StateMachine implements StateMachineInterface, \Serializable
                 $this->$name = $value;
             }
         }
+
+        if ($this->currentStateId !== null) {
+            $currentState = $this->getState($this->currentStateId);
+
+            foreach ($this->stateCollection as $state) {
+                if ($state instanceof State) {
+                    $stateClass = new \ReflectionClass($state);
+                    $eventCollectionProperty = $stateClass->getProperty('eventCollection');
+                    $eventCollectionProperty->setAccessible(true);
+                    $eventCollection = $eventCollectionProperty->getValue($state);
+                    $eventCollectionProperty->setAccessible(false);
+                    foreach ($eventCollection as $event) {
+                        if ($event instanceof TransitionEventInterface) {
+                            $this->transitionMap[$state->getStateId()][$event->getEventId()] = $event->getNextState();
+                        }
+                    }
+                }
+            }
+        } else {
+            $currentState = null;
+        }
+
+        if ($currentState !== null) {
+            $this->active = true;
+
+            if ($this->previousStateId !== null) {
+                $previousState = $this->getState($this->previousStateId);
+            } else {
+                $previousState = null;
+            }
+
+            if ($previousState !== null) {
+                $this->transitionLogs[] = $this->createTransitionLog($currentState, $previousState);
+            }
+        }
     }
 
     /**
