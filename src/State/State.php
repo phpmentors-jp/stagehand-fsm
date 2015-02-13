@@ -42,7 +42,7 @@ class State implements TransitionalStateInterface, \Serializable
      * @var EventCollection
      * @since Property available since Release 2.2.0
      */
-    private $eventCollection;
+    protected $eventCollection;
 
     /**
      * {@inheritDoc}
