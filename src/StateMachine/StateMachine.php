@@ -143,21 +143,7 @@ class StateMachine implements StateMachineInterface, \Serializable
 
         if ($this->currentStateId !== null) {
             $currentState = $this->getState($this->currentStateId);
-
-            foreach ($this->stateCollection as $state) {
-                if ($state instanceof State) {
-                    $stateClass = new \ReflectionClass($state);
-                    $eventCollectionProperty = $stateClass->getProperty('eventCollection');
-                    $eventCollectionProperty->setAccessible(true);
-                    $eventCollection = $eventCollectionProperty->getValue($state);
-                    $eventCollectionProperty->setAccessible(false);
-                    foreach ($eventCollection as $event) {
-                        if ($event instanceof TransitionEventInterface) {
-                            $this->transitionMap[$state->getStateId()][$event->getEventId()] = $event->getNextState();
-                        }
-                    }
-                }
-            }
+            $this->buildTransitionMapFromStates($this->stateCollection);
         } else {
             $currentState = null;
         }
@@ -188,20 +174,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             $this->stateCollection = new StateCollection($this->states);
         }
 
-        foreach ($this->stateCollection as $state) {
-            if ($state instanceof State) {
-                $stateClass = new \ReflectionClass($state);
-                $eventCollectionProperty = $stateClass->getProperty('eventCollection');
-                $eventCollectionProperty->setAccessible(true);
-                $eventCollection = $eventCollectionProperty->getValue($state);
-                $eventCollectionProperty->setAccessible(false);
-                foreach ($eventCollection as $event) {
-                    if ($event instanceof TransitionEventInterface) {
-                        $this->transitionMap[$state->getStateId()][$event->getEventId()] = $event->getNextState();
-                    }
-                }
-            }
-        }
+        $this->buildTransitionMapFromStates($this->stateCollection);
 
         if ($this->currentStateID !== null) {
             $currentState = $this->getState($this->currentStateID);
@@ -486,5 +459,27 @@ class StateMachine implements StateMachineInterface, \Serializable
     private function createStateMachineNotStartedException()
     {
         return new StateMachineNotStartedException('The state machine is not started yet.');
+    }
+
+    /**
+     * @param StateCollection $stateCollection
+     * @since Method available since Release 2.3.0
+     */
+    private function buildTransitionMapFromStates(StateCollection $stateCollection)
+    {
+        foreach ($stateCollection as $state) {
+            if ($state instanceof State) {
+                $stateClass = new \ReflectionClass($state);
+                $eventCollectionProperty = $stateClass->getProperty('eventCollection');
+                $eventCollectionProperty->setAccessible(true);
+                $eventCollection = $eventCollectionProperty->getValue($state);
+                $eventCollectionProperty->setAccessible(false);
+                foreach ($eventCollection as $event) {
+                    if ($event instanceof TransitionEventInterface) {
+                        $this->transitionMap[$state->getStateId()][$event->getEventId()] = $event->getNextState();
+                    }
+                }
+            }
+        }
     }
 }
