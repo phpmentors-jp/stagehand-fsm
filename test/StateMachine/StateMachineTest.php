@@ -444,14 +444,23 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @test
-     * @since Method available since Release 2.2.0
+     * @return array
      */
-    public function migratesFromAStateMachine20()
+    public function provideUnserializedStateMachines()
     {
-        /* @var $stateMachine20 StateMachineInterface */
-        $stateMachine20 = unserialize('O:39:"Stagehand\FSM\StateMachine\StateMachine":5:{s:17:" * currentStateID";s:5:"input";s:18:" * previousStateID";s:11:"__INITIAL__";s:9:" * states";a:5:{s:5:"input";O:25:"Stagehand\FSM\State\State":2:{s:10:" * stateID";s:5:"input";s:9:" * events";a:4:{s:9:"__ENTRY__";O:30:"Stagehand\FSM\Event\EntryEvent":1:{s:9:" * action";N;}s:8:"__EXIT__";O:29:"Stagehand\FSM\Event\ExitEvent":1:{s:9:" * action";N;}s:6:"__DO__";O:27:"Stagehand\FSM\Event\DoEvent":1:{s:9:" * action";N;}s:12:"confirmation";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:12:"confirmation";s:12:" * nextState";O:25:"Stagehand\FSM\State\State":2:{s:10:" * stateID";s:12:"confirmation";s:9:" * events";a:5:{s:9:"__ENTRY__";O:30:"Stagehand\FSM\Event\EntryEvent":1:{s:9:" * action";N;}s:8:"__EXIT__";O:29:"Stagehand\FSM\Event\ExitEvent":1:{s:9:" * action";N;}s:6:"__DO__";O:27:"Stagehand\FSM\Event\DoEvent":1:{s:9:" * action";N;}s:7:"success";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:7:"success";s:12:" * nextState";O:25:"Stagehand\FSM\State\State":2:{s:10:" * stateID";s:7:"success";s:9:" * events";a:4:{s:9:"__ENTRY__";O:30:"Stagehand\FSM\Event\EntryEvent":1:{s:9:" * action";N;}s:8:"__EXIT__";O:29:"Stagehand\FSM\Event\ExitEvent":1:{s:9:" * action";N;}s:6:"__DO__";O:27:"Stagehand\FSM\Event\DoEvent":1:{s:9:" * action";N;}s:9:"__FINAL__";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:9:"__FINAL__";s:12:" * nextState";O:30:"Stagehand\FSM\State\FinalState":0:{}s:9:" * action";N;s:8:" * guard";N;}}}s:9:" * action";N;s:8:" * guard";N;}s:5:"input";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:5:"input";s:12:" * nextState";r:5;s:9:" * action";N;s:8:" * guard";N;}}}s:9:" * action";N;s:8:" * guard";N;}}}s:12:"confirmation";r:16;s:7:"success";r:27;s:11:"__INITIAL__";O:32:"Stagehand\FSM\State\InitialState":1:{s:18:" * transitionEvent";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:9:"__START__";s:12:" * nextState";r:5;s:9:" * action";N;s:8:" * guard";N;}}s:9:"__FINAL__";r:38;}s:17:" * stateMachineID";s:12:"registration";s:13:" * eventQueue";a:0:{}}');
+        return array(
+            array(unserialize('O:39:"Stagehand\FSM\StateMachine\StateMachine":5:{s:17:" * currentStateID";s:5:"input";s:18:" * previousStateID";s:11:"__INITIAL__";s:9:" * states";a:5:{s:5:"input";O:25:"Stagehand\FSM\State\State":2:{s:10:" * stateID";s:5:"input";s:9:" * events";a:4:{s:9:"__ENTRY__";O:30:"Stagehand\FSM\Event\EntryEvent":1:{s:9:" * action";N;}s:8:"__EXIT__";O:29:"Stagehand\FSM\Event\ExitEvent":1:{s:9:" * action";N;}s:6:"__DO__";O:27:"Stagehand\FSM\Event\DoEvent":1:{s:9:" * action";N;}s:12:"confirmation";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:12:"confirmation";s:12:" * nextState";O:25:"Stagehand\FSM\State\State":2:{s:10:" * stateID";s:12:"confirmation";s:9:" * events";a:5:{s:9:"__ENTRY__";O:30:"Stagehand\FSM\Event\EntryEvent":1:{s:9:" * action";N;}s:8:"__EXIT__";O:29:"Stagehand\FSM\Event\ExitEvent":1:{s:9:" * action";N;}s:6:"__DO__";O:27:"Stagehand\FSM\Event\DoEvent":1:{s:9:" * action";N;}s:7:"success";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:7:"success";s:12:" * nextState";O:25:"Stagehand\FSM\State\State":2:{s:10:" * stateID";s:7:"success";s:9:" * events";a:4:{s:9:"__ENTRY__";O:30:"Stagehand\FSM\Event\EntryEvent":1:{s:9:" * action";N;}s:8:"__EXIT__";O:29:"Stagehand\FSM\Event\ExitEvent":1:{s:9:" * action";N;}s:6:"__DO__";O:27:"Stagehand\FSM\Event\DoEvent":1:{s:9:" * action";N;}s:9:"__FINAL__";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:9:"__FINAL__";s:12:" * nextState";O:30:"Stagehand\FSM\State\FinalState":0:{}s:9:" * action";N;s:8:" * guard";N;}}}s:9:" * action";N;s:8:" * guard";N;}s:5:"input";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:5:"input";s:12:" * nextState";r:5;s:9:" * action";N;s:8:" * guard";N;}}}s:9:" * action";N;s:8:" * guard";N;}}}s:12:"confirmation";r:16;s:7:"success";r:27;s:11:"__INITIAL__";O:32:"Stagehand\FSM\State\InitialState":1:{s:18:" * transitionEvent";O:35:"Stagehand\FSM\Event\TransitionEvent":4:{s:10:" * eventID";s:9:"__START__";s:12:" * nextState";r:5;s:9:" * action";N;s:8:" * guard";N;}}s:9:"__FINAL__";r:38;}s:17:" * stateMachineID";s:12:"registration";s:13:" * eventQueue";a:0:{}}')),
+        );
+    }
 
+    /**
+     * @since Method available since Release 2.2.0
+     *
+     * @test
+     * @dataProvider provideUnserializedStateMachines
+     */
+    public function migratesFromAStateMachine20(StateMachine $stateMachine20)
+    {
         $this->assertThat($stateMachine20->getStateMachineId(), $this->equalTo('registration'));
         $this->assertThat($stateMachine20->getCurrentState()->getStateId(), $this->equalTo('input'));
         $this->assertThat($stateMachine20->getPreviousState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
