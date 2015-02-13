@@ -462,32 +462,32 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provideUnserializedStateMachines
      */
-    public function migratesFromAStateMachine20(StateMachine $stateMachine20)
+    public function migratesAStateMachine(StateMachine $stateMachine)
     {
-        $this->assertThat($stateMachine20->getStateMachineId(), $this->equalTo('registration'));
-        $this->assertThat($stateMachine20->getCurrentState()->getStateId(), $this->equalTo('input'));
-        $this->assertThat($stateMachine20->getPreviousState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
-        $this->assertThat($stateMachine20->getState(StateInterface::STATE_INITIAL)->getEvent(EventInterface::EVENT_START), $this->logicalNot($this->isNull()));
+        $this->assertThat($stateMachine->getStateMachineId(), $this->equalTo('registration'));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('input'));
+        $this->assertThat($stateMachine->getPreviousState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
+        $this->assertThat($stateMachine->getState(StateInterface::STATE_INITIAL)->getEvent(EventInterface::EVENT_START), $this->logicalNot($this->isNull()));
 
-        $stateMachine20->triggerEvent('confirmation');
+        $stateMachine->triggerEvent('confirmation');
 
-        $this->assertThat($stateMachine20->getCurrentState()->getStateId(), $this->equalTo('confirmation'));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('confirmation'));
 
-        $stateMachine20->triggerEvent('input');
+        $stateMachine->triggerEvent('input');
 
-        $this->assertThat($stateMachine20->getCurrentState()->getStateId(), $this->equalTo('input'));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('input'));
 
-        $stateMachine20->triggerEvent('confirmation');
+        $stateMachine->triggerEvent('confirmation');
 
-        $this->assertThat($stateMachine20->getCurrentState()->getStateId(), $this->equalTo('confirmation'));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('confirmation'));
 
-        $stateMachine20->triggerEvent('success');
+        $stateMachine->triggerEvent('success');
 
-        $this->assertThat($stateMachine20->getCurrentState()->getStateId(), $this->equalTo('success'));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('success'));
 
-        $stateMachine20->triggerEvent(StateInterface::STATE_FINAL);
+        $stateMachine->triggerEvent(StateInterface::STATE_FINAL);
 
-        $this->assertThat($stateMachine20->getCurrentState()->getStateId(), $this->equalTo(StateInterface::STATE_FINAL));
+        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo(StateInterface::STATE_FINAL));
     }
 
     /**
