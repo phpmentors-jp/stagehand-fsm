@@ -449,10 +449,12 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function provideUnserializedStateMachines()
     {
+        $phpVersion = 'php'.PHP_MAJOR_VERSION.PHP_MINOR_VERSION;
+
         return array(
-            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/StateMachine20.txt'))),
-            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/StateMachine22.txt'))),
-            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/StateMachine23.txt'))),
+            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/'.$phpVersion.'/StateMachine20.ser'))),
+            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/'.$phpVersion.'/StateMachine22.ser'))),
+            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/'.$phpVersion.'/StateMachine23.ser'))),
         );
     }
 
