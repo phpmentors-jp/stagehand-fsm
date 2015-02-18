@@ -38,7 +38,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     /**
      * @param EventInterface $event
      * @param callback
-     * @param StateMachine $stateMachine
+     * @param StateMachine   $stateMachine
      * @since Method available since Release 2.0.0
      */
     public function logActionCall(EventInterface $event, $payload, StateMachine $stateMachine)

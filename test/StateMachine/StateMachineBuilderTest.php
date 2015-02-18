@@ -13,8 +13,6 @@
 namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
-use Stagehand\FSM\StateMachine\ActionNotCallableException;
-use Stagehand\FSM\StateMachine\StateNotFoundException;
 
 /**
  * @since Class available since Release 2.0.0
@@ -29,7 +27,7 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
         return array(
             array('setEntryAction'),
             array('setExitAction'),
-            array('setActivity')
+            array('setActivity'),
         );
     }
 
