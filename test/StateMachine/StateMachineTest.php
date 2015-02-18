@@ -449,6 +449,10 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function provideUnserializedStateMachines()
     {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('unserialize() will raise an error "Notice: Unable to unserialize: ...Id x out of range. in ..."');
+        }
+
         $phpVersion = 'php'.PHP_MAJOR_VERSION.PHP_MINOR_VERSION;
 
         return array(
@@ -467,10 +471,6 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function migratesAStateMachine(StateMachine $stateMachine)
     {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('unserialize() will raise an error "Notice: Unable to unserialize: ...Id x out of range. in ..."');
-        }
-
         $this->assertThat($stateMachine->getStateMachineId(), $this->equalTo('registration'));
         $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('input'));
         $this->assertThat($stateMachine->getPreviousState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
