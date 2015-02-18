@@ -39,6 +39,7 @@ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "locked"
 * Entry actions
 * Exit actions
 * Transition actions
+* Transition logging
 * Guards
 * Initial pseudo state
 * Final state
