@@ -53,7 +53,7 @@ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "locked"
 Add the dependency to `piece/stagehand-fsm` into your `composer.json` file as the following:
 
 ```
-composer require piece/stagehand-fsm "~2.3@dev"
+composer require piece/stagehand-fsm "2.3.*"
 ```
 
 ## Support
