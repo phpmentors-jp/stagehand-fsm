@@ -108,4 +108,11 @@ interface StateMachineInterface extends EntityInterface
      * @throws StateMachineNotStartedException
      */
     public function queueEvent($eventId);
+
+    /**
+     * @return bool
+     *
+     * @since Method available since Release 2.4.0
+     */
+    public function isActive();
 }
