@@ -19,7 +19,7 @@
     "require-dev": {
         "phake/phake": "~1.0",
         "phpunit/phpunit": "~4.0",
-        "piece/stagehand-testrunner": "~4.0"
+        "piece/stagehand-testrunner": "~4.1@dev"
     },
     "autoload": {
         "psr-4": { "Stagehand\\FSM\\": "src/" }
