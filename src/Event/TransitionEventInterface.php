@@ -36,7 +36,7 @@ interface TransitionEventInterface extends EventInterface
     /**
      * Checks whether the event is connected to the final state or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEndEvent();
 }

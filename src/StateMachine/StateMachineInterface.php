@@ -13,7 +13,6 @@
 namespace Stagehand\FSM\StateMachine;
 
 use PHPMentors\DomainKata\Entity\EntityInterface;
-
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
@@ -47,7 +46,8 @@ interface StateMachineInterface extends EntityInterface
     /**
      * Gets the state according to the given ID.
      *
-     * @param  string         $stateId
+     * @param string $stateId
+     *
      * @return StateInterface
      */
     public function getState($stateId);
@@ -91,9 +91,10 @@ interface StateMachineInterface extends EntityInterface
 
     /**
      * Triggers an event in the current state.
-     * <i>Note: Do not call this method directly from actions.</i>
+     * <i>Note: Do not call this method directly from actions.</i>.
      *
-     * @param  string                               $eventId
+     * @param string $eventId
+     *
      * @throws StateMachineAlreadyShutdownException
      * @throws StateMachineNotStartedException
      */
@@ -102,7 +103,8 @@ interface StateMachineInterface extends EntityInterface
     /**
      * Queues an event to the event queue.
      *
-     * @param  string                          $eventId
+     * @param string $eventId
+     *
      * @throws StateMachineNotStartedException
      */
     public function queueEvent($eventId);

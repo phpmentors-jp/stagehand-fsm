@@ -12,10 +12,9 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Symfony\Component\EventDispatcher\Event;
-
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\StateInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @since Class available since Release 2.1.0

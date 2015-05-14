@@ -21,6 +21,7 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
 {
     /**
      * @var string
+     *
      * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
      */
     protected $eventID;

@@ -25,7 +25,8 @@ interface StateInterface extends EntityInterface
     /**
      * Gets the event according to the given ID.
      *
-     * @param  string          $eventId
+     * @param string $eventId
+     *
      * @return EventInterfacee
      */
     public function getEvent($eventId);
@@ -40,7 +41,7 @@ interface StateInterface extends EntityInterface
     /**
      * Checks whether the state is connected to the final state or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEndState();
 }

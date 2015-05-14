@@ -12,14 +12,13 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @link  http://en.wikipedia.org/wiki/Finite_state_machine
@@ -32,36 +31,42 @@ class StateMachine implements StateMachineInterface, \Serializable
 {
     /**
      * @var string
+     *
      * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
      */
     protected $currentStateID;
 
     /**
      * @var string
+     *
      * @deprecated Deprecated since version 2.3.0, to be removed in 3.0.0.
      */
     protected $currentStateId;
 
     /**
      * @var string
+     *
      * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
      */
     protected $previousStateID;
 
     /**
      * @var string
+     *
      * @deprecated Deprecated since version 2.3.0, to be removed in 3.0.0.
      */
     protected $previousStateId;
 
     /**
      * @var array
+     *
      * @deprecated Deprecated since version 2.2.0, to be removed in 3.0.0.
      */
     protected $states = array();
 
     /**
      * @var StateCollection
+     *
      * @since Property available since Release 2.2.0
      */
     private $stateCollection;
@@ -73,6 +78,7 @@ class StateMachine implements StateMachineInterface, \Serializable
 
     /**
      * @var string
+     *
      * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
      */
     protected $stateMachineID;
@@ -89,24 +95,28 @@ class StateMachine implements StateMachineInterface, \Serializable
 
     /**
      * @var EventDispatcherInterface
+     *
      * @since Property available since Release 2.1.0
      */
     private $eventDispatcher;
 
     /**
      * @var bool
+     *
      * @since Property available since Release 2.3.0
      */
     private $active = false;
 
     /**
      * @var TransitionLog[]
+     *
      * @since Property available since Release 2.3.0
      */
     private $transitionLogs = array();
 
     /**
      * @var array
+     *
      * @since Property available since Release 2.3.0
      */
     private $transitionMap = array();
@@ -218,6 +228,7 @@ class StateMachine implements StateMachineInterface, \Serializable
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
+     *
      * @since Method available since Release 2.1.0
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher = null)
@@ -379,6 +390,7 @@ class StateMachine implements StateMachineInterface, \Serializable
 
     /**
      * @return bool
+     *
      * @since Method available since Release 2.3.0
      */
     public function isActive()
@@ -389,7 +401,8 @@ class StateMachine implements StateMachineInterface, \Serializable
     /**
      * Transitions to the next state.
      *
-     * @param  TransitionEventInterface $event
+     * @param TransitionEventInterface $event
+     *
      * @throws StateNotFoundException
      */
     private function transition(TransitionEventInterface $event)
@@ -417,8 +430,10 @@ class StateMachine implements StateMachineInterface, \Serializable
     /**
      * Evaluates the guard for the given event.
      *
-     * @param  EventInterface $event
-     * @return boolean
+     * @param EventInterface $event
+     *
+     * @return bool
+     *
      * @since Method available since Release 2.0.0
      */
     private function evaluateGuard(TransitionEventInterface $event)
@@ -434,6 +449,7 @@ class StateMachine implements StateMachineInterface, \Serializable
      * Invokes the action for the given event.
      *
      * @param EventInterface $event
+     *
      * @since Method available since Release 2.0.0
      */
     private function invokeAction(EventInterface $event = null)
@@ -444,9 +460,10 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * @param  StateInterface           $toState
-     * @param  StateInterface           $fromState
-     * @param  TransitionEventInterface $event
+     * @param StateInterface           $toState
+     * @param StateInterface           $fromState
+     * @param TransitionEventInterface $event
+     *
      * @return TransitionLog
      */
     private function createTransitionLog(StateInterface $toState, StateInterface $fromState = null, TransitionEventInterface $event = null)
@@ -456,6 +473,7 @@ class StateMachine implements StateMachineInterface, \Serializable
 
     /**
      * @return StateMachineNotStartedException
+     *
      * @since Method available since Release 2.3.0
      */
     private function createStateMachineNotStartedException()
@@ -465,6 +483,7 @@ class StateMachine implements StateMachineInterface, \Serializable
 
     /**
      * @param StateCollection $stateCollection
+     *
      * @since Method available since Release 2.3.0
      */
     private function buildTransitionMapFromStates(StateCollection $stateCollection)
@@ -487,6 +506,7 @@ class StateMachine implements StateMachineInterface, \Serializable
 
     /**
      * @param StateCollection $stateCollection
+     *
      * @since Method available since Release 2.3.0
      */
     private function rebuildTransitionEvents(StateCollection $stateCollection)

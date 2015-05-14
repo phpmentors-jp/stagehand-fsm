@@ -90,8 +90,9 @@ class StateMachineBuilder
     /**
      * Sets the activity to the state.
      *
-     * @param  string                     $stateId
-     * @param  callback                   $activity
+     * @param string   $stateId
+     * @param callback $activity
+     *
      * @throws ActionNotCallableException
      * @throws StateNotFoundException
      */
@@ -126,11 +127,12 @@ class StateMachineBuilder
     /**
      * Adds an state transition to the state machine.
      *
-     * @param  string                     $stateId
-     * @param  string                     $eventId
-     * @param  string                     $nextStateId
-     * @param  callback                   $action
-     * @param  callback                   $guard
+     * @param string   $stateId
+     * @param string   $eventId
+     * @param string   $nextStateId
+     * @param callback $action
+     * @param callback $guard
+     *
      * @throws ActionNotCallableException
      * @throws StateNotFoundException
      */
@@ -174,8 +176,9 @@ class StateMachineBuilder
     /**
      * Sets the entry action to the state.
      *
-     * @param  string                     $stateId
-     * @param  callback                   $action
+     * @param string   $stateId
+     * @param callback $action
+     *
      * @throws ActionNotCallableException
      * @throws StateNotFoundException
      */
@@ -196,8 +199,9 @@ class StateMachineBuilder
     /**
      * Sets the exit action to the state.
      *
-     * @param  string                     $stateId
-     * @param  callback                   $action
+     * @param string   $stateId
+     * @param callback $action
+     *
      * @throws ActionNotCallableException
      * @throws StateNotFoundException
      */

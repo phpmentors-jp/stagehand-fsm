@@ -69,6 +69,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.1.0
      */
     public function isNotAnEndStateIfNoEndEventsAreFound()
@@ -86,6 +87,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.1.0
      */
     public function isAnEndStateIfAtLeastATransitionEventIsAnEndEvent()

@@ -23,6 +23,7 @@ class State implements TransitionalStateInterface, \Serializable
 {
     /**
      * @var string
+     *
      * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
      */
     protected $stateID;
@@ -34,12 +35,14 @@ class State implements TransitionalStateInterface, \Serializable
 
     /**
      * @var array
+     *
      * @deprecated Deprecated since version 2.2.0, to be removed in 3.0.0.
      */
     protected $events = array();
 
     /**
      * @var EventCollection
+     *
      * @since Property available since Release 2.2.0
      */
     protected $eventCollection;
@@ -98,8 +101,10 @@ class State implements TransitionalStateInterface, \Serializable
     }
 
     /**
-     * @param  EventInterface        $event
+     * @param EventInterface $event
+     *
      * @throws InvalidEventException
+     *
      * @since Method available since Release 2.0.0
      */
     public function setEntryEvent(EventInterface $event)
@@ -112,8 +117,10 @@ class State implements TransitionalStateInterface, \Serializable
     }
 
     /**
-     * @param  EventInterface        $event
+     * @param EventInterface $event
+     *
      * @throws InvalidEventException
+     *
      * @since Method available since Release 2.0.0
      */
     public function setExitEvent(EventInterface $event)
@@ -126,8 +133,10 @@ class State implements TransitionalStateInterface, \Serializable
     }
 
     /**
-     * @param  EventInterface        $event
+     * @param EventInterface $event
+     *
      * @throws InvalidEventException
+     *
      * @since Method available since Release 2.0.0
      */
     public function setDoEvent(EventInterface $event)

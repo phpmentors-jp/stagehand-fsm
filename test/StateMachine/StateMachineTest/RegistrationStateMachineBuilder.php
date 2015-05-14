@@ -1,9 +1,9 @@
 <?php
 namespace Stagehand\FSM\StateMachine\StateMachineTest;
 
+use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\StateMachine\StateMachineBuilder;
 use Stagehand\FSM\StateMachine\StateMachineInterface;
-use Stagehand\FSM\State\StateInterface;
 
 class RegistrationStateMachineBuilder
 {

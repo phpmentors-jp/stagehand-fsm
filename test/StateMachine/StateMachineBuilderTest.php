@@ -150,6 +150,7 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.1.0
      */
     public function setsTheStateMachineObject()

@@ -22,12 +22,14 @@ class InitialState extends State
 {
     /**
      * @var string
+     *
      * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
      */
     protected $stateID = StateInterface::STATE_INITIAL;
 
     /**
      * @var \Stagehand\FSM\Event\TransitionEventInterface
+     *
      * @deprecated Deprecated since version 2.2.0, to be removed in 3.0.0.
      */
     protected $transitionEvent;
@@ -58,6 +60,7 @@ class InitialState extends State
      * {@inheritDoc}
      *
      * @throws InvalidEventException
+     *
      * @since Method available since Release 2.2.0
      */
     public function addTransitionEvent(TransitionEventInterface $event)

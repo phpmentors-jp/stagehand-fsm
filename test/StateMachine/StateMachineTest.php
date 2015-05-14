@@ -12,11 +12,10 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
-
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @since Class available since Release 0.1.0
@@ -25,12 +24,14 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var StateMachineBuilder
+     *
      * @since Property available since Release 2.0.0
      */
     protected $stateMachineBuilder;
 
     /**
      * @var array
+     *
      * @since Property available since Release 2.0.0
      */
     protected $actionCalls = array();
@@ -39,6 +40,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      * @param EventInterface $event
      * @param callback
      * @param StateMachine   $stateMachine
+     *
      * @since Method available since Release 2.0.0
      */
     public function logActionCall(EventInterface $event, $payload, StateMachine $stateMachine)
@@ -94,6 +96,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.0.0
      */
     public function transitions()
@@ -137,6 +140,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.0.0
      */
     public function raisesAnExceptionWhenAnEventIsTriggeredOnTheFinalState()
@@ -162,6 +166,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.0.0
      */
     public function transitionsToTheNextStateWhenTheGuardConditionIsTrue()
@@ -190,6 +195,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.0.0
      */
     public function doesNotTransitionToTheNextStateWhenTheGuardConditionIsFalse()
@@ -218,6 +224,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.0.0
      */
     public function passesTheUserDefinedPayloadToActions()
@@ -240,6 +247,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.0.0
      */
     public function passesTheUserDefinedPayloadToGuards()
@@ -262,6 +270,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.0.0
      */
     public function getsTheIdOfTheStateMachine()
@@ -273,6 +282,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.0.0
      */
     public function excludesThePayloadPropertyForSerialization()
@@ -388,6 +398,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.1.0
      */
     public function returnsNullAsTheCurrentStateBeforeStartingTheStateMachine()
@@ -399,6 +410,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.1.0
      */
     public function returnsNullAsThePreviousStateBeforeStartingTheStateMachine()
@@ -410,6 +422,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.1.0
      */
     public function raisesAnExceptionWhenAnEventIsTriggeredBeforeStartingTheStateMachine()
@@ -427,6 +440,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.1.0
      */
     public function raisesAnExceptionWhenStartingTheStateMachineIfItIsAlreadyStarted()
@@ -445,6 +459,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @return array
+     *
      * @since Method available since Release 2.3.0
      */
     public function provideUnserializedStateMachines()
@@ -464,6 +479,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param StateMachine $stateMachine20
+     *
      * @since Method available since Release 2.2.0
      *
      * @test
@@ -503,6 +519,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     *
      * @since Method available since Release 2.3.0
      */
     public function logsTransitions()
