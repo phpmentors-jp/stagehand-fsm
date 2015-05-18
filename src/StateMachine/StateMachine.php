@@ -295,10 +295,6 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function triggerEvent($eventId)
     {
-        if (!$this->active) {
-            throw $this->createStateMachineNotStartedException();
-        }
-
         $this->queueEvent($eventId);
 
         do {
