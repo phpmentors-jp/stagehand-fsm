@@ -105,6 +105,7 @@ interface StateMachineInterface extends EntityInterface
      *
      * @param string $eventId
      *
+     * @throws StateMachineAlreadyShutdownException
      * @throws StateMachineNotStartedException
      */
     public function queueEvent($eventId);

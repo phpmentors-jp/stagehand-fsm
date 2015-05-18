@@ -326,7 +326,11 @@ class StateMachine implements StateMachineInterface, \Serializable
     public function queueEvent($eventId)
     {
         if (!$this->active) {
-            throw $this->createStateMachineNotStartedException();
+            if ($this->isEnded()) {
+                throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
+            } else {
+                throw $this->createStateMachineNotStartedException();
+            }
         }
 
         $this->eventQueue[] = $eventId;
