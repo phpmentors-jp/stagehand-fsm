@@ -255,12 +255,14 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function getCurrentState()
     {
-        if (!$this->active) {
-            return null;
-        }
-
-        if (count($this->transitionLogs) == 0) {
-            return $this->getState(StateInterface::STATE_INITIAL);
+        if ($this->active) {
+            if (count($this->transitionLogs) == 0) {
+                return $this->getState(StateInterface::STATE_INITIAL);
+            }
+        } else {
+            if (!$this->isEnded()) {
+                return null;
+            }
         }
 
         return $this->transitionLogs[count($this->transitionLogs) - 1]->getToState();
@@ -271,12 +273,14 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function getPreviousState()
     {
-        if (!$this->active) {
-            return null;
-        }
-
-        if (count($this->transitionLogs) == 0) {
-            return null;
+        if ($this->active) {
+            if (count($this->transitionLogs) == 0) {
+                return null;
+            }
+        } else {
+            if (!$this->isEnded()) {
+                return null;
+            }
         }
 
         return $this->transitionLogs[count($this->transitionLogs) - 1]->getFromState();
@@ -298,7 +302,7 @@ class StateMachine implements StateMachineInterface, \Serializable
         $this->queueEvent($eventId);
 
         do {
-            if ($this->getCurrentState()->getStateId() == StateInterface::STATE_FINAL) {
+            if ($this->isEnded()) {
                 throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
             }
 
@@ -308,6 +312,9 @@ class StateMachine implements StateMachineInterface, \Serializable
             }
             if ($event instanceof TransitionEventInterface && $this->evaluateGuard($event)) {
                 $this->transition($event);
+                if ($this->isEnded()) {
+                    $this->active = false;
+                }
             }
 
             $doEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_DO);
