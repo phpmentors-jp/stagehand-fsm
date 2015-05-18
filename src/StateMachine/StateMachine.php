@@ -14,6 +14,7 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\State\FinalState;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
@@ -389,13 +390,21 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      *
      * @since Method available since Release 2.3.0
      */
     public function isActive()
     {
         return $this->active;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isEnded()
+    {
+        return count($this->transitionLogs) > 0 && $this->transitionLogs[count($this->transitionLogs) - 1]->getToState() instanceof FinalState;
     }
 
     /**
