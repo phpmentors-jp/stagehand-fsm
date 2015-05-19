@@ -14,6 +14,7 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\State\FinalState;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
@@ -254,12 +255,14 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function getCurrentState()
     {
-        if (!$this->active) {
-            return null;
-        }
-
-        if (count($this->transitionLogs) == 0) {
-            return $this->getState(StateInterface::STATE_INITIAL);
+        if ($this->active) {
+            if (count($this->transitionLogs) == 0) {
+                return $this->getState(StateInterface::STATE_INITIAL);
+            }
+        } else {
+            if (!$this->isEnded()) {
+                return null;
+            }
         }
 
         return $this->transitionLogs[count($this->transitionLogs) - 1]->getToState();
@@ -270,12 +273,14 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function getPreviousState()
     {
-        if (!$this->active) {
-            return null;
-        }
-
-        if (count($this->transitionLogs) == 0) {
-            return null;
+        if ($this->active) {
+            if (count($this->transitionLogs) == 0) {
+                return null;
+            }
+        } else {
+            if (!$this->isEnded()) {
+                return null;
+            }
         }
 
         return $this->transitionLogs[count($this->transitionLogs) - 1]->getFromState();
@@ -294,14 +299,10 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function triggerEvent($eventId)
     {
-        if (!$this->active) {
-            throw $this->createStateMachineNotStartedException();
-        }
-
         $this->queueEvent($eventId);
 
         do {
-            if ($this->getCurrentState()->getStateId() == StateInterface::STATE_FINAL) {
+            if ($this->isEnded()) {
                 throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
             }
 
@@ -311,6 +312,9 @@ class StateMachine implements StateMachineInterface, \Serializable
             }
             if ($event instanceof TransitionEventInterface && $this->evaluateGuard($event)) {
                 $this->transition($event);
+                if ($this->isEnded()) {
+                    $this->active = false;
+                }
             }
 
             $doEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_DO);
@@ -329,7 +333,11 @@ class StateMachine implements StateMachineInterface, \Serializable
     public function queueEvent($eventId)
     {
         if (!$this->active) {
-            throw $this->createStateMachineNotStartedException();
+            if ($this->isEnded()) {
+                throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
+            } else {
+                throw $this->createStateMachineNotStartedException();
+            }
         }
 
         $this->eventQueue[] = $eventId;
@@ -389,13 +397,21 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * @return bool
+     * {@inheritDoc}
      *
      * @since Method available since Release 2.3.0
      */
     public function isActive()
     {
         return $this->active;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isEnded()
+    {
+        return count($this->transitionLogs) > 0 && $this->transitionLogs[count($this->transitionLogs) - 1]->getToState() instanceof FinalState;
     }
 
     /**
