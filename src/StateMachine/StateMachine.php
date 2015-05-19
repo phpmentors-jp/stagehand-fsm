@@ -389,7 +389,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * @return TransitionLog[]
+     * {@inheritDoc}
      */
     public function getTransitionLogs()
     {
