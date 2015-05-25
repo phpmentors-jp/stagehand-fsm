@@ -83,4 +83,12 @@ class StateCollection implements EntityCollectionInterface
     {
         return new \ArrayIterator($this->states);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray()
+    {
+        return $this->states;
+    }
 }

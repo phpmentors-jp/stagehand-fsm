@@ -84,4 +84,12 @@ class EventCollection implements EntityCollectionInterface
     {
         return new \ArrayIterator($this->events);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray()
+    {
+        return $this->events;
+    }
 }
