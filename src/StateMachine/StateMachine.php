@@ -183,7 +183,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             }
 
             if ($previousState !== null) {
-                $this->transitionLog[] = $this->createTransitionLog($currentState, $previousState);
+                $this->transitionLog[] = $this->createTransitionLogEntry($currentState, $previousState);
             }
         }
     }
@@ -221,7 +221,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             }
 
             if ($previousState !== null) {
-                $this->transitionLog[] = $this->createTransitionLog($currentState, $previousState);
+                $this->transitionLog[] = $this->createTransitionLogEntry($currentState, $previousState);
             }
         }
 
@@ -457,7 +457,7 @@ class StateMachine implements StateMachineInterface, \Serializable
         }
         $this->invokeAction($event);
 
-        $this->transitionLog[] = $this->createTransitionLog($this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()], $this->getCurrentState(), $event);
+        $this->transitionLog[] = $this->createTransitionLogEntry($this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()], $this->getCurrentState(), $event);
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
         if ($this->eventDispatcher !== null) {
@@ -505,7 +505,7 @@ class StateMachine implements StateMachineInterface, \Serializable
      *
      * @return TransitionLog
      */
-    private function createTransitionLog(StateInterface $toState, StateInterface $fromState = null, TransitionEventInterface $event = null)
+    private function createTransitionLogEntry(StateInterface $toState, StateInterface $fromState = null, TransitionEventInterface $event = null)
     {
         return new TransitionLog($toState, $fromState, $event, new \DateTime());
     }
