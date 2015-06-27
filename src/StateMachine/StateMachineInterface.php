@@ -129,5 +129,5 @@ interface StateMachineInterface extends EntityInterface
      *
      * @since Method available since Release 2.4.0
      */
-    public function getTransitionLogs();
+    public function getTransitionLog();
 }
