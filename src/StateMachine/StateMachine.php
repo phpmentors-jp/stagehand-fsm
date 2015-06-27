@@ -111,7 +111,15 @@ class StateMachine implements StateMachineInterface, \Serializable
     /**
      * @var TransitionLog[]
      *
+     * @since Property available since Release 2.4.0
+     */
+    private $transitionLog = array();
+
+    /**
+     * @var TransitionLog[]
+     *
      * @since Property available since Release 2.3.0
+     * @deprecated Deprecated since version 2.4.0, to be removed in 3.0.0.
      */
     private $transitionLogs = array();
 
@@ -133,7 +141,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             'stateCollection' => $this->stateCollection,
             'stateMachineId' => $this->stateMachineId,
             'eventQueue' => $this->eventQueue,
-            'transitionLogs' => $this->transitionLogs,
+            'transitionLog' => $this->transitionLog,
             'active' => $this->active,
             'transitionMap' => $this->transitionMap,
         ));
@@ -161,6 +169,10 @@ class StateMachine implements StateMachineInterface, \Serializable
 
         $this->rebuildTransitionEvents($this->stateCollection);
 
+        if (count($this->transitionLogs) > 0) {
+            $this->transitionLog = $this->transitionLogs;
+        }
+
         if ($currentState !== null) {
             $this->active = true;
 
@@ -171,7 +183,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             }
 
             if ($previousState !== null) {
-                $this->transitionLogs[] = $this->createTransitionLog($currentState, $previousState);
+                $this->transitionLog[] = $this->createTransitionLogEntry($currentState, $previousState);
             }
         }
     }
@@ -209,7 +221,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             }
 
             if ($previousState !== null) {
-                $this->transitionLogs[] = $this->createTransitionLog($currentState, $previousState);
+                $this->transitionLog[] = $this->createTransitionLogEntry($currentState, $previousState);
             }
         }
 
@@ -256,7 +268,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     public function getCurrentState()
     {
         if ($this->active) {
-            if (count($this->transitionLogs) == 0) {
+            if (count($this->transitionLog) == 0) {
                 return $this->getState(StateInterface::STATE_INITIAL);
             }
         } else {
@@ -265,7 +277,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             }
         }
 
-        return $this->transitionLogs[count($this->transitionLogs) - 1]->getToState();
+        return $this->transitionLog[count($this->transitionLog) - 1]->getToState();
     }
 
     /**
@@ -274,7 +286,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     public function getPreviousState()
     {
         if ($this->active) {
-            if (count($this->transitionLogs) == 0) {
+            if (count($this->transitionLog) == 0) {
                 return null;
             }
         } else {
@@ -283,7 +295,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             }
         }
 
-        return $this->transitionLogs[count($this->transitionLogs) - 1]->getFromState();
+        return $this->transitionLog[count($this->transitionLog) - 1]->getFromState();
     }
 
     /**
@@ -391,9 +403,20 @@ class StateMachine implements StateMachineInterface, \Serializable
     /**
      * {@inheritDoc}
      */
+    public function getTransitionLog()
+    {
+        return $this->transitionLog;
+    }
+
+    /**
+     * @return TransitionLog[]
+     *
+     * @since Method available since Release 2.3.0
+     * @deprecated Deprecated since version 2.4.0, to be removed in 3.0.0.
+     */
     public function getTransitionLogs()
     {
-        return $this->transitionLogs;
+        return $this->getTransitionLog();
     }
 
     /**
@@ -411,7 +434,7 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     public function isEnded()
     {
-        return count($this->transitionLogs) > 0 && $this->transitionLogs[count($this->transitionLogs) - 1]->getToState() instanceof FinalState;
+        return count($this->transitionLog) > 0 && $this->transitionLog[count($this->transitionLog) - 1]->getToState() instanceof FinalState;
     }
 
     /**
@@ -434,7 +457,7 @@ class StateMachine implements StateMachineInterface, \Serializable
         }
         $this->invokeAction($event);
 
-        $this->transitionLogs[] = $this->createTransitionLog($this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()], $this->getCurrentState(), $event);
+        $this->transitionLog[] = $this->createTransitionLogEntry($this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()], $this->getCurrentState(), $event);
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
         if ($this->eventDispatcher !== null) {
@@ -482,7 +505,7 @@ class StateMachine implements StateMachineInterface, \Serializable
      *
      * @return TransitionLog
      */
-    private function createTransitionLog(StateInterface $toState, StateInterface $fromState = null, TransitionEventInterface $event = null)
+    private function createTransitionLogEntry(StateInterface $toState, StateInterface $fromState = null, TransitionEventInterface $event = null)
     {
         return new TransitionLog($toState, $fromState, $event, new \DateTime());
     }
