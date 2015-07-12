@@ -7,11 +7,11 @@ A finite state machine
 [![Latest Unstable Version](https://poser.pugx.org/piece/stagehand-fsm/v/unstable.png)](https://packagist.org/packages/piece/stagehand-fsm)
 [![Build Status](https://travis-ci.org/piece/stagehand-fsm.svg?branch=master)](https://travis-ci.org/piece/stagehand-fsm)
 
-Stagehand_FSM is a [finite state machine](https://en.wikipedia.org/wiki/Finite-state_machine).
+`Stagehand_FSM` is a [finite state machine](https://en.wikipedia.org/wiki/Finite-state_machine).
 
-Manual state management makes code complex, decreases intentionality. By using Stagehand_FSM, state management code can be declaratively represented in the form of FSM. This makes code simpler, increases intentionality.
+Manual state management makes code complex, decreases intentionality. By using `Stagehand_FSM`, state management code can be declaratively represented in the form of FSM. This makes code simpler, increases intentionality.
 
-Stagehand_FSM can be used as an infrastructure for [domain-specific languages](http://en.wikipedia.org/wiki/Domain-specific_language) (DSLs). Examples are workflow engines, pageflow engines such as [PHPMentorsPageflowerBundle](https://github.com/phpmentors-jp/pageflower-bundle).
+`Stagehand_FSM` can be used as an infrastructure for [domain-specific languages](http://en.wikipedia.org/wiki/Domain-specific_language) (DSLs). Examples are workflow engines, pageflow engines such as [PHPMentorsPageflowerBundle](https://github.com/phpmentors-jp/pageflower-bundle).
 
 ```php
 <?php
