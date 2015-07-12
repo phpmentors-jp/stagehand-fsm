@@ -55,13 +55,13 @@ Add the dependency to `piece/stagehand-fsm` into your `composer.json` file as th
 Stable version:
 
 ```
-composer require piece/stagehand-fsm "2.3.*"
+composer require piece/stagehand-fsm "2.4.*"
 ```
 
 Development version:
 
 ```
-composer require piece/stagehand-fsm "~2.4@dev"
+composer require piece/stagehand-fsm "~2.5@dev"
 ```
 
 ## Support
