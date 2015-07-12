@@ -11,7 +11,7 @@ A finite state machine
 
 Manual state management makes code complex, decreases intentionality. By using `Stagehand_FSM`, state management code can be declaratively represented in the form of FSM. This makes code simpler, increases intentionality.
 
-`Stagehand_FSM` can be used as an infrastructure for [domain-specific languages](http://en.wikipedia.org/wiki/Domain-specific_language) (DSLs). Examples are workflow engines, pageflow engines such as [PHPMentorsPageflowerBundle](https://github.com/phpmentors-jp/pageflower-bundle).
+`Stagehand_FSM` can be used as an infrastructure for [domain-specific languages](http://en.wikipedia.org/wiki/Domain-specific_language) (DSLs). Examples are workflow engines such as [Workflower](https://github.com/phpmentors-jp/workflower), pageflow engines such as [PHPMentorsPageflowerBundle](https://github.com/phpmentors-jp/pageflower-bundle).
 
 ```php
 <?php
