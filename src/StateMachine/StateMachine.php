@@ -167,7 +167,9 @@ class StateMachine implements StateMachineInterface, \Serializable
             $currentState = null;
         }
 
-        $this->rebuildTransitionEvents($this->stateCollection);
+        if ($this->stateCollection !== null) {
+            $this->rebuildTransitionEvents($this->stateCollection);
+        }
 
         if (count($this->transitionLogs) > 0) {
             $this->transitionLog = $this->transitionLogs;
