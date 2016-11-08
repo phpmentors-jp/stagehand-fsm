@@ -61,7 +61,7 @@ composer require piece/stagehand-fsm "2.4.*"
 Development version:
 
 ```
-composer require piece/stagehand-fsm "~2.5@dev"
+composer require piece/stagehand-fsm "~3.0@dev"
 ```
 
 ## Support
