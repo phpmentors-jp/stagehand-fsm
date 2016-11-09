@@ -31,41 +31,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class StateMachine implements StateMachineInterface, \Serializable
 {
     /**
-     * @var string
-     *
-     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
-     */
-    protected $currentStateID;
-
-    /**
-     * @var string
-     *
-     * @deprecated Deprecated since version 2.3.0, to be removed in 3.0.0.
-     */
-    protected $currentStateId;
-
-    /**
-     * @var string
-     *
-     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
-     */
-    protected $previousStateID;
-
-    /**
-     * @var string
-     *
-     * @deprecated Deprecated since version 2.3.0, to be removed in 3.0.0.
-     */
-    protected $previousStateId;
-
-    /**
-     * @var array
-     *
-     * @deprecated Deprecated since version 2.2.0, to be removed in 3.0.0.
-     */
-    protected $states = array();
-
-    /**
      * @var StateCollection
      *
      * @since Property available since Release 2.2.0
@@ -76,13 +41,6 @@ class StateMachine implements StateMachineInterface, \Serializable
      * @var string
      */
     protected $stateMachineId;
-
-    /**
-     * @var string
-     *
-     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
-     */
-    protected $stateMachineID;
 
     /**
      * @var mixed
@@ -114,14 +72,6 @@ class StateMachine implements StateMachineInterface, \Serializable
      * @since Property available since Release 2.4.0
      */
     private $transitionLog = array();
-
-    /**
-     * @var TransitionLog[]
-     *
-     * @since Property available since Release 2.3.0
-     * @deprecated Deprecated since version 2.4.0, to be removed in 3.0.0.
-     */
-    private $transitionLogs = array();
 
     /**
      * @var array
@@ -160,75 +110,8 @@ class StateMachine implements StateMachineInterface, \Serializable
             }
         }
 
-        if ($this->currentStateId !== null) {
-            $currentState = $this->getState($this->currentStateId);
-            $this->buildTransitionMapFromStates($this->stateCollection);
-        } else {
-            $currentState = null;
-        }
-
         if ($this->stateCollection !== null) {
             $this->rebuildTransitionEvents($this->stateCollection);
-        }
-
-        if (count($this->transitionLogs) > 0) {
-            $this->transitionLog = $this->transitionLogs;
-        }
-
-        if ($currentState !== null) {
-            $this->active = true;
-
-            if ($this->previousStateId !== null) {
-                $previousState = $this->getState($this->previousStateId);
-            } else {
-                $previousState = null;
-            }
-
-            if ($previousState !== null) {
-                $this->transitionLog[] = $this->createTransitionLogEntry($currentState, $previousState);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function __wakeup()
-    {
-        if (count($this->states) > 0) {
-            $this->stateCollection = new StateCollection($this->states);
-        }
-
-        $this->buildTransitionMapFromStates($this->stateCollection);
-
-        if ($this->currentStateID !== null) {
-            $currentState = $this->getState($this->currentStateID);
-        } elseif ($this->currentStateId !== null) {
-            $currentState = $this->getState($this->currentStateId);
-        } else {
-            $currentState = null;
-        }
-
-        if ($currentState !== null) {
-            $this->active = true;
-
-            if ($this->previousStateID !== null) {
-                $previousState = $this->getState($this->previousStateID);
-            } elseif ($this->previousStateId !== null) {
-                $previousState = $this->getState($this->previousStateId);
-            } else {
-                $previousState = null;
-            }
-
-            if ($previousState !== null) {
-                $this->transitionLog[] = $this->createTransitionLogEntry($currentState, $previousState);
-            }
-        }
-
-        if ($this->stateMachineID !== null) {
-            $this->stateMachineId = $this->stateMachineID;
         }
     }
 
@@ -408,17 +291,6 @@ class StateMachine implements StateMachineInterface, \Serializable
     public function getTransitionLog()
     {
         return $this->transitionLog;
-    }
-
-    /**
-     * @return TransitionLog[]
-     *
-     * @since Method available since Release 2.3.0
-     * @deprecated Deprecated since version 2.4.0, to be removed in 3.0.0.
-     */
-    public function getTransitionLogs()
-    {
-        return $this->getTransitionLog();
     }
 
     /**

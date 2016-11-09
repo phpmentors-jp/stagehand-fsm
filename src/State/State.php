@@ -23,22 +23,8 @@ class State implements TransitionalStateInterface, \Serializable
 {
     /**
      * @var string
-     *
-     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
-     */
-    protected $stateID;
-
-    /**
-     * @var string
      */
     protected $stateId;
-
-    /**
-     * @var array
-     *
-     * @deprecated Deprecated since version 2.2.0, to be removed in 3.0.0.
-     */
-    protected $events = array();
 
     /**
      * @var EventCollection
@@ -68,26 +54,6 @@ class State implements TransitionalStateInterface, \Serializable
             if (property_exists($this, $name)) {
                 $this->$name = $value;
             }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function __wakeup()
-    {
-        if (count($this->events) > 0) {
-            $this->eventCollection = new EventCollection($this->events);
-        } else {
-            if ($this->eventCollection === null) {
-                $this->eventCollection = new EventCollection();
-            }
-        }
-
-        if ($this->stateID !== null) {
-            $this->stateId = $this->stateID;
         }
     }
 

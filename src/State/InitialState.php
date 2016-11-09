@@ -21,34 +21,6 @@ use Stagehand\FSM\Event\TransitionEventInterface;
 class InitialState extends State
 {
     /**
-     * @var string
-     *
-     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
-     */
-    protected $stateID = StateInterface::STATE_INITIAL;
-
-    /**
-     * @var \Stagehand\FSM\Event\TransitionEventInterface
-     *
-     * @deprecated Deprecated since version 2.2.0, to be removed in 3.0.0.
-     */
-    protected $transitionEvent;
-
-    /**
-     * {@inheritDoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function __wakeup()
-    {
-        parent::__wakeup();
-
-        if ($this->transitionEvent !== null) {
-            $this->addTransitionEvent($this->transitionEvent);
-        }
-    }
-
-    /**
      * @since Method available since Release 2.1.0
      */
     public function __construct()
