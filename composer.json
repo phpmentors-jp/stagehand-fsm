@@ -17,8 +17,8 @@
         "symfony/event-dispatcher": "~2.8|~3.0"
     },
     "require-dev": {
-        "phake/phake": "~1.0",
-        "phpunit/phpunit": "~4.0"
+        "phake/phake": "~2.3",
+        "phpunit/phpunit": "~5.6"
     },
     "autoload": {
         "psr-4": { "Stagehand\\FSM\\": "src/" }
