@@ -21,13 +21,6 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
 {
     /**
      * @var string
-     *
-     * @deprecated Deprecated since version 2.1.0, to be removed in 3.0.0.
-     */
-    protected $eventID;
-
-    /**
-     * @var string
      */
     protected $eventId;
 
@@ -71,18 +64,6 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
             if (property_exists($this, $name)) {
                 $this->$name = $value;
             }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function __wakeup()
-    {
-        if ($this->eventID !== null) {
-            $this->eventId = $this->eventID;
         }
     }
 

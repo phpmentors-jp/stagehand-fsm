@@ -459,66 +459,6 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
-     *
-     * @since Method available since Release 2.3.0
-     */
-    public function provideUnserializedStateMachines()
-    {
-        if (defined('HHVM_VERSION')) {
-            $this->markTestSkipped('unserialize() will raise an error "Notice: Unable to unserialize: ...Id x out of range. in ..."');
-        }
-
-        $phpVersion = 'php'.PHP_MAJOR_VERSION.PHP_MINOR_VERSION;
-
-        return array(
-            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/'.$phpVersion.'/StateMachine20.ser'))),
-            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/'.$phpVersion.'/StateMachine22.ser'))),
-            array(unserialize(file_get_contents(__DIR__.'/'.basename(__FILE__, '.php').'/'.$phpVersion.'/StateMachine23.ser'))),
-        );
-    }
-
-    /**
-     * @param StateMachine $stateMachine20
-     *
-     * @since Method available since Release 2.2.0
-     *
-     * @test
-     * @dataProvider provideUnserializedStateMachines
-     */
-    public function migratesAStateMachine(StateMachine $stateMachine)
-    {
-        $this->assertThat($stateMachine->getStateMachineId(), $this->equalTo('registration'));
-        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('input'));
-        $this->assertThat($stateMachine->getPreviousState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
-        $this->assertThat($stateMachine->getState(StateInterface::STATE_INITIAL)->getEvent(EventInterface::EVENT_START), $this->logicalNot($this->isNull()));
-        $this->assertThat($stateMachine->getState(StateInterface::STATE_INITIAL)->getEvent(EventInterface::EVENT_START)->getNextState(), $this->logicalNot($this->isNull()));
-        $this->assertThat($stateMachine->getState('input')->getEvent('confirmation')->getNextState(), $this->logicalNot($this->isNull()));
-        $this->assertThat($stateMachine->getState('confirmation')->getEvent('success')->getNextState(), $this->logicalNot($this->isNull()));
-        $this->assertThat($stateMachine->getState('success')->getEvent(StateInterface::STATE_FINAL)->getNextState(), $this->logicalNot($this->isNull()));
-
-        $stateMachine->triggerEvent('confirmation');
-
-        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('confirmation'));
-
-        $stateMachine->triggerEvent('input');
-
-        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('input'));
-
-        $stateMachine->triggerEvent('confirmation');
-
-        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('confirmation'));
-
-        $stateMachine->triggerEvent('success');
-
-        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('success'));
-
-        $stateMachine->triggerEvent(StateInterface::STATE_FINAL);
-
-        $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo(StateInterface::STATE_FINAL));
-    }
-
-    /**
      * @test
      *
      * @since Method available since Release 2.3.0
@@ -532,7 +472,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $stateMachine->triggerEvent('next');
         $stateMachine->triggerEvent('next');
         $stateMachine->triggerEvent('next');
-        $transitionLogs = $stateMachine->getTransitionLogs();
+        $transitionLogs = $stateMachine->getTransitionLog();
 
         $expectedTransitionLogs = array(
             array(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, 'Input'),
