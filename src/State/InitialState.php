@@ -29,7 +29,7 @@ class InitialState extends State
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws InvalidEventException
      *

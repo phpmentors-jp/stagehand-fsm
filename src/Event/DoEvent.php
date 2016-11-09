@@ -30,7 +30,7 @@ class DoEvent implements EventInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getEventId()
     {
@@ -46,7 +46,7 @@ class DoEvent implements EventInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAction()
     {

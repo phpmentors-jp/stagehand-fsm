@@ -25,7 +25,7 @@ class FinalState implements StateInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getEvent($eventId)
     {
@@ -33,7 +33,7 @@ class FinalState implements StateInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getStateId()
     {
@@ -41,7 +41,7 @@ class FinalState implements StateInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isEndState()
     {

@@ -40,7 +40,7 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     protected $guard;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
      */
@@ -54,7 +54,7 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
      */
@@ -106,7 +106,7 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getEventId()
     {
@@ -114,7 +114,7 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getNextState()
     {
@@ -122,7 +122,7 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAction()
     {
@@ -130,7 +130,7 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getGuard()
     {
@@ -138,7 +138,7 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.1.0
      */

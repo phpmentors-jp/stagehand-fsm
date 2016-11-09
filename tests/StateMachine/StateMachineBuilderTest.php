@@ -42,7 +42,8 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
         $stateMachineBuilder = new StateMachineBuilder();
 
         try {
-            $stateMachineBuilder->{ $actionSetter }('foo', function (EventInterface $event, $payload, StateMachine $stateMachine) {});
+            $stateMachineBuilder->{ $actionSetter }('foo', function (EventInterface $event, $payload, StateMachine $stateMachine) {
+            });
         } catch (StateNotFoundException $e) {
             return;
         }
