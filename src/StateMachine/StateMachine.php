@@ -22,10 +22,10 @@ use Stagehand\FSM\State\TransitionalStateInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @link  http://en.wikipedia.org/wiki/Finite_state_machine
- * @link  http://www.sparxsystems.com/resources/uml2_tutorial/uml2_statediagram.html
- * @link  http://pear.php.net/package/FSM
- * @link  http://www.generation5.org/content/2003/FSM_Tutorial.asp
+ * @see  http://en.wikipedia.org/wiki/Finite_state_machine
+ * @see  http://www.sparxsystems.com/resources/uml2_tutorial/uml2_statediagram.html
+ * @see  http://pear.php.net/package/FSM
+ * @see  http://www.generation5.org/content/2003/FSM_Tutorial.asp
  * @since Class available since Release 0.1.0
  */
 class StateMachine implements StateMachineInterface, \Serializable
