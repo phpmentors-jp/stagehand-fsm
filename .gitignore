@@ -3,5 +3,6 @@
 /composer.lock
 /composer.phar
 /docker-compose.yml
+/docker/php.ini
 /php-cs-fixer.phar
 /vendor/

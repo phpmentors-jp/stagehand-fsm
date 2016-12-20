@@ -9,3 +9,4 @@ services:
             TERM: "xterm"
             TZ: "Asia/Tokyo"
             LANG: "ja_JP.UTF-8"
+            PHP_INI: "docker/php.ini"
