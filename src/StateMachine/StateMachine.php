@@ -235,7 +235,7 @@ class StateMachine implements StateMachineInterface, \Serializable
                 $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_DO, new StateMachineEvent($this, $this->getCurrentState(), $doEvent));
             }
             if ($doEvent !== null) {
-                $this->invokeAction($doEvent);
+                $this->runAction($doEvent);
             }
         } while (count($this->eventQueue) > 0);
     }
@@ -357,13 +357,13 @@ class StateMachine implements StateMachineInterface, \Serializable
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $this->getCurrentState(), $exitEvent));
         }
         if ($exitEvent !== null) {
-            $this->invokeAction($exitEvent);
+            $this->runAction($exitEvent);
         }
 
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, $this->getCurrentState(), $event));
         }
-        $this->invokeAction($event);
+        $this->runAction($event);
 
         $this->transitionLog[] = $this->createTransitionLogEntry($this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()], $this->getCurrentState(), $event);
 
@@ -372,7 +372,7 @@ class StateMachine implements StateMachineInterface, \Serializable
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $this->getCurrentState(), $entryEvent));
         }
         if ($entryEvent !== null) {
-            $this->invokeAction($entryEvent);
+            $this->runAction($entryEvent);
         }
     }
 
@@ -398,13 +398,13 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * Invokes the action for the given event.
+     * Runs the action for the given event.
      *
      * @param EventInterface $event
      *
      * @since Method available since Release 2.0.0
      */
-    private function invokeAction(EventInterface $event)
+    private function runAction(EventInterface $event)
     {
         foreach ((array) $this->actionRunners as $actionRunner) {
             call_user_func(array($actionRunner, 'run'), $event, $this->getPayload(), $this);

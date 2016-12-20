@@ -65,7 +65,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     public function logActionCall(EventInterface $event, $payload, StateMachine $stateMachine)
     {
         foreach (debug_backtrace() as $stackFrame) {
-            if ($stackFrame['function'] == 'invokeAction' || $stackFrame['function'] == 'evaluateGuard') {
+            if ($stackFrame['function'] == 'runAction' || $stackFrame['function'] == 'evaluateGuard') {
                 $calledBy = $stackFrame['function'];
             }
         }
@@ -117,13 +117,13 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $this->assertThat(count($this->actionCalls), $this->equalTo(3));
         $this->assertThat($this->actionCalls[0]['state'], $this->equalTo(StateInterface::STATE_INITIAL));
         $this->assertThat($this->actionCalls[0]['event'], $this->equalTo(EventInterface::EVENT_START));
-        $this->assertThat($this->actionCalls[0]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[0]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[1]['state'], $this->equalTo('Input'));
         $this->assertThat($this->actionCalls[1]['event'], $this->equalTo(EventInterface::EVENT_ENTRY));
-        $this->assertThat($this->actionCalls[1]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[1]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[2]['state'], $this->equalTo('Input'));
         $this->assertThat($this->actionCalls[2]['event'], $this->equalTo(EventInterface::EVENT_DO));
-        $this->assertThat($this->actionCalls[2]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[2]['calledBy'], $this->equalTo('runAction'));
 
         $stateMachine->triggerEvent('next');
 
@@ -133,16 +133,16 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $this->assertThat(count($this->actionCalls), $this->equalTo(7));
         $this->assertThat($this->actionCalls[3]['state'], $this->equalTo('Input'));
         $this->assertThat($this->actionCalls[3]['event'], $this->equalTo(EventInterface::EVENT_EXIT));
-        $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[4]['state'], $this->equalTo('Input'));
         $this->assertThat($this->actionCalls[4]['event'], $this->equalTo('next'));
-        $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[5]['state'], $this->equalTo('Validation'));
         $this->assertThat($this->actionCalls[5]['event'], $this->equalTo(EventInterface::EVENT_ENTRY));
-        $this->assertThat($this->actionCalls[5]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[5]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[6]['state'], $this->equalTo('Validation'));
         $this->assertThat($this->actionCalls[6]['event'], $this->equalTo(EventInterface::EVENT_DO));
-        $this->assertThat($this->actionCalls[6]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[6]['calledBy'], $this->equalTo('runAction'));
     }
 
     /**
@@ -201,7 +201,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('evaluateGuard'));
         $this->assertThat($this->actionCalls[4]['state'], $this->equalTo('Input'));
         $this->assertThat($this->actionCalls[4]['event'], $this->equalTo(EventInterface::EVENT_EXIT));
-        $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('runAction'));
     }
 
     /**
@@ -234,7 +234,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('evaluateGuard'));
         $this->assertThat($this->actionCalls[4]['state'], $this->equalTo('Input'));
         $this->assertThat($this->actionCalls[4]['event'], $this->equalTo(EventInterface::EVENT_DO));
-        $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('invokeAction'));
+        $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('runAction'));
     }
 
     /**
