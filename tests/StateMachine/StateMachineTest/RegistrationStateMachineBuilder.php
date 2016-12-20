@@ -1,4 +1,5 @@
 <?php
+
 namespace Stagehand\FSM\StateMachine\StateMachineTest;
 
 use Stagehand\FSM\State\StateInterface;

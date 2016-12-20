@@ -15,12 +15,12 @@ namespace Stagehand\FSM\StateMachine;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Stagehand\FSM\Transition\ActionRunnerInterface;
-use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 use Stagehand\FSM\StateMachine\StateMachineTest\CallableActionRunner;
 use Stagehand\FSM\StateMachine\StateMachineTest\CallableGuardEvaluator;
+use Stagehand\FSM\Transition\ActionRunnerInterface;
+use Stagehand\FSM\Transition\GuardEvaluatorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @since Class available since Release 0.1.0
