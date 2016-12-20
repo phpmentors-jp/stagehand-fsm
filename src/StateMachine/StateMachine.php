@@ -388,7 +388,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     private function evaluateGuard(TransitionEventInterface $event)
     {
         foreach ((array) $this->guardEvaluators as $guardEvaluator) {
-            $result = call_user_func([$guardEvaluator, 'evaluate'], $event, $this->getPayload(), $this);
+            $result = call_user_func(array($guardEvaluator, 'evaluate'), $event, $this->getPayload(), $this);
             if (!$result) {
                 return false;
             }
@@ -407,7 +407,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     private function invokeAction(EventInterface $event)
     {
         foreach ((array) $this->actionRunners as $actionRunner) {
-            call_user_func([$actionRunner, 'run'], $event, $this->getPayload(), $this);
+            call_user_func(array($actionRunner, 'run'), $event, $this->getPayload(), $this);
         }
     }
 

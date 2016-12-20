@@ -97,7 +97,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $this->stateMachineBuilder->addTransition('Registration', 'next', 'Success');
         $this->stateMachineBuilder->setEndState('Success', 'next');
 
-        $this->actionRunner = new CallableActionRunner([$this, 'logActionCall']);
+        $this->actionRunner = new CallableActionRunner(array($this, 'logActionCall'));
     }
 
     /**
@@ -330,19 +330,19 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $events = array();
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(StateMachineEvents::EVENT_PROCESS, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = ['name' => $eventName, 'event' => $event];
+            $events[] = array('name' => $eventName, 'event' => $event);
         });
         $eventDispatcher->addListener(StateMachineEvents::EVENT_EXIT, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = ['name' => $eventName, 'event' => $event];
+            $events[] = array('name' => $eventName, 'event' => $event);
         });
         $eventDispatcher->addListener(StateMachineEvents::EVENT_TRANSITION, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = ['name' => $eventName, 'event' => $event];
+            $events[] = array('name' => $eventName, 'event' => $event);
         });
         $eventDispatcher->addListener(StateMachineEvents::EVENT_ENTRY, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = ['name' => $eventName, 'event' => $event];
+            $events[] = array('name' => $eventName, 'event' => $event);
         });
         $eventDispatcher->addListener(StateMachineEvents::EVENT_DO, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = ['name' => $eventName, 'event' => $event];
+            $events[] = array('name' => $eventName, 'event' => $event);
         });
         $stateMachineBuilder = new StateMachineBuilder();
         $stateMachineBuilder->addState('locked');
