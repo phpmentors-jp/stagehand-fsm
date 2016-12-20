@@ -27,13 +27,6 @@ interface TransitionEventInterface extends EventInterface
     public function getNextState();
 
     /**
-     * Gets the guard for the event.
-     *
-     * @return callback
-     */
-    public function getGuard();
-
-    /**
      * Checks whether the event is connected to the final state or not.
      *
      * @return bool

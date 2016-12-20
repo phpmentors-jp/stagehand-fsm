@@ -18,11 +18,6 @@ namespace Stagehand\FSM\Event;
 class ExitEvent implements EventInterface
 {
     /**
-     * @var callback
-     */
-    protected $action;
-
-    /**
      * @since Method available since Release 2.1.0
      */
     public function __construct()
@@ -35,21 +30,5 @@ class ExitEvent implements EventInterface
     public function getEventId()
     {
         return EventInterface::EVENT_EXIT;
-    }
-
-    /**
-     * @param callback $action
-     */
-    public function setAction($action)
-    {
-        $this->action = $action;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAction()
-    {
-        return $this->action;
     }
 }

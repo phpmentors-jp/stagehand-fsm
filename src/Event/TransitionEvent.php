@@ -30,16 +30,6 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     protected $nextState;
 
     /**
-     * @var callback
-     */
-    protected $action;
-
-    /**
-     * @var callback
-     */
-    protected $guard;
-
-    /**
      * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
@@ -48,8 +38,6 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     {
         return serialize(array(
             'eventId' => $this->eventId,
-            'action' => $this->action,
-            'guard' => $this->guard,
         ));
     }
 
@@ -86,26 +74,6 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     }
 
     /**
-     * Sets the action for the event.
-     *
-     * @param callback $action
-     */
-    public function setAction($action)
-    {
-        $this->action = $action;
-    }
-
-    /**
-     * Sets the guard for the event.
-     *
-     * @param callback $guard
-     */
-    public function setGuard($guard)
-    {
-        $this->guard = $guard;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getEventId()
@@ -119,22 +87,6 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     public function getNextState()
     {
         return $this->nextState;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAction()
-    {
-        return $this->action;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getGuard()
-    {
-        return $this->guard;
     }
 
     /**

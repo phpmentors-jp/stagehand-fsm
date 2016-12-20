@@ -19,6 +19,8 @@ use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
+use Stagehand\FSM\Transition\ActionRunnerInterface;
+use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -79,6 +81,20 @@ class StateMachine implements StateMachineInterface, \Serializable
      * @since Property available since Release 2.3.0
      */
     private $transitionMap = array();
+
+    /**
+     * @var ActionRunnerInterface[]
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $actionRunners;
+
+    /**
+     * @var GuardEvaluatorInterface[]
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $guardEvaluators;
 
     /**
      * {@inheritdoc}
@@ -218,7 +234,9 @@ class StateMachine implements StateMachineInterface, \Serializable
             if ($this->eventDispatcher !== null) {
                 $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_DO, new StateMachineEvent($this, $this->getCurrentState(), $doEvent));
             }
-            $this->invokeAction($doEvent);
+            if ($doEvent !== null) {
+                $this->invokeAction($doEvent);
+            }
         } while (count($this->eventQueue) > 0);
     }
 
@@ -275,11 +293,9 @@ class StateMachine implements StateMachineInterface, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function addTransition(TransitionalStateInterface $state, TransitionEventInterface $event, StateInterface $nextState, $action, $guard)
+    public function addTransition(TransitionalStateInterface $state, TransitionEventInterface $event, StateInterface $nextState)
     {
         $event->setNextState($nextState);
-        $event->setAction($action);
-        $event->setGuard($guard);
         $state->addTransitionEvent($event);
 
         $this->transitionMap[$state->getStateId()][$event->getEventId()] = $nextState;
@@ -312,6 +328,22 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function addActionRunner(ActionRunnerInterface $actionRunner)
+    {
+        $this->actionRunners[] = $actionRunner;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addGuardEvaluator(GuardEvaluatorInterface $guardEvaluator)
+    {
+        $this->guardEvaluators[] = $guardEvaluator;
+    }
+
+    /**
      * Transitions to the next state.
      *
      * @param TransitionEventInterface $event
@@ -324,7 +356,9 @@ class StateMachine implements StateMachineInterface, \Serializable
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $this->getCurrentState(), $exitEvent));
         }
-        $this->invokeAction($exitEvent);
+        if ($exitEvent !== null) {
+            $this->invokeAction($exitEvent);
+        }
 
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, $this->getCurrentState(), $event));
@@ -337,7 +371,9 @@ class StateMachine implements StateMachineInterface, \Serializable
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $this->getCurrentState(), $entryEvent));
         }
-        $this->invokeAction($entryEvent);
+        if ($entryEvent !== null) {
+            $this->invokeAction($entryEvent);
+        }
     }
 
     /**
@@ -351,11 +387,14 @@ class StateMachine implements StateMachineInterface, \Serializable
      */
     private function evaluateGuard(TransitionEventInterface $event)
     {
-        if ($event->getGuard() === null) {
-            return true;
+        foreach ((array) $this->guardEvaluators as $guardEvaluator) {
+            $result = call_user_func([$guardEvaluator, 'evaluate'], $event, $this->getPayload(), $this);
+            if (!$result) {
+                return false;
+            }
         }
 
-        return call_user_func($event->getGuard(), $event, $this->getPayload(), $this);
+        return true;
     }
 
     /**
@@ -365,10 +404,10 @@ class StateMachine implements StateMachineInterface, \Serializable
      *
      * @since Method available since Release 2.0.0
      */
-    private function invokeAction(EventInterface $event = null)
+    private function invokeAction(EventInterface $event)
     {
-        if ($event !== null && $event->getAction() !== null) {
-            call_user_func($event->getAction(), $event, $this->getPayload(), $this);
+        foreach ((array) $this->actionRunners as $actionRunner) {
+            call_user_func([$actionRunner, 'run'], $event, $this->getPayload(), $this);
         }
     }
 

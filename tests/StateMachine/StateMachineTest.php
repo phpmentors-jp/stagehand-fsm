@@ -17,6 +17,10 @@ use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Stagehand\FSM\Transition\ActionRunnerInterface;
+use Stagehand\FSM\Transition\GuardEvaluatorInterface;
+use Stagehand\FSM\StateMachine\StateMachineTest\CallableActionRunner;
+use Stagehand\FSM\StateMachine\StateMachineTest\CallableGuardEvaluator;
 
 /**
  * @since Class available since Release 0.1.0
@@ -38,8 +42,22 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     protected $actionCalls = array();
 
     /**
+     * @var ActionRunnerInterface
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $actionRunner;
+
+    /**
+     * @var GuardEvaluatorInterface
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $guardEvaluator;
+
+    /**
      * @param EventInterface $event
-     * @param callback
+     * @param mixed callback
      * @param StateMachine $stateMachine
      *
      * @since Method available since Release 2.0.0
@@ -70,29 +88,16 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $this->stateMachineBuilder->addState('Success');
         $this->stateMachineBuilder->addState('Validation');
         $this->stateMachineBuilder->addState('Registration');
-        $this->stateMachineBuilder->setStartState('Input', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->addTransition('Validation', 'valid', 'Confirmation', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->addTransition('Validation', 'invalid', 'Input', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->addTransition('Confirmation', 'next', 'Registration', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->addTransition('Confirmation', 'prev', 'Input', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->addTransition('Registration', 'next', 'Success', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setEndState('Success', 'next', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setEntryAction('Input', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setActivity('Input', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setExitAction('Input', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setEntryAction('Confirmation', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setActivity('Confirmation', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setExitAction('Confirmation', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setEntryAction('Success', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setActivity('Success', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setExitAction('Success', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setEntryAction('Validation', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setActivity('Validation', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setExitAction('Validation', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setEntryAction('Registration', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setActivity('Registration', array($this, 'logActionCall'));
-        $this->stateMachineBuilder->setExitAction('Registration', array($this, 'logActionCall'));
+        $this->stateMachineBuilder->setStartState('Input');
+        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation');
+        $this->stateMachineBuilder->addTransition('Validation', 'valid', 'Confirmation');
+        $this->stateMachineBuilder->addTransition('Validation', 'invalid', 'Input');
+        $this->stateMachineBuilder->addTransition('Confirmation', 'next', 'Registration');
+        $this->stateMachineBuilder->addTransition('Confirmation', 'prev', 'Input');
+        $this->stateMachineBuilder->addTransition('Registration', 'next', 'Success');
+        $this->stateMachineBuilder->setEndState('Success', 'next');
+
+        $this->actionRunner = new CallableActionRunner([$this, 'logActionCall']);
     }
 
     /**
@@ -103,6 +108,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
     public function transitions()
     {
         $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->addActionRunner($this->actionRunner);
         $stateMachine->start();
 
         $this->assertThat($stateMachine->getCurrentState()->getStateId(), $this->equalTo('Input'));
@@ -172,13 +178,17 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function transitionsToTheNextStateWhenTheGuardConditionIsTrue()
     {
-        $self = $this;
-        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', array($this, 'logActionCall'), function (EventInterface $event, $payload, StateMachine $stateMachine) use ($self) {
-            $self->logActionCall($event, $payload, $stateMachine);
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->addActionRunner($this->actionRunner);
+        $stateMachine->addGuardEvaluator(new CallableGuardEvaluator(function (EventInterface $event, $payload, StateMachineInterface $stateMachine) {
+            if ($stateMachine->getCurrentState()->getStateId() == 'Input' && $event->getEventId() == 'next') {
+                $this->logActionCall($event, $payload, $stateMachine);
+
+                return true;
+            }
 
             return true;
-        });
-        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        }));
         $stateMachine->start();
         $stateMachine->triggerEvent('next');
 
@@ -201,13 +211,17 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function doesNotTransitionToTheNextStateWhenTheGuardConditionIsFalse()
     {
-        $self = $this;
-        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', array($this, 'logActionCall'), function (EventInterface $event, $payload, StateMachine $stateMachine) use ($self) {
-            $self->logActionCall($event, $payload, $stateMachine);
-
-            return false;
-        });
         $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->addActionRunner($this->actionRunner);
+        $stateMachine->addGuardEvaluator(new CallableGuardEvaluator(function (EventInterface $event, $payload, StateMachineInterface $stateMachine) {
+            if ($stateMachine->getCurrentState()->getStateId() == 'Input' && $event->getEventId() == 'next') {
+                $this->logActionCall($event, $payload, $stateMachine);
+
+                return false;
+            }
+
+            return true;
+        }));
         $stateMachine->start();
         $stateMachine->triggerEvent('next');
 
@@ -230,12 +244,13 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function passesTheUserDefinedPayloadToActions()
     {
-        $self = $this;
-        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', function (EventInterface $event, $payload, StateMachine $stateMachine) use ($self) {
-            $payload->foo = 'baz';
-
-            return false;
-        });
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->addActionRunner($this->actionRunner);
+        $stateMachine->addActionRunner(new CallableActionRunner(function (EventInterface $event, $payload, StateMachineInterface $stateMachine) {
+            if ($stateMachine->getCurrentState()->getStateId() == 'Input' && $event->getEventId() == 'next') {
+                $payload->foo = 'baz';
+            }
+        }));
         $payload = new \stdClass();
         $payload->foo = 'bar';
         $stateMachine = $this->stateMachineBuilder->getStateMachine();
@@ -253,12 +268,17 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function passesTheUserDefinedPayloadToGuards()
     {
-        $self = $this;
-        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation', null, function (EventInterface $event, $payload, StateMachine $stateMachine) use ($self) {
-            $payload->foo = 'baz';
+        $stateMachine = $this->stateMachineBuilder->getStateMachine();
+        $stateMachine->addActionRunner($this->actionRunner);
+        $stateMachine->addGuardEvaluator(new CallableGuardEvaluator(function (EventInterface $event, $payload, StateMachineInterface $stateMachine) {
+            $this->logActionCall($event, $payload, $stateMachine);
+
+            if ($stateMachine->getCurrentState()->getStateId() == 'Input' && $event->getEventId() == 'next') {
+                $payload->foo = 'baz';
+            }
 
             return true;
-        });
+        }));
         $payload = new \stdClass();
         $payload->foo = 'bar';
         $stateMachine = $this->stateMachineBuilder->getStateMachine();
