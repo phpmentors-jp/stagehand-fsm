@@ -55,11 +55,9 @@ class StateMachineBuilder
     /**
      * Sets the given state as the start state of the state machine.
      *
-     * @param string   $stateId
-     * @param callback $action
-     * @param callback $guard
+     * @param string $stateId
      */
-    public function setStartState($stateId, $action = null, $guard = null)
+    public function setStartState($stateId)
     {
         $state = $this->stateMachine->getState(StateInterface::STATE_INITIAL);
         if ($state === null) {
@@ -67,47 +65,22 @@ class StateMachineBuilder
             $this->stateMachine->addState($state);
         }
 
-        $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateId, $action, $guard);
+        $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateId);
     }
 
     /**
      * Sets the given state as an end state of the state machine.
      *
-     * @param string   $stateId
-     * @param string   $eventId
-     * @param callback $action
-     * @param callback $guard
+     * @param string $stateId
+     * @param string $eventId
      */
-    public function setEndState($stateId, $eventId, $action = null, $guard = null)
+    public function setEndState($stateId, $eventId)
     {
         if ($this->stateMachine->getState(StateInterface::STATE_FINAL) === null) {
             $this->stateMachine->addState(new FinalState());
         }
 
-        $this->addTransition($stateId, $eventId, StateInterface::STATE_FINAL, $action, $guard);
-    }
-
-    /**
-     * Sets the activity to the state.
-     *
-     * @param string   $stateId
-     * @param callback $activity
-     *
-     * @throws ActionNotCallableException
-     * @throws StateNotFoundException
-     */
-    public function setActivity($stateId, $activity)
-    {
-        $state = $this->stateMachine->getState($stateId);
-        if ($state === null) {
-            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateId, $this->stateMachine->getStateMachineId()));
-        }
-
-        if (!is_callable($activity)) {
-            throw new ActionNotCallableException(sprintf('The activity for the state "%s" is not callable.', EventInterface::EVENT_DO, $stateId));
-        }
-
-        $state->getEvent(EventInterface::EVENT_DO)->setAction($activity);
+        $this->addTransition($stateId, $eventId, StateInterface::STATE_FINAL);
     }
 
     /**
@@ -127,21 +100,13 @@ class StateMachineBuilder
     /**
      * Adds an state transition to the state machine.
      *
-     * @param string   $stateId
-     * @param string   $eventId
-     * @param string   $nextStateId
-     * @param callback $action
-     * @param callback $guard
+     * @param string $stateId
+     * @param string $eventId
+     * @param string $nextStateId
      *
-     * @throws ActionNotCallableException
      * @throws StateNotFoundException
      */
-    public function addTransition(
-        $stateId,
-        $eventId,
-        $nextStateId,
-        $action = null,
-        $guard = null)
+    public function addTransition($stateId, $eventId, $nextStateId)
     {
         $state = $this->stateMachine->getState($stateId);
         if ($state === null) {
@@ -158,64 +123,6 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateId));
         }
 
-        if ($action !== null) {
-            if (!is_callable($action)) {
-                throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', $eventId, $stateId));
-            }
-        }
-
-        if ($guard !== null) {
-            if (!is_callable($guard)) {
-                throw new ActionNotCallableException(sprintf('The guard for the event "%s" in the state "%s" is not callable.', $eventId, $stateId));
-            }
-        }
-
-        $this->stateMachine->addTransition($state, $event, $nextState, $action, $guard);
-    }
-
-    /**
-     * Sets the entry action to the state.
-     *
-     * @param string   $stateId
-     * @param callback $action
-     *
-     * @throws ActionNotCallableException
-     * @throws StateNotFoundException
-     */
-    public function setEntryAction($stateId, $action)
-    {
-        $state = $this->stateMachine->getState($stateId);
-        if ($state === null) {
-            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateId, $this->stateMachine->getStateMachineId()));
-        }
-
-        if (!is_callable($action)) {
-            throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_ENTRY, $stateId));
-        }
-
-        $state->getEvent(EventInterface::EVENT_ENTRY)->setAction($action);
-    }
-
-    /**
-     * Sets the exit action to the state.
-     *
-     * @param string   $stateId
-     * @param callback $action
-     *
-     * @throws ActionNotCallableException
-     * @throws StateNotFoundException
-     */
-    public function setExitAction($stateId, $action)
-    {
-        $state = $this->stateMachine->getState($stateId);
-        if ($state === null) {
-            throw new StateNotFoundException(sprintf('The state "%s" is not found in the state machine "%s".', $stateId, $this->stateMachine->getStateMachineId()));
-        }
-
-        if (!is_callable($action)) {
-            throw new ActionNotCallableException(sprintf('The action for the event "%s" in the state "%s" is not callable.', EventInterface::EVENT_EXIT, $stateId));
-        }
-
-        $state->getEvent(EventInterface::EVENT_EXIT)->setAction($action);
+        $this->stateMachine->addTransition($state, $event, $nextState);
     }
 }

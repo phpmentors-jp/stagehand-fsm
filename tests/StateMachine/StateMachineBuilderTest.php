@@ -12,65 +12,11 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Stagehand\FSM\Event\EventInterface;
-
 /**
  * @since Class available since Release 2.0.0
  */
 class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @return array
-     */
-    public function provideActionSetters()
-    {
-        return array(
-            array('setEntryAction'),
-            array('setExitAction'),
-            array('setActivity'),
-        );
-    }
-
-    /**
-     * @param string $actionSetter
-     *
-     * @test
-     * @dataProvider provideActionSetters
-     */
-    public function raisesAnExceptionIfTheStateIsNotFoundWhenSettingAStateAction($actionSetter)
-    {
-        $stateMachineBuilder = new StateMachineBuilder();
-
-        try {
-            $stateMachineBuilder->{ $actionSetter }('foo', function (EventInterface $event, $payload, StateMachine $stateMachine) {
-            });
-        } catch (StateNotFoundException $e) {
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
-    }
-
-    /**
-     * @param string $actionSetter
-     *
-     * @test
-     * @dataProvider provideActionSetters
-     */
-    public function raisesAnExceptionIfTheActionIsNotCallableWhenSettingAStateAction($actionSetter)
-    {
-        $stateMachineBuilder = new StateMachineBuilder();
-        $stateMachineBuilder->addState('foo');
-
-        try {
-            $stateMachineBuilder->{ $actionSetter }('foo', 'bar', array($this, 'nonExistingMethod'));
-        } catch (ActionNotCallableException $e) {
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
-    }
-
     /**
      * @test
      */
@@ -102,46 +48,6 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
             $stateMachineBuilder->addTransition('foo', 'bar', 'baz');
         } catch (StateNotFoundException $e) {
             $this->assertThat($e->getMessage(), $this->stringContains('"baz"'));
-
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
-    }
-
-    /**
-     * @test
-     */
-    public function raisesAnExceptionIfTheActionIsNotCallableWhenAddingATransition()
-    {
-        $stateMachineBuilder = new StateMachineBuilder();
-        $stateMachineBuilder->addState('foo');
-        $stateMachineBuilder->addState('baz');
-
-        try {
-            $stateMachineBuilder->addTransition('foo', 'bar', 'baz', array($this, 'nonExistingMethod'));
-        } catch (ActionNotCallableException $e) {
-            $this->assertThat($e->getMessage(), $this->stringStartsWith('The action'));
-
-            return;
-        }
-
-        $this->fail('An expected exception has not been raised.');
-    }
-
-    /**
-     * @test
-     */
-    public function raisesAnExceptionIfTheGuardIsNotCallableWhenAddingATransition()
-    {
-        $stateMachineBuilder = new StateMachineBuilder();
-        $stateMachineBuilder->addState('foo');
-        $stateMachineBuilder->addState('baz');
-
-        try {
-            $stateMachineBuilder->addTransition('foo', 'bar', 'baz', null, array($this, 'nonExistingMethod'));
-        } catch (ActionNotCallableException $e) {
-            $this->assertThat($e->getMessage(), $this->stringStartsWith('The guard'));
 
             return;
         }

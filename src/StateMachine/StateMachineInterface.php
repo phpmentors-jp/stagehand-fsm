@@ -16,6 +16,8 @@ use PHPMentors\DomainKata\Entity\EntityInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
+use Stagehand\FSM\Transition\ActionRunnerInterface;
+use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 
 /**
  * @since Class available since Release 2.2.0
@@ -77,10 +79,8 @@ interface StateMachineInterface extends EntityInterface
      * @param TransitionalStateInterface $state
      * @param TransitionEventInterface   $event
      * @param StateInterface             $nextState
-     * @param callable                   $action
-     * @param callable                   $guard
      */
-    public function addTransition(TransitionalStateInterface $state, TransitionEventInterface $event, StateInterface $nextState, $action, $guard);
+    public function addTransition(TransitionalStateInterface $state, TransitionEventInterface $event, StateInterface $nextState);
 
     /**
      * Starts the state machine.
@@ -130,4 +130,18 @@ interface StateMachineInterface extends EntityInterface
      * @since Method available since Release 2.4.0
      */
     public function getTransitionLog();
+
+    /**
+     * @param ActionRunnerInterface $actionRunner
+     *
+     * @since Method available since Release 3.0.0
+     */
+    public function addActionRunner(ActionRunnerInterface $actionRunner);
+
+    /**
+     * @param GuardEvaluatorInterface $guardEvaluator
+     *
+     * @since Method available since Release 3.0.0
+     */
+    public function addGuardEvaluator(GuardEvaluatorInterface $guardEvaluator);
 }

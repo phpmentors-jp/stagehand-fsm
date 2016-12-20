@@ -33,11 +33,4 @@ interface EventInterface extends EntityInterface
      * @return string
      */
     public function getEventId();
-
-    /**
-     * Gets the action for the event.
-     *
-     * @return callback
-     */
-    public function getAction();
 }
