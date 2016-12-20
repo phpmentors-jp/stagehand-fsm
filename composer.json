@@ -23,6 +23,11 @@
     "autoload": {
         "psr-4": { "Stagehand\\FSM\\": "src/" }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Stagehand\\FSM\\": "tests/"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "3.0.x-dev"
