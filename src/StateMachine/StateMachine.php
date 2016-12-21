@@ -356,7 +356,7 @@ class StateMachine implements StateMachineInterface, \Serializable
         }
         $this->runAction($event);
 
-        $this->transitionLog[] = $this->createTransitionLogEntry($this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()], $this->getCurrentState(), $event);
+        $this->transitionLog[] = $this->createTransitionLogEntry($this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()]);
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
         if ($this->eventDispatcher !== null) {

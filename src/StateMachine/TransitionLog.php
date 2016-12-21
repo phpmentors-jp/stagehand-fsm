@@ -38,7 +38,7 @@ class TransitionLog implements TransitionInterface
      * @param TransitionInterface $transition
      * @param \DateTime           $transitionDate
      */
-    public function __construct(TransitionInterface $transition, \DateTime $transitionDate = null)
+    public function __construct(TransitionInterface $transition, \DateTime $transitionDate)
     {
         $this->transition = $transition;
         $this->transitionDate = $transitionDate;
