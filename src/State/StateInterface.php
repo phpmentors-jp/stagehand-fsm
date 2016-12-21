@@ -37,11 +37,4 @@ interface StateInterface extends EntityInterface
      * @return string
      */
     public function getStateId();
-
-    /**
-     * Checks whether the state is connected to the final state or not.
-     *
-     * @return bool
-     */
-    public function isEndState();
 }

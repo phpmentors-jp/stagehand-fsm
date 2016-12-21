@@ -66,45 +66,4 @@ class StateTest extends \PHPUnit_Framework_TestCase
 
         $this->fail('An expected exception has not been raised.');
     }
-
-    /**
-     * @test
-     *
-     * @since Method available since Release 2.1.0
-     */
-    public function isNotAnEndStateIfNoEndEventsAreFound()
-    {
-        $event = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event)->getEventId()->thenReturn('bar');
-        \Phake::when($event)->isEndEvent()->thenReturn(false);
-        $state = new State('foo');
-        $state->addTransitionEvent($event);
-        $result = $state->isEndState();
-
-        $this->assertThat($result, $this->isFalse());
-        \Phake::verify($event)->isEndEvent();
-    }
-
-    /**
-     * @test
-     *
-     * @since Method available since Release 2.1.0
-     */
-    public function isAnEndStateIfAtLeastATransitionEventIsAnEndEvent()
-    {
-        $event1 = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event1)->getEventId()->thenReturn('bar');
-        \Phake::when($event1)->isEndEvent()->thenReturn(false);
-        $event2 = \Phake::mock('Stagehand\FSM\Event\TransitionEventInterface');
-        \Phake::when($event2)->getEventId()->thenReturn('baz');
-        \Phake::when($event2)->isEndEvent()->thenReturn(true);
-        $state = new State('foo');
-        $state->addTransitionEvent($event1);
-        $state->addTransitionEvent($event2);
-        $result = $state->isEndState();
-
-        $this->assertThat($result, $this->isTrue());
-        \Phake::verify($event1)->isEndEvent();
-        \Phake::verify($event2)->isEndEvent();
-    }
 }

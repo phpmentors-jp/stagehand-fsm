@@ -89,13 +89,4 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
         return $this->nextState;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @since Method available since Release 2.1.0
-     */
-    public function isEndEvent()
-    {
-        return $this->getNextState() !== null && $this->getNextState()->getStateId() == StateInterface::STATE_FINAL;
-    }
 }
