@@ -137,20 +137,4 @@ class State implements TransitionalStateInterface, \Serializable
     {
         return $this->stateId;
     }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @since Method available since Release 2.1.0
-     */
-    public function isEndState()
-    {
-        foreach ($this->eventCollection as $event) {
-            if ($event instanceof TransitionEventInterface && $event->isEndEvent()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

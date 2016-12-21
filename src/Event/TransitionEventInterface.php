@@ -12,8 +12,6 @@
 
 namespace Stagehand\FSM\Event;
 
-use Stagehand\FSM\State\StateInterface;
-
 /**
  * @since Class available since Release 2.0.0
  */
@@ -26,10 +24,4 @@ interface TransitionEventInterface extends EventInterface
      */
     public function getNextState();
 
-    /**
-     * Checks whether the event is connected to the final state or not.
-     *
-     * @return bool
-     */
-    public function isEndEvent();
 }
