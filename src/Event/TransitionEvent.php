@@ -12,8 +12,6 @@
 
 namespace Stagehand\FSM\Event;
 
-use Stagehand\FSM\State\StateInterface;
-
 /**
  * @since Class available since Release 0.1.0
  */
@@ -23,11 +21,6 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
      * @var string
      */
     protected $eventId;
-
-    /**
-     * @var StateInterface
-     */
-    protected $nextState;
 
     /**
      * {@inheritdoc}
@@ -64,29 +57,10 @@ class TransitionEvent implements TransitionEventInterface, \Serializable
     }
 
     /**
-     * Sets the next state to the event.
-     *
-     * @param StateInterface $state
-     */
-    public function setNextState(StateInterface $state)
-    {
-        $this->nextState = $state;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getEventId()
     {
         return $this->eventId;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNextState()
-    {
-        return $this->nextState;
-    }
-
 }

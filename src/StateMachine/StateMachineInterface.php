@@ -13,11 +13,10 @@
 namespace Stagehand\FSM\StateMachine;
 
 use PHPMentors\DomainKata\Entity\EntityInterface;
-use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
-use Stagehand\FSM\State\TransitionalStateInterface;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
 use Stagehand\FSM\Transition\GuardEvaluatorInterface;
+use Stagehand\FSM\Transition\TransitionInterface;
 
 /**
  * @since Class available since Release 2.2.0
@@ -76,11 +75,9 @@ interface StateMachineInterface extends EntityInterface
     public function getStateMachineId();
 
     /**
-     * @param TransitionalStateInterface $state
-     * @param TransitionEventInterface   $event
-     * @param StateInterface             $nextState
+     * @param TransitionInterface $transition
      */
-    public function addTransition(TransitionalStateInterface $state, TransitionEventInterface $event, StateInterface $nextState);
+    public function addTransition(TransitionInterface $transition);
 
     /**
      * Starts the state machine.

@@ -21,6 +21,7 @@ use Stagehand\FSM\State\FinalState;
 use Stagehand\FSM\State\InitialState;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
+use Stagehand\FSM\Transition\Transition;
 
 /**
  * @since Class available since Release 2.0.0
@@ -123,6 +124,6 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateId));
         }
 
-        $this->stateMachine->addTransition($state, $event, $nextState);
+        $this->stateMachine->addTransition(new Transition($nextState, $state, $event));
     }
 }
