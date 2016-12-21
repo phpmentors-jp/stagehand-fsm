@@ -14,68 +14,58 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
+use Stagehand\FSM\State\TransitionalStateInterface;
+use Stagehand\FSM\Transition\TransitionInterface;
 
 /**
  * @since Class available since Release 2.3.0
  */
-class TransitionLog
+class TransitionLog implements TransitionInterface
 {
-    /**
-     * @var TransitionEventInterface
-     */
-    private $event;
-
-    /**
-     * @var StateInterface
-     */
-    private $fromState;
-
-    /**
-     * @var StateInterface
-     */
-    private $toState;
-
     /**
      * @var \DateTime
      */
     private $transitionDate;
 
     /**
-     * @param StateInterface           $toState
-     * @param StateInterface           $fromState
-     * @param TransitionEventInterface $event
-     * @param \DateTime                $transitionDate
+     * @var TransitionInterface
+     *
+     * @since Property available since Release 3.0.0
      */
-    public function __construct(StateInterface $toState, StateInterface $fromState = null, TransitionEventInterface $event = null, \DateTime $transitionDate = null)
+    private $transition;
+
+    /**
+     * @param TransitionInterface $transition
+     * @param \DateTime           $transitionDate
+     */
+    public function __construct(TransitionInterface $transition, \DateTime $transitionDate = null)
     {
-        $this->toState = $toState;
-        $this->fromState = $fromState;
-        $this->event = $event;
+        $this->transition = $transition;
         $this->transitionDate = $transitionDate;
     }
 
     /**
-     * @return TransitionEventInterface
+     * {@inheritdoc}
      */
-    public function getEvent()
+    public function getEvent(): TransitionEventInterface
     {
-        return $this->event;
+        return $this->transition->getEvent();
     }
 
     /**
-     * @return StateInterface
+     * {@inheritdoc}
      */
-    public function getFromState()
+    public function getFromState(): TransitionalStateInterface
     {
-        return $this->fromState;
+        return $this->transition->getFromState();
     }
 
     /**
-     * @return StateInterface
+     * {@inheritdoc}
      */
-    public function getToState()
+    public function getToState(): StateInterface
     {
-        return $this->toState;
+        return $this->transition->getToState();
     }
 
     /**

@@ -14,12 +14,11 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
-use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
-use Stagehand\FSM\State\TransitionalStateInterface;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
 use Stagehand\FSM\Transition\GuardEvaluatorInterface;
+use Stagehand\FSM\Transition\TransitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -123,10 +122,6 @@ class StateMachine implements StateMachineInterface, \Serializable
             if (property_exists($this, $name)) {
                 $this->$name = $value;
             }
-        }
-
-        if ($this->stateCollection !== null) {
-            $this->rebuildTransitionEvents($this->stateCollection);
         }
     }
 
@@ -292,12 +287,9 @@ class StateMachine implements StateMachineInterface, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function addTransition(TransitionalStateInterface $state, TransitionEventInterface $event, StateInterface $nextState)
+    public function addTransition(TransitionInterface $transition)
     {
-        $event->setNextState($nextState);
-        $state->addTransitionEvent($event);
-
-        $this->transitionMap[$state->getStateId()][$event->getEventId()] = $nextState;
+        $this->transitionMap[$transition->getFromState()->getStateId()][$transition->getEvent()->getEventId()] = $transition;
     }
 
     /**
@@ -411,15 +403,13 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * @param StateInterface           $toState
-     * @param StateInterface           $fromState
-     * @param TransitionEventInterface $event
+     * @param TransitionInterface $transition
      *
      * @return TransitionLog
      */
-    private function createTransitionLogEntry(StateInterface $toState, StateInterface $fromState = null, TransitionEventInterface $event = null)
+    private function createTransitionLogEntry(TransitionInterface $transition)
     {
-        return new TransitionLog($toState, $fromState, $event, new \DateTime());
+        return new TransitionLog($transition, new \DateTime());
     }
 
     /**
@@ -430,57 +420,5 @@ class StateMachine implements StateMachineInterface, \Serializable
     private function createStateMachineNotStartedException()
     {
         return new StateMachineNotStartedException('The state machine is not started yet.');
-    }
-
-    /**
-     * @param StateCollection $stateCollection
-     *
-     * @since Method available since Release 2.3.0
-     */
-    private function buildTransitionMapFromStates(StateCollection $stateCollection)
-    {
-        foreach ($stateCollection as $state) {
-            if ($state instanceof State) {
-                $stateClass = new \ReflectionClass($state);
-                $eventCollectionProperty = $stateClass->getProperty('eventCollection');
-                $eventCollectionProperty->setAccessible(true);
-                $eventCollection = $eventCollectionProperty->getValue($state);
-                $eventCollectionProperty->setAccessible(false);
-                foreach ($eventCollection as $event) {
-                    if ($event instanceof TransitionEventInterface) {
-                        $this->transitionMap[$state->getStateId()][$event->getEventId()] = $event->getNextState();
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * @param StateCollection $stateCollection
-     *
-     * @since Method available since Release 2.3.0
-     */
-    private function rebuildTransitionEvents(StateCollection $stateCollection)
-    {
-        foreach ($stateCollection as $state) {
-            if ($state instanceof State) {
-                $stateClass = new \ReflectionClass($state);
-                $eventCollectionProperty = $stateClass->getProperty('eventCollection');
-                $eventCollectionProperty->setAccessible(true);
-                $eventCollection = $eventCollectionProperty->getValue($state);
-                $eventCollectionProperty->setAccessible(false);
-                foreach ($eventCollection as $event) {
-                    if ($event instanceof TransitionEventInterface) {
-                        if ($event->getNextState() === null) {
-                            $eventClass = new \ReflectionClass($event);
-                            $nextStateProperty = $eventClass->getProperty('nextState');
-                            $nextStateProperty->setAccessible(true);
-                            $nextStateProperty->setValue($event, $this->transitionMap[$state->getStateId()][$event->getEventId()]);
-                            $nextStateProperty->setAccessible(false);
-                        }
-                    }
-                }
-            }
-        }
     }
 }

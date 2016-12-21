@@ -17,11 +17,4 @@ namespace Stagehand\FSM\Event;
  */
 interface TransitionEventInterface extends EventInterface
 {
-    /**
-     * Gets the next state that the event will transition to.
-     *
-     * @return StateInterface
-     */
-    public function getNextState();
-
 }
