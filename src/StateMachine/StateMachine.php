@@ -40,7 +40,7 @@ class StateMachine implements StateMachineInterface
     /**
      * @var string
      */
-    protected $stateMachineId;
+    private $stateMachineId;
 
     /**
      * @var mixed
@@ -50,7 +50,7 @@ class StateMachine implements StateMachineInterface
     /**
      * @var array
      */
-    protected $eventQueue = array();
+    private $eventQueue = array();
 
     /**
      * @var EventDispatcherInterface

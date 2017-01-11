@@ -20,7 +20,7 @@ class TransitionEvent implements TransitionEventInterface
     /**
      * @var string
      */
-    protected $eventId;
+    private $eventId;
 
     /**
      * @param string $eventId

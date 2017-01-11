@@ -24,14 +24,14 @@ class State implements TransitionalStateInterface
     /**
      * @var string
      */
-    protected $stateId;
+    private $stateId;
 
     /**
      * @var EventCollection
      *
      * @since Property available since Release 2.2.0
      */
-    protected $eventCollection;
+    private $eventCollection;
 
     /**
      * @param string $stateId
