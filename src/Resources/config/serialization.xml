@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serializer
+  xmlns="http://symfony.com/schema/dic/serializer-mapping"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping http://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
+  >
+  <class name="Stagehand\FSM\StateMachine\StateMachine">
+    <attribute name="stateCollection">
+      <group>default</group>
+    </attribute>
+    <attribute name="stateMachineId">
+      <group>default</group>
+    </attribute>
+    <attribute name="eventQueue">
+      <group>default</group>
+    </attribute>
+    <attribute name="transitionLog">
+      <group>default</group>
+    </attribute>
+    <attribute name="active">
+      <group>default</group>
+    </attribute>
+    <attribute name="transitionMap">
+      <group>default</group>
+    </attribute>
+  </class>
+  <class name="Stagehand\FSM\State\State">
+    <attribute name="stateId">
+      <group>default</group>
+    </attribute>
+    <attribute name="eventCollection">
+      <group>default</group>
+    </attribute>
+  </class>
+  <class name="Stagehand\FSM\Event\TransitionEvent">
+    <attribute name="eventId">
+      <group>default</group>
+    </attribute>
+  </class>
+</serializer>
