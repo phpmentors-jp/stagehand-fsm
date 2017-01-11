@@ -15,38 +15,12 @@ namespace Stagehand\FSM\Event;
 /**
  * @since Class available since Release 0.1.0
  */
-class TransitionEvent implements TransitionEventInterface, \Serializable
+class TransitionEvent implements TransitionEventInterface
 {
     /**
      * @var string
      */
     protected $eventId;
-
-    /**
-     * {@inheritdoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function serialize()
-    {
-        return serialize(array(
-            'eventId' => $this->eventId,
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function unserialize($serialized)
-    {
-        foreach (unserialize($serialized) as $name => $value) {
-            if (property_exists($this, $name)) {
-                $this->$name = $value;
-            }
-        }
-    }
 
     /**
      * @param string $eventId

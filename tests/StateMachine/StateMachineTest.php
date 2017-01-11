@@ -303,27 +303,6 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     *
-     * @since Method available since Release 2.0.0
-     */
-    public function excludesThePayloadPropertyForSerialization()
-    {
-        $stateMachineBuilder = new StateMachineBuilder();
-        $stateMachineBuilder->addState('locked');
-        $stateMachineBuilder->addState('unlocked');
-        $stateMachineBuilder->setStartState('locked');
-        $stateMachineBuilder->addTransition('locked', 'insertCoin', 'unlocked');
-        $stateMachineBuilder->addTransition('unlocked', 'pass', 'locked');
-        $stateMachine = $stateMachineBuilder->getStateMachine();
-        $stateMachine->setPayload(new \stdClass());
-
-        $unserializedStateMachine = unserialize(serialize($stateMachine));
-
-        $this->assertThat($unserializedStateMachine->getPayload(), $this->isNull());
-    }
-
-    /**
-     * @test
      */
     public function dispatchesSystemEventsToListenersIfTheEventDispatcherHasBeenSet()
     {

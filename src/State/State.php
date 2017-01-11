@@ -19,7 +19,7 @@ use Stagehand\FSM\Event\TransitionEventInterface;
 /**
  * @since Class available since Release 0.1.0
  */
-class State implements TransitionalStateInterface, \Serializable
+class State implements TransitionalStateInterface
 {
     /**
      * @var string
@@ -32,30 +32,6 @@ class State implements TransitionalStateInterface, \Serializable
      * @since Property available since Release 2.2.0
      */
     protected $eventCollection;
-
-    /**
-     * {@inheritdoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function serialize()
-    {
-        return serialize(get_object_vars($this));
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function unserialize($serialized)
-    {
-        foreach (unserialize($serialized) as $name => $value) {
-            if (property_exists($this, $name)) {
-                $this->$name = $value;
-            }
-        }
-    }
 
     /**
      * @param string $stateId

@@ -28,7 +28,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @see  http://www.generation5.org/content/2003/FSM_Tutorial.asp
  * @since Class available since Release 0.1.0
  */
-class StateMachine implements StateMachineInterface, \Serializable
+class StateMachine implements StateMachineInterface
 {
     /**
      * @var StateCollection
@@ -93,37 +93,6 @@ class StateMachine implements StateMachineInterface, \Serializable
      * @since Property available since Release 3.0.0
      */
     private $guardEvaluators;
-
-    /**
-     * {@inheritdoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function serialize()
-    {
-        return serialize(array(
-            'stateCollection' => $this->stateCollection,
-            'stateMachineId' => $this->stateMachineId,
-            'eventQueue' => $this->eventQueue,
-            'transitionLog' => $this->transitionLog,
-            'active' => $this->active,
-            'transitionMap' => $this->transitionMap,
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @since Method available since Release 2.2.0
-     */
-    public function unserialize($serialized)
-    {
-        foreach (unserialize($serialized) as $name => $value) {
-            if (property_exists($this, $name)) {
-                $this->$name = $value;
-            }
-        }
-    }
 
     /**
      * @param string $stateMachineId
