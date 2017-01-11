@@ -5,7 +5,7 @@ A finite state machine
 [![Total Downloads](https://poser.pugx.org/phpmentors/stagehand-fsm/downloads.png)](https://packagist.org/packages/phpmentors/stagehand-fsm)
 [![Latest Stable Version](https://poser.pugx.org/phpmentors/stagehand-fsm/v/stable.png)](https://packagist.org/packages/phpmentors/stagehand-fsm)
 [![Latest Unstable Version](https://poser.pugx.org/phpmentors/stagehand-fsm/v/unstable.png)](https://packagist.org/packages/phpmentors/stagehand-fsm)
-[![Build Status](https://travis-ci.org/phpmentors/stagehand-fsm.svg?branch=master)](https://travis-ci.org/phpmentors/stagehand-fsm)
+[![Build Status](https://travis-ci.org/phpmentors-jp/stagehand-fsm.svg?branch=master)](https://travis-ci.org/phpmentors-jp/stagehand-fsm)
 
 `Stagehand_FSM` is a [finite state machine](https://en.wikipedia.org/wiki/Finite-state_machine).
 
