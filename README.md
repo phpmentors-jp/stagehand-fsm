@@ -2,10 +2,10 @@
 
 A finite state machine
 
-[![Total Downloads](https://poser.pugx.org/piece/stagehand-fsm/downloads.png)](https://packagist.org/packages/piece/stagehand-fsm)
-[![Latest Stable Version](https://poser.pugx.org/piece/stagehand-fsm/v/stable.png)](https://packagist.org/packages/piece/stagehand-fsm)
-[![Latest Unstable Version](https://poser.pugx.org/piece/stagehand-fsm/v/unstable.png)](https://packagist.org/packages/piece/stagehand-fsm)
-[![Build Status](https://travis-ci.org/piece/stagehand-fsm.svg?branch=master)](https://travis-ci.org/piece/stagehand-fsm)
+[![Total Downloads](https://poser.pugx.org/phpmentors/stagehand-fsm/downloads.png)](https://packagist.org/packages/phpmentors/stagehand-fsm)
+[![Latest Stable Version](https://poser.pugx.org/phpmentors/stagehand-fsm/v/stable.png)](https://packagist.org/packages/phpmentors/stagehand-fsm)
+[![Latest Unstable Version](https://poser.pugx.org/phpmentors/stagehand-fsm/v/unstable.png)](https://packagist.org/packages/phpmentors/stagehand-fsm)
+[![Build Status](https://travis-ci.org/phpmentors/stagehand-fsm.svg?branch=master)](https://travis-ci.org/phpmentors/stagehand-fsm)
 
 `Stagehand_FSM` is a [finite state machine](https://en.wikipedia.org/wiki/Finite-state_machine).
 
@@ -50,23 +50,23 @@ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "locked"
 
 `Stagehand_FSM` can be installed using [Composer](http://getcomposer.org/).
 
-Add the dependency to `piece/stagehand-fsm` into your `composer.json` file as the following:
+Add the dependency to `phpmentors/stagehand-fsm` into your `composer.json` file as the following:
 
 Stable version:
 
 ```
-composer require piece/stagehand-fsm "2.4.*"
+composer require phpmentors/stagehand-fsm "2.4.*"
 ```
 
 Development version:
 
 ```
-composer require piece/stagehand-fsm "~3.0@dev"
+composer require phpmentors/stagehand-fsm "~3.0@dev"
 ```
 
 ## Support
 
-If you find a bug or have a question, or want to request a feature, create an issue or pull request for it on [Issues](https://github.com/piece/stagehand-fsm/issues).
+If you find a bug or have a question, or want to request a feature, create an issue or pull request for it on [Issues](https://github.com/phpmentors-jp/stagehand-fsm/issues).
 
 ## Copyright
 

@@ -1,5 +1,5 @@
 {
-    "name": "piece/stagehand-fsm",
+    "name": "phpmentors/stagehand-fsm",
     "type": "library",
     "description": "A finite state machine",
     "keywords": ["fsm", "state machine"],
