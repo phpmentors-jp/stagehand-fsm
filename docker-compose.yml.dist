@@ -1,7 +1,7 @@
 version: '2'
 services:
     app:
-        container_name: "piece.stagehand-fsm.app"
+        container_name: "phpmentors.stagehand-fsm.app"
         image: "phpmentors/php-app:php70"
         volumes:
             - ".:/var/app"
