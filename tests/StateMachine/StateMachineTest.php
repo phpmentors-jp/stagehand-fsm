@@ -39,7 +39,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      *
      * @since Property available since Release 2.0.0
      */
-    protected $actionCalls = array();
+    protected $actionCalls = [];
 
     /**
      * @var ActionRunnerInterface
@@ -70,11 +70,11 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $this->actionCalls[] = array(
+        $this->actionCalls[] = [
             'state' => $stateMachine->getCurrentState()->getStateId(),
             'event' => $event->getEventId(),
             'calledBy' => @$calledBy,
-        );
+        ];
     }
 
     /**
@@ -97,7 +97,7 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $this->stateMachineBuilder->addTransition('Registration', 'next', 'Success');
         $this->stateMachineBuilder->setEndState('Success', 'next');
 
-        $this->actionRunner = new CallableActionRunner(array($this, 'logActionCall'));
+        $this->actionRunner = new CallableActionRunner([$this, 'logActionCall']);
     }
 
     /**
@@ -306,22 +306,22 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
      */
     public function dispatchesSystemEventsToListenersIfTheEventDispatcherHasBeenSet()
     {
-        $events = array();
+        $events = [];
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addListener(StateMachineEvents::EVENT_PROCESS, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = array('name' => $eventName, 'event' => $event);
+            $events[] = ['name' => $eventName, 'event' => $event];
         });
         $eventDispatcher->addListener(StateMachineEvents::EVENT_EXIT, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = array('name' => $eventName, 'event' => $event);
+            $events[] = ['name' => $eventName, 'event' => $event];
         });
         $eventDispatcher->addListener(StateMachineEvents::EVENT_TRANSITION, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = array('name' => $eventName, 'event' => $event);
+            $events[] = ['name' => $eventName, 'event' => $event];
         });
         $eventDispatcher->addListener(StateMachineEvents::EVENT_ENTRY, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = array('name' => $eventName, 'event' => $event);
+            $events[] = ['name' => $eventName, 'event' => $event];
         });
         $eventDispatcher->addListener(StateMachineEvents::EVENT_DO, function (StateMachineEvent $event, $eventName, EventDispatcherInterface $eventDispatcher) use (&$events) {
-            $events[] = array('name' => $eventName, 'event' => $event);
+            $events[] = ['name' => $eventName, 'event' => $event];
         });
         $stateMachineBuilder = new StateMachineBuilder();
         $stateMachineBuilder->addState('locked');
@@ -473,14 +473,14 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         $stateMachine->triggerEvent('next');
         $transitionLogs = $stateMachine->getTransitionLog();
 
-        $expectedTransitionLogs = array(
-            array(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, 'Input'),
-            array('Input', 'next', 'Validation'),
-            array('Validation', 'valid', 'Confirmation'),
-            array('Confirmation', 'next', 'Registration'),
-            array('Registration', 'next', 'Success'),
-            array('Success', 'next', StateInterface::STATE_FINAL),
-        );
+        $expectedTransitionLogs = [
+            [StateInterface::STATE_INITIAL, EventInterface::EVENT_START, 'Input'],
+            ['Input', 'next', 'Validation'],
+            ['Validation', 'valid', 'Confirmation'],
+            ['Confirmation', 'next', 'Registration'],
+            ['Registration', 'next', 'Success'],
+            ['Success', 'next', StateInterface::STATE_FINAL],
+        ];
 
         $this->assertThat(count($transitionLogs), $this->equalTo(count($expectedTransitionLogs)));
 

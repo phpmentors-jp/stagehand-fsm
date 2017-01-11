@@ -23,12 +23,12 @@ class StateCollection implements EntityCollectionInterface
     /**
      * @var array
      */
-    private $states;
+    private $states = [];
 
     /**
      * @param array $states
      */
-    public function __construct(array $states = array())
+    public function __construct(array $states = [])
     {
         $this->states = $states;
     }

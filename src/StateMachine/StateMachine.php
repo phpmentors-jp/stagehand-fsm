@@ -50,7 +50,7 @@ class StateMachine implements StateMachineInterface
     /**
      * @var array
      */
-    private $eventQueue = array();
+    private $eventQueue = [];
 
     /**
      * @var EventDispatcherInterface
@@ -71,14 +71,14 @@ class StateMachine implements StateMachineInterface
      *
      * @since Property available since Release 2.4.0
      */
-    private $transitionLog = array();
+    private $transitionLog = [];
 
     /**
      * @var array
      *
      * @since Property available since Release 2.3.0
      */
-    private $transitionMap = array();
+    private $transitionMap = [];
 
     /**
      * @var ActionRunnerInterface[]
@@ -348,7 +348,7 @@ class StateMachine implements StateMachineInterface
     private function evaluateGuard(TransitionEventInterface $event)
     {
         foreach ((array) $this->guardEvaluators as $guardEvaluator) {
-            $result = call_user_func(array($guardEvaluator, 'evaluate'), $event, $this->getPayload(), $this);
+            $result = call_user_func([$guardEvaluator, 'evaluate'], $event, $this->getPayload(), $this);
             if (!$result) {
                 return false;
             }
@@ -367,7 +367,7 @@ class StateMachine implements StateMachineInterface
     private function runAction(EventInterface $event)
     {
         foreach ((array) $this->actionRunners as $actionRunner) {
-            call_user_func(array($actionRunner, 'run'), $event, $this->getPayload(), $this);
+            call_user_func([$actionRunner, 'run'], $event, $this->getPayload(), $this);
         }
     }
 

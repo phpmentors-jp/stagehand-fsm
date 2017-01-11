@@ -23,12 +23,12 @@ class EventCollection implements EntityCollectionInterface
     /**
      * @var array
      */
-    private $events;
+    private $events = [];
 
     /**
      * @param array $events
      */
-    public function __construct(array $events = array())
+    public function __construct(array $events = [])
     {
         $this->events = $events;
     }
