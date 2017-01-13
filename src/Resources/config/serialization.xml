@@ -24,6 +24,11 @@
       <group>default</group>
     </attribute>
   </class>
+  <class name="Stagehand\FSM\State\StateCollection">
+    <attribute name="states">
+      <group>default</group>
+    </attribute>
+  </class>
   <class name="Stagehand\FSM\State\State">
     <attribute name="stateId">
       <group>default</group>
@@ -32,8 +37,32 @@
       <group>default</group>
     </attribute>
   </class>
+  <class name="Stagehand\FSM\Event\EventCollection">
+    <attribute name="events">
+      <group>default</group>
+    </attribute>
+  </class>
   <class name="Stagehand\FSM\Event\TransitionEvent">
     <attribute name="eventId">
+      <group>default</group>
+    </attribute>
+  </class>
+  <class name="Stagehand\FSM\StateMachine\TransitionLog">
+    <attribute name="transitionDate">
+      <group>default</group>
+    </attribute>
+    <attribute name="transition">
+      <group>default</group>
+    </attribute>
+  </class>
+  <class name="Stagehand\FSM\Transition\Transition">
+    <attribute name="toState">
+      <group>default</group>
+    </attribute>
+    <attribute name="fromState">
+      <group>default</group>
+    </attribute>
+    <attribute name="event">
       <group>default</group>
     </attribute>
   </class>
