@@ -3,7 +3,7 @@
     "type": "library",
     "description": "A finite state machine",
     "keywords": ["fsm", "state machine"],
-    "homepage": "https://github.com/piece/stagehand-fsm/wiki",
+    "homepage": "https://github.com/phpmentors-jp/stagehand-fsm/wiki",
     "license": "BSD-2-Clause",
     "authors": [
         {
