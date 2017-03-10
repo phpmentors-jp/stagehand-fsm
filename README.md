@@ -55,7 +55,7 @@ Add the dependency to `phpmentors/stagehand-fsm` into your `composer.json` file 
 Stable version:
 
 ```
-composer require phpmentors/stagehand-fsm "2.4.*"
+composer require phpmentors/stagehand-fsm "2.5.*"
 ```
 
 Development version:
