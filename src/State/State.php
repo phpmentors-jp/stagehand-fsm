@@ -48,7 +48,7 @@ class State implements TransitionalStateInterface, \Serializable
     protected $eventCollection;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
      */
@@ -58,7 +58,7 @@ class State implements TransitionalStateInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
      */
@@ -72,7 +72,7 @@ class State implements TransitionalStateInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
      */
@@ -149,7 +149,7 @@ class State implements TransitionalStateInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getEvent($eventId)
     {
@@ -165,7 +165,7 @@ class State implements TransitionalStateInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getStateId()
     {
@@ -173,7 +173,7 @@ class State implements TransitionalStateInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.1.0
      */

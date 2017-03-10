@@ -22,10 +22,10 @@ use Stagehand\FSM\State\TransitionalStateInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @link  http://en.wikipedia.org/wiki/Finite_state_machine
- * @link  http://www.sparxsystems.com/resources/uml2_tutorial/uml2_statediagram.html
- * @link  http://pear.php.net/package/FSM
- * @link  http://www.generation5.org/content/2003/FSM_Tutorial.asp
+ * @see  http://en.wikipedia.org/wiki/Finite_state_machine
+ * @see  http://www.sparxsystems.com/resources/uml2_tutorial/uml2_statediagram.html
+ * @see  http://pear.php.net/package/FSM
+ * @see  http://www.generation5.org/content/2003/FSM_Tutorial.asp
  * @since Class available since Release 0.1.0
  */
 class StateMachine implements StateMachineInterface, \Serializable
@@ -131,7 +131,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     private $transitionMap = array();
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
      */
@@ -148,7 +148,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
      */
@@ -189,7 +189,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
      */
@@ -250,7 +250,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function start()
     {
@@ -263,7 +263,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getCurrentState()
     {
@@ -281,7 +281,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPreviousState()
     {
@@ -299,7 +299,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPayload()
     {
@@ -307,7 +307,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function triggerEvent($eventId)
     {
@@ -338,7 +338,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 1.7.0
      */
@@ -356,7 +356,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getState($stateId)
     {
@@ -364,7 +364,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function addState(StateInterface $state)
     {
@@ -372,7 +372,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getStateMachineId()
     {
@@ -380,7 +380,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setPayload($payload)
     {
@@ -388,7 +388,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function addTransition(TransitionalStateInterface $state, TransitionEventInterface $event, StateInterface $nextState, $action, $guard)
     {
@@ -401,7 +401,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTransitionLog()
     {
@@ -420,7 +420,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.3.0
      */
@@ -430,7 +430,7 @@ class StateMachine implements StateMachineInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isEnded()
     {

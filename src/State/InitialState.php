@@ -35,7 +35,7 @@ class InitialState extends State
     protected $transitionEvent;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @since Method available since Release 2.2.0
      */
@@ -57,7 +57,7 @@ class InitialState extends State
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws InvalidEventException
      *
