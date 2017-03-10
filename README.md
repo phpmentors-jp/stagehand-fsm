@@ -2,8 +2,8 @@
 
 A finite state machine
 
-[![Total Downloads](https://poser.pugx.org/phpmentors/stagehand-fsm/downloads.png)](https://packagist.org/packages/phpmentors/stagehand-fsm)
-[![Latest Stable Version](https://poser.pugx.org/phpmentors/stagehand-fsm/v/stable.png)](https://packagist.org/packages/phpmentors/stagehand-fsm)
+[![Total Downloads](https://poser.pugx.org/piece/stagehand-fsm/downloads.png)](https://packagist.org/packages/piece/stagehand-fsm)
+[![Latest Stable Version](https://poser.pugx.org/piece/stagehand-fsm/v/stable.png)](https://packagist.org/packages/piece/stagehand-fsm)
 [![Latest Unstable Version](https://poser.pugx.org/phpmentors/stagehand-fsm/v/unstable.png)](https://packagist.org/packages/phpmentors/stagehand-fsm)
 [![Build Status](https://travis-ci.org/phpmentors-jp/stagehand-fsm.svg?branch=master)](https://travis-ci.org/phpmentors-jp/stagehand-fsm)
 
@@ -50,12 +50,12 @@ echo $stateMachine->getCurrentState()->getStateID() . PHP_EOL; // "locked"
 
 `Stagehand_FSM` can be installed using [Composer](http://getcomposer.org/).
 
-Add the dependency to `phpmentors/stagehand-fsm` into your `composer.json` file as the following:
+Add the dependency to `piece/stagehand-fsm` into your `composer.json` file as the following:
 
 Stable version:
 
 ```
-composer require phpmentors/stagehand-fsm "2.5.*"
+composer require piece/stagehand-fsm "2.5.*"
 ```
 
 Development version:
