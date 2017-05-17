@@ -12,12 +12,10 @@
 
 namespace Stagehand\FSM\Event;
 
-use PHPMentors\DomainKata\Entity\EntityInterface;
-
 /**
  * @since Class available since Release 2.0.0
  */
-interface EventInterface extends EntityInterface
+interface EventInterface
 {
     /*
      * Constants for special events.

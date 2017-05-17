@@ -12,13 +12,10 @@
 
 namespace Stagehand\FSM\State;
 
-use PHPMentors\DomainKata\Entity\EntityCollectionInterface;
-use PHPMentors\DomainKata\Entity\EntityInterface;
-
 /**
  * @since Class available since Release 2.2.0
  */
-class StateCollection implements EntityCollectionInterface
+class StateCollection
 {
     /**
      * @var array
@@ -36,11 +33,8 @@ class StateCollection implements EntityCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function add(EntityInterface $entity)
+    public function add(StateInterface $entity)
     {
-        assert($entity instanceof StateInterface);
-
-        /* @var $entity StateInterface */
         $this->states[$entity->getStateId()] = $entity;
     }
 
@@ -59,11 +53,8 @@ class StateCollection implements EntityCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function remove(EntityInterface $entity)
+    public function remove(StateInterface $entity)
     {
-        assert($entity instanceof StateInterface);
-
-        /* @var $entity StateInterface */
         if (array_key_exists($entity->getStateId(), $this->states)) {
         }
     }

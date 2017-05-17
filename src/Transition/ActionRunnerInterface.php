@@ -12,14 +12,13 @@
 
 namespace Stagehand\FSM\Transition;
 
-use PHPMentors\DomainKata\Service\ServiceInterface;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\StateMachine\StateMachineInterface;
 
 /**
  * @since Class available since Release 3.0.0
  */
-interface ActionRunnerInterface extends ServiceInterface
+interface ActionRunnerInterface
 {
     /**
      * @param EventInterface        $event

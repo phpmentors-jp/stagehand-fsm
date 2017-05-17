@@ -12,7 +12,6 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use PHPMentors\DomainKata\Entity\EntityInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
 use Stagehand\FSM\Transition\GuardEvaluatorInterface;
@@ -21,7 +20,7 @@ use Stagehand\FSM\Transition\TransitionInterface;
 /**
  * @since Class available since Release 2.2.0
  */
-interface StateMachineInterface extends EntityInterface
+interface StateMachineInterface
 {
     /**
      * Sets the payload to the state machine.

@@ -12,7 +12,6 @@
 
 namespace Stagehand\FSM\Transition;
 
-use PHPMentors\DomainKata\Service\ServiceInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
@@ -20,7 +19,7 @@ use Stagehand\FSM\State\TransitionalStateInterface;
 /**
  * @since Class available since Release 3.0.0
  */
-interface TransitionInterface extends ServiceInterface
+interface TransitionInterface
 {
     public function getToState(): StateInterface;
 

@@ -12,12 +12,12 @@
 
 namespace Stagehand\FSM\State;
 
-use PHPMentors\DomainKata\Entity\EntityInterface;
+use Stagehand\FSM\Event\EventInterface;
 
 /**
  * @since Class available since Release 2.0.0
  */
-interface StateInterface extends EntityInterface
+interface StateInterface
 {
     const STATE_INITIAL = '__INITIAL__';
     const STATE_FINAL = '__FINAL__';
@@ -27,7 +27,7 @@ interface StateInterface extends EntityInterface
      *
      * @param string $eventId
      *
-     * @return EventInterfacee
+     * @return EventInterface
      */
     public function getEvent($eventId);
 

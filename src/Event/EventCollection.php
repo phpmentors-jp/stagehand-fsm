@@ -12,13 +12,10 @@
 
 namespace Stagehand\FSM\Event;
 
-use PHPMentors\DomainKata\Entity\EntityCollectionInterface;
-use PHPMentors\DomainKata\Entity\EntityInterface;
-
 /**
  * @since Class available since Release 2.2.0
  */
-class EventCollection implements EntityCollectionInterface
+class EventCollection
 {
     /**
      * @var array
@@ -36,11 +33,8 @@ class EventCollection implements EntityCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function add(EntityInterface $entity)
+    public function add(EventInterface $entity)
     {
-        assert($entity instanceof EventInterface);
-
-        /* @var $entity EventInterface */
         $this->events[$entity->getEventId()] = $entity;
     }
 
@@ -59,11 +53,8 @@ class EventCollection implements EntityCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function remove(EntityInterface $entity)
+    public function remove(EventInterface $entity)
     {
-        assert($entity instanceof EventInterface);
-
-        /* @var $entity EventInterface */
         if (array_key_exists($entity->getEventId(), $this->events)) {
             unset($this->events[$entity->getEventId()]);
         }
