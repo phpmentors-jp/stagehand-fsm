@@ -12,8 +12,8 @@
 
 namespace Stagehand\FSM\StateMachine;
 
+use PHPUnit\Framework\TestCase;
 use Stagehand\FSM\Event\EventInterface;
-use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\StateMachine\StateMachineTest\CallableActionRunner;
 use Stagehand\FSM\StateMachine\StateMachineTest\CallableGuardEvaluator;
@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @since Class available since Release 0.1.0
  */
-class StateMachineTest extends \PHPUnit_Framework_TestCase
+class StateMachineTest extends TestCase
 {
     /**
      * @var StateMachineBuilder
@@ -432,6 +432,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         try {
             $stateMachine->triggerEvent('foo');
         } catch (StateMachineNotStartedException $e) {
+            $this->assertTrue(true);
+
             return;
         }
 
@@ -451,6 +453,8 @@ class StateMachineTest extends \PHPUnit_Framework_TestCase
         try {
             $stateMachine->start();
         } catch (StateMachineAlreadyStartedException $e) {
+            $this->assertTrue(true);
+
             return;
         }
 

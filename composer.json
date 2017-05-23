@@ -16,8 +16,7 @@
         "symfony/event-dispatcher": "~2.8|~3.0"
     },
     "require-dev": {
-        "phake/phake": "~2.3",
-        "phpunit/phpunit": "~5.6"
+        "phpunit/phpunit": "~6.1"
     },
     "autoload": {
         "psr-4": {

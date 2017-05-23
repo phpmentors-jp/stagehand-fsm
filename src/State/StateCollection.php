@@ -30,17 +30,11 @@ class StateCollection
         $this->states = $states;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function add(StateInterface $entity)
     {
         $this->states[$entity->getStateId()] = $entity;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($key)
     {
         if (array_key_exists($key, $this->states)) {
@@ -50,34 +44,22 @@ class StateCollection
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove(StateInterface $entity)
     {
         if (array_key_exists($entity->getStateId(), $this->states)) {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return count($this->states);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIterator()
     {
         return new \ArrayIterator($this->states);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray()
     {
         return $this->states;

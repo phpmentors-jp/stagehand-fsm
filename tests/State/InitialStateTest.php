@@ -12,12 +12,13 @@
 
 namespace Stagehand\FSM\State;
 
+use PHPUnit\Framework\TestCase;
 use Stagehand\FSM\Event\TransitionEvent;
 
 /**
  * @since Class available since Release 2.1.0
  */
-class InitialStateTest extends \PHPUnit_Framework_TestCase
+class InitialStateTest extends TestCase
 {
     /**
      * @test
@@ -31,6 +32,8 @@ class InitialStateTest extends \PHPUnit_Framework_TestCase
         try {
             $state->addTransitionEvent(new TransitionEvent('foo'));
         } catch (InvalidEventException $e) {
+            $this->assertTrue(true);
+
             return;
         }
 

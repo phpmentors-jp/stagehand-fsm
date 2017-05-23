@@ -12,10 +12,12 @@
 
 namespace Stagehand\FSM\StateMachine;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @since Class available since Release 2.0.0
  */
-class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
+class StateMachineBuilderTest extends TestCase
 {
     /**
      * @test
@@ -62,7 +64,7 @@ class StateMachineBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function setsTheStateMachineObject()
     {
-        $stateMachine1 = \Phake::mock('Stagehand\FSM\StateMachine\StateMachineInterface');
+        $stateMachine1 = new StateMachine();
         $stateMachineBuilder = new StateMachineBuilder($stateMachine1);
         $stateMachine2 = $stateMachineBuilder->getStateMachine();
 
