@@ -30,17 +30,11 @@ class EventCollection
         $this->events = $events;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function add(EventInterface $entity)
     {
         $this->events[$entity->getEventId()] = $entity;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($key)
     {
         if (array_key_exists($key, $this->events)) {
@@ -50,9 +44,6 @@ class EventCollection
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove(EventInterface $entity)
     {
         if (array_key_exists($entity->getEventId(), $this->events)) {
@@ -60,25 +51,16 @@ class EventCollection
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return count($this->events);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIterator()
     {
         return new \ArrayIterator($this->events);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray()
     {
         return $this->events;
