@@ -21,9 +21,18 @@ use Stagehand\FSM\State\TransitionalStateInterface;
  */
 interface TransitionInterface
 {
+    /**
+     * @return StateInterface
+     */
     public function getToState(): StateInterface;
 
+    /**
+     * @return TransitionalStateInterface
+     */
     public function getFromState(): TransitionalStateInterface;
 
+    /**
+     * @return TransitionEventInterface
+     */
     public function getEvent(): TransitionEventInterface;
 }
