@@ -21,8 +21,19 @@ use Stagehand\FSM\State\TransitionalStateInterface;
  */
 class Transition implements TransitionInterface
 {
+    /**
+     * @var StateInterface
+     */
     private $toState;
+
+    /**
+     * @var TransitionalStateInterface
+     */
     private $fromState;
+
+    /**
+     * @var TransitionEventInterface
+     */
     private $event;
 
     /**
