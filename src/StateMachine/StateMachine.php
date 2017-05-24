@@ -325,7 +325,7 @@ class StateMachine implements StateMachineInterface
         }
         $this->runAction($event);
 
-        $this->transitionLog[] = $this->createTransitionLogEntry($this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()]);
+        $this->transitionLog[] = $this->createTransitionLogEntry($this->getCurrentTransition($event));
 
         $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
         if ($this->eventDispatcher !== null) {
@@ -389,5 +389,17 @@ class StateMachine implements StateMachineInterface
     private function createStateMachineNotStartedException()
     {
         return new StateMachineNotStartedException('The state machine is not started yet.');
+    }
+
+    /**
+     * @param TransitionEventInterface $event
+     *
+     * @return TransitionInterface
+     *
+     * @since Method available since Release 2.3.0
+     */
+    private function getCurrentTransition(TransitionEventInterface $event): TransitionInterface
+    {
+        return $this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()];
     }
 }
