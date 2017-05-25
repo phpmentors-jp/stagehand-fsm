@@ -13,11 +13,12 @@
 namespace Stagehand\FSM\State;
 
 use Stagehand\FSM\Event\EventInterface;
+use Stagehand\FSM\Token\TokenAwareInterface;
 
 /**
  * @since Class available since Release 2.0.0
  */
-interface StateInterface
+interface StateInterface extends TokenAwareInterface
 {
     const STATE_INITIAL = '__INITIAL__';
     const STATE_FINAL = '__FINAL__';
@@ -37,4 +38,9 @@ interface StateInterface
      * @return string
      */
     public function getStateId();
+
+    /**
+     * @return bool
+     */
+    public function hasToken(): bool;
 }

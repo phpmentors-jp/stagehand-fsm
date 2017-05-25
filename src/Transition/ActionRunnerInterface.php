@@ -21,9 +21,10 @@ use Stagehand\FSM\StateMachine\StateMachineInterface;
 interface ActionRunnerInterface
 {
     /**
-     * @param EventInterface        $event
-     * @param mixed                 $payload
-     * @param StateMachineInterface $stateMachine
+     * @param EventInterface           $event
+     * @param mixed                    $payload
+     * @param StateMachineInterface    $stateMachine
+     * @param TransitionInterface|null $transition
      */
-    public function run(EventInterface $event, $payload, StateMachineInterface $stateMachine);
+    public function run(EventInterface $event, $payload, StateMachineInterface $stateMachine, TransitionInterface $transition = null);
 }

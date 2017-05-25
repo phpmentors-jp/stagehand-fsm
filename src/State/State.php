@@ -15,6 +15,7 @@ namespace Stagehand\FSM\State;
 use Stagehand\FSM\Event\EventCollection;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\Token\Token;
 
 /**
  * @since Class available since Release 0.1.0
@@ -32,6 +33,13 @@ class State implements TransitionalStateInterface
      * @since Property available since Release 2.2.0
      */
     private $eventCollection;
+
+    /**
+     * @var Token|null
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $token;
 
     /**
      * @param string $stateId
@@ -112,5 +120,32 @@ class State implements TransitionalStateInterface
     public function getStateId()
     {
         return $this->stateId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setToken(Token $token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getToken()
+    {
+        $token = $this->token;
+        $this->token = null;
+
+        return $token;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasToken(): bool
+    {
+        return $this->token !== null;
     }
 }

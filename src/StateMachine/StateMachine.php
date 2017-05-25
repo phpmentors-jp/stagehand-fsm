@@ -16,6 +16,8 @@ use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
+use Stagehand\FSM\State\TransitionalStateInterface;
+use Stagehand\FSM\Token\Token;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
 use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 use Stagehand\FSM\Transition\TransitionInterface;
@@ -95,6 +97,20 @@ class StateMachine implements StateMachineInterface
     private $guardEvaluators;
 
     /**
+     * @var StateInterface
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $currentState;
+
+    /**
+     * @var TransitionalStateInterface
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $previousState;
+
+    /**
      * @param string $stateMachineId
      */
     public function __construct($stateMachineId = null)
@@ -118,11 +134,15 @@ class StateMachine implements StateMachineInterface
      */
     public function start()
     {
-        if ($this->active) {
+        if ($this->currentState !== null) {
             throw new StateMachineAlreadyStartedException('The state machine is already started.');
         }
 
-        $this->active = true;
+        $initialState = $this->getState(StateInterface::STATE_INITIAL);
+        assert($initialState !== null);
+
+        $initialState->setToken(new Token());
+        $this->currentState = $this->stateCollection->getCurrentState();
         $this->triggerEvent(EventInterface::EVENT_START);
     }
 
@@ -131,17 +151,7 @@ class StateMachine implements StateMachineInterface
      */
     public function getCurrentState()
     {
-        if ($this->active) {
-            if (count($this->transitionLog) == 0) {
-                return $this->getState(StateInterface::STATE_INITIAL);
-            }
-        } else {
-            if (!$this->isEnded()) {
-                return null;
-            }
-        }
-
-        return $this->transitionLog[count($this->transitionLog) - 1]->getToState();
+        return $this->currentState;
     }
 
     /**
@@ -149,17 +159,7 @@ class StateMachine implements StateMachineInterface
      */
     public function getPreviousState()
     {
-        if ($this->active) {
-            if (count($this->transitionLog) == 0) {
-                return null;
-            }
-        } else {
-            if (!$this->isEnded()) {
-                return null;
-            }
-        }
-
-        return $this->transitionLog[count($this->transitionLog) - 1]->getFromState();
+        return $this->previousState;
     }
 
     /**
@@ -182,20 +182,18 @@ class StateMachine implements StateMachineInterface
                 throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
             }
 
-            $event = $this->getCurrentState()->getEvent(array_shift($this->eventQueue));
+            $event = $this->currentState->getEvent(array_shift($this->eventQueue));
             if ($this->eventDispatcher !== null) {
-                $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->getCurrentState(), $event));
+                $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->currentState, $event));
             }
             if ($event instanceof TransitionEventInterface && $this->evaluateGuard($event)) {
-                $this->transition($event);
-                if ($this->isEnded()) {
-                    $this->active = false;
-                }
+                $fromState = $this->currentState; /* @var $fromState TransitionalStateInterface */
+                $this->transition($fromState, $event);
             }
 
-            $doEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_DO);
+            $doEvent = $this->currentState->getEvent(EventInterface::EVENT_DO);
             if ($this->eventDispatcher !== null) {
-                $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_DO, new StateMachineEvent($this, $this->getCurrentState(), $doEvent));
+                $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_DO, new StateMachineEvent($this, $this->currentState, $doEvent));
             }
             if ($doEvent !== null) {
                 $this->runAction($doEvent);
@@ -210,12 +208,12 @@ class StateMachine implements StateMachineInterface
      */
     public function queueEvent($eventId)
     {
-        if (!$this->active) {
-            if ($this->isEnded()) {
-                throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
-            } else {
-                throw $this->createStateMachineNotStartedException();
-            }
+        if ($this->currentState === null) {
+            throw $this->createStateMachineNotStartedException();
+        }
+
+        if ($this->currentState->getStateId() == StateInterface::STATE_FINAL) {
+            throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
         }
 
         $this->eventQueue[] = $eventId;
@@ -276,7 +274,11 @@ class StateMachine implements StateMachineInterface
      */
     public function isActive()
     {
-        return $this->active;
+        if ($this->currentState === null) {
+            return false;
+        }
+
+        return $this->currentState != StateInterface::STATE_FINAL;
     }
 
     /**
@@ -284,7 +286,11 @@ class StateMachine implements StateMachineInterface
      */
     public function isEnded()
     {
-        return count($this->transitionLog) > 0 && $this->transitionLog[count($this->transitionLog) - 1]->getToState()->getStateId() == StateInterface::STATE_FINAL;
+        if ($this->currentState === null) {
+            return false;
+        }
+
+        return $this->currentState == StateInterface::STATE_FINAL;
     }
 
     /**
@@ -306,30 +312,35 @@ class StateMachine implements StateMachineInterface
     /**
      * Transitions to the next state.
      *
-     * @param TransitionEventInterface $event
-     *
-     * @throws StateNotFoundException
+     * @param TransitionalStateInterface $fromState
+     * @param TransitionEventInterface   $event
      */
-    private function transition(TransitionEventInterface $event)
+    private function transition(TransitionalStateInterface $fromState, TransitionEventInterface $event)
     {
-        $exitEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_EXIT);
+        $exitEvent = $fromState->getEvent(EventInterface::EVENT_EXIT);
         if ($this->eventDispatcher !== null) {
-            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $this->getCurrentState(), $exitEvent));
+            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $fromState, $exitEvent));
         }
         if ($exitEvent !== null) {
             $this->runAction($exitEvent);
         }
 
+        $transition = $this->getTransition($fromState, $event);
+        $transition->setToken($fromState->getToken());
+        $this->previousState = $fromState;
+        $this->currentState = null;
         if ($this->eventDispatcher !== null) {
-            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, $this->getCurrentState(), $event));
+            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, null, $event, $transition));
         }
-        $this->runAction($event);
+        $this->runAction($event, $transition);
+        $transition->getToState()->setToken($transition->getToken());
+        $toState = $this->stateCollection->getCurrentState();
+        $this->currentState = $toState;
+        $this->transitionLog[] = $this->createTransitionLogEntry($transition);
 
-        $this->transitionLog[] = $this->createTransitionLogEntry($this->getCurrentTransition($event));
-
-        $entryEvent = $this->getCurrentState()->getEvent(EventInterface::EVENT_ENTRY);
+        $entryEvent = $toState->getEvent(EventInterface::EVENT_ENTRY);
         if ($this->eventDispatcher !== null) {
-            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $this->getCurrentState(), $entryEvent));
+            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $toState, $entryEvent));
         }
         if ($entryEvent !== null) {
             $this->runAction($entryEvent);
@@ -360,14 +371,15 @@ class StateMachine implements StateMachineInterface
     /**
      * Runs the action for the given event.
      *
-     * @param EventInterface $event
+     * @param EventInterface           $event
+     * @param TransitionInterface|null $transition
      *
      * @since Method available since Release 2.0.0
      */
-    private function runAction(EventInterface $event)
+    private function runAction(EventInterface $event, TransitionInterface $transition = null)
     {
         foreach ((array) $this->actionRunners as $actionRunner) {
-            call_user_func([$actionRunner, 'run'], $event, $this->getPayload(), $this);
+            call_user_func([$actionRunner, 'run'], $event, $this->getPayload(), $this, $transition);
         }
     }
 
@@ -392,14 +404,15 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
-     * @param TransitionEventInterface $event
+     * @param TransitionalStateInterface $state
+     * @param TransitionEventInterface   $event
      *
      * @return TransitionInterface
      *
-     * @since Method available since Release 2.3.0
+     * @since Method available since Release 3.0.0
      */
-    private function getCurrentTransition(TransitionEventInterface $event): TransitionInterface
+    private function getTransition(TransitionalStateInterface $state, TransitionEventInterface $event): TransitionInterface
     {
-        return $this->transitionMap[$this->getCurrentState()->getStateId()][$event->getEventId()];
+        return $this->transitionMap[$state->getStateId()][$event->getEventId()];
     }
 }

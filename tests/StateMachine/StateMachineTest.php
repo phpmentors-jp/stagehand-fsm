@@ -19,6 +19,7 @@ use Stagehand\FSM\StateMachine\StateMachineTest\CallableActionRunner;
 use Stagehand\FSM\StateMachine\StateMachineTest\CallableGuardEvaluator;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
 use Stagehand\FSM\Transition\GuardEvaluatorInterface;
+use Stagehand\FSM\Transition\TransitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -58,11 +59,12 @@ class StateMachineTest extends TestCase
     /**
      * @param EventInterface $event
      * @param mixed callback
-     * @param StateMachine $stateMachine
+     * @param StateMachine             $stateMachine
+     * @param TransitionInterface|null $transition
      *
      * @since Method available since Release 2.0.0
      */
-    public function logActionCall(EventInterface $event, $payload, StateMachine $stateMachine)
+    public function logActionCall(EventInterface $event, $payload, StateMachine $stateMachine, TransitionInterface $transition = null)
     {
         foreach (debug_backtrace() as $stackFrame) {
             if ($stackFrame['function'] == 'runAction' || $stackFrame['function'] == 'evaluateGuard') {
@@ -71,7 +73,7 @@ class StateMachineTest extends TestCase
         }
 
         $this->actionCalls[] = [
-            'state' => $stateMachine->getCurrentState()->getStateId(),
+            'state' => $transition === null ? $stateMachine->getCurrentState()->getStateId() : $transition->getFromState()->getStateId(),
             'event' => $event->getEventId(),
             'calledBy' => @$calledBy,
         ];
@@ -246,8 +248,8 @@ class StateMachineTest extends TestCase
     {
         $stateMachine = $this->stateMachineBuilder->getStateMachine();
         $stateMachine->addActionRunner($this->actionRunner);
-        $stateMachine->addActionRunner(new CallableActionRunner(function (EventInterface $event, $payload, StateMachineInterface $stateMachine) {
-            if ($stateMachine->getCurrentState()->getStateId() == 'Input' && $event->getEventId() == 'next') {
+        $stateMachine->addActionRunner(new CallableActionRunner(function (EventInterface $event, $payload, StateMachineInterface $stateMachine, TransitionInterface $transition = null) {
+            if (($transition === null ? $stateMachine->getCurrentState() : $transition->getFromState())->getStateId() == 'Input' && $event->getEventId() == 'next') {
                 $payload->foo = 'baz';
             }
         }));
@@ -349,7 +351,7 @@ class StateMachineTest extends TestCase
 
         $this->assertThat($events[2]['name'], $this->equalTo(StateMachineEvents::EVENT_TRANSITION));
         $this->assertThat($events[2]['event']->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[2]['event']->getState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
+        $this->assertThat(($events[2]['event']->getTransition() === null ? $events[2]['event']->getState() : $events[2]['event']->getTransition()->getFromState())->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
         $this->assertThat($events[2]['event']->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\TransitionEventInterface'));
         $this->assertThat($events[2]['event']->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_START));
 
@@ -379,7 +381,7 @@ class StateMachineTest extends TestCase
 
         $this->assertThat($events[7]['name'], $this->equalTo(StateMachineEvents::EVENT_TRANSITION));
         $this->assertThat($events[7]['event']->getStateMachine(), $this->identicalTo($stateMachine));
-        $this->assertThat($events[7]['event']->getState()->getStateId(), $this->equalTo('locked'));
+        $this->assertThat(($events[7]['event']->getTransition() === null ? $events[7]['event']->getState() : $events[7]['event']->getTransition()->getFromState())->getStateId(), $this->equalTo('locked'));
         $this->assertThat($events[7]['event']->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\TransitionEventInterface'));
         $this->assertThat($events[7]['event']->getEvent()->getEventId(), $this->equalTo('insertCoin'));
 

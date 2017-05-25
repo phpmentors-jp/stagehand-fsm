@@ -5,6 +5,7 @@ namespace Stagehand\FSM\StateMachine\StateMachineTest;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\StateMachine\StateMachineInterface;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
+use Stagehand\FSM\Transition\TransitionInterface;
 
 /**
  * @since Class available since Release 3.0.0
@@ -27,8 +28,8 @@ class CallableActionRunner implements ActionRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function run(EventInterface $event, $payload, StateMachineInterface $stateMachine)
+    public function run(EventInterface $event, $payload, StateMachineInterface $stateMachine, TransitionInterface $transition = null)
     {
-        call_user_func($this->callback, $event, $payload, $stateMachine);
+        call_user_func($this->callback, $event, $payload, $stateMachine, $transition);
     }
 }

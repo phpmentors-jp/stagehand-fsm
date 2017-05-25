@@ -14,6 +14,7 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\StateInterface;
+use Stagehand\FSM\Transition\TransitionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -32,20 +33,29 @@ class StateMachineEvent extends Event
     private $state;
 
     /**
-     * @var EventInterface
+     * @var EventInterface|null
      */
     private $event;
 
     /**
-     * @param StateMachine   $stateMachine
-     * @param StateInterface $state
-     * @param EventInterface $event
+     * @var TransitionInterface|null
+     *
+     * @since Property available since Release 3.0.0
      */
-    public function __construct(StateMachine $stateMachine, StateInterface $state, EventInterface $event = null)
+    private $transition;
+
+    /**
+     * @param StateMachine             $stateMachine
+     * @param StateInterface|null      $state
+     * @param EventInterface|null      $event
+     * @param TransitionInterface|null $transition
+     */
+    public function __construct(StateMachine $stateMachine, StateInterface $state = null, EventInterface $event = null, TransitionInterface $transition = null)
     {
         $this->stateMachine = $stateMachine;
         $this->state = $state;
         $this->event = $event;
+        $this->transition = $transition;
     }
 
     /**
@@ -70,5 +80,15 @@ class StateMachineEvent extends Event
     public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * @return TransitionInterface
+     *
+     * @since Method available since Release 3.0.0
+     */
+    public function getTransition(): TransitionInterface
+    {
+        return $this->transition;
     }
 }
