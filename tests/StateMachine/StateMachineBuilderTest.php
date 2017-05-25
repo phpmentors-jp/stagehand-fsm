@@ -28,7 +28,7 @@ class StateMachineBuilderTest extends TestCase
         $stateMachineBuilder->addState('baz');
 
         try {
-            $stateMachineBuilder->addTransition('foo', 'bar', 'baz');
+            $stateMachineBuilder->addTransition('foo', 'baz', 'bar');
         } catch (StateNotFoundException $e) {
             $this->assertThat($e->getMessage(), $this->stringContains('"foo"'));
 
@@ -47,7 +47,7 @@ class StateMachineBuilderTest extends TestCase
         $stateMachineBuilder->addState('foo');
 
         try {
-            $stateMachineBuilder->addTransition('foo', 'bar', 'baz');
+            $stateMachineBuilder->addTransition('foo', 'baz', 'bar');
         } catch (StateNotFoundException $e) {
             $this->assertThat($e->getMessage(), $this->stringContains('"baz"'));
 

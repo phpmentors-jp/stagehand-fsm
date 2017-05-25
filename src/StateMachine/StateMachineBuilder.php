@@ -66,7 +66,7 @@ class StateMachineBuilder
             $this->stateMachine->addState($state);
         }
 
-        $this->addTransition(StateInterface::STATE_INITIAL, EventInterface::EVENT_START, $stateId);
+        $this->addTransition(StateInterface::STATE_INITIAL, $stateId, EventInterface::EVENT_START);
     }
 
     /**
@@ -81,7 +81,7 @@ class StateMachineBuilder
             $this->stateMachine->addState(new FinalState());
         }
 
-        $this->addTransition($stateId, $eventId, StateInterface::STATE_FINAL);
+        $this->addTransition($stateId, StateInterface::STATE_FINAL, $eventId);
     }
 
     /**
@@ -102,26 +102,26 @@ class StateMachineBuilder
      * Adds an state transition to the state machine.
      *
      * @param string $stateId
-     * @param string $eventId
      * @param string $nextStateId
+     * @param string $eventId
      *
      * @throws StateNotFoundException
      */
-    public function addTransition($stateId, $eventId, $nextStateId)
+    public function addTransition($stateId, $nextStateId, $eventId)
     {
         $state = $this->stateMachine->getState($stateId);
         if ($state === null) {
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $stateId));
         }
 
-        $event = $state->getEvent($eventId);
-        if ($event === null) {
-            $event = new TransitionEvent($eventId);
-        }
-
         $nextState = $this->stateMachine->getState($nextStateId);
         if ($nextState === null) {
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateId));
+        }
+
+        $event = $state->getEvent($eventId);
+        if ($event === null) {
+            $event = new TransitionEvent($eventId);
         }
 
         $this->stateMachine->addTransition(new Transition($nextState, $state, $event));

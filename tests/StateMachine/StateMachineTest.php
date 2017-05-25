@@ -91,12 +91,12 @@ class StateMachineTest extends TestCase
         $this->stateMachineBuilder->addState('Validation');
         $this->stateMachineBuilder->addState('Registration');
         $this->stateMachineBuilder->setStartState('Input');
-        $this->stateMachineBuilder->addTransition('Input', 'next', 'Validation');
-        $this->stateMachineBuilder->addTransition('Validation', 'valid', 'Confirmation');
-        $this->stateMachineBuilder->addTransition('Validation', 'invalid', 'Input');
-        $this->stateMachineBuilder->addTransition('Confirmation', 'next', 'Registration');
-        $this->stateMachineBuilder->addTransition('Confirmation', 'prev', 'Input');
-        $this->stateMachineBuilder->addTransition('Registration', 'next', 'Success');
+        $this->stateMachineBuilder->addTransition('Input', 'Validation', 'next');
+        $this->stateMachineBuilder->addTransition('Validation', 'Confirmation', 'valid');
+        $this->stateMachineBuilder->addTransition('Validation', 'Input', 'invalid');
+        $this->stateMachineBuilder->addTransition('Confirmation', 'Registration', 'next');
+        $this->stateMachineBuilder->addTransition('Confirmation', 'Input', 'prev');
+        $this->stateMachineBuilder->addTransition('Registration', 'Success', 'next');
         $this->stateMachineBuilder->setEndState('Success', 'next');
 
         $this->actionRunner = new CallableActionRunner([$this, 'logActionCall']);
@@ -329,8 +329,8 @@ class StateMachineTest extends TestCase
         $stateMachineBuilder->addState('locked');
         $stateMachineBuilder->addState('unlocked');
         $stateMachineBuilder->setStartState('locked');
-        $stateMachineBuilder->addTransition('locked', 'insertCoin', 'unlocked');
-        $stateMachineBuilder->addTransition('unlocked', 'pass', 'locked');
+        $stateMachineBuilder->addTransition('locked', 'unlocked', 'insertCoin');
+        $stateMachineBuilder->addTransition('unlocked', 'locked', 'pass');
         $stateMachine = $stateMachineBuilder->getStateMachine();
         $stateMachine->setEventDispatcher($eventDispatcher);
         $stateMachine->start();
