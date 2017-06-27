@@ -20,52 +20,12 @@ use Stagehand\FSM\Event\TransitionEventInterface;
  */
 trait TransitionalStateTrait
 {
+    use StateActionTrait;
+
     /**
      * @var array
      */
     protected $events = [];
-
-    /**
-     * @param EventInterface $event
-     *
-     * @throws InvalidEventException
-     */
-    public function setEntryEvent(EventInterface $event)
-    {
-        if ($event->getEventId() != EventInterface::EVENT_ENTRY) {
-            throw new InvalidEventException(sprintf('The event "%s" is not an entry event. "%s" must be set as the ID for an entry event ', $event->getEventId(), EventInterface::EVENT_ENTRY));
-        }
-
-        $this->events[$event->getEventId()] = $event;
-    }
-
-    /**
-     * @param EventInterface $event
-     *
-     * @throws InvalidEventException
-     */
-    public function setExitEvent(EventInterface $event)
-    {
-        if ($event->getEventId() != EventInterface::EVENT_EXIT) {
-            throw new InvalidEventException(sprintf('The event "%s" is not an exit event. "%s" must be set as the ID for an exit event ', $event->getEventId(), EventInterface::EVENT_EXIT));
-        }
-
-        $this->events[$event->getEventId()] = $event;
-    }
-
-    /**
-     * @param EventInterface $event
-     *
-     * @throws InvalidEventException
-     */
-    public function setDoEvent(EventInterface $event)
-    {
-        if ($event->getEventId() != EventInterface::EVENT_DO) {
-            throw new InvalidEventException(sprintf('The event "%s" is not a do event. "%s" must be set as the ID for an do event ', $event->getEventId(), EventInterface::EVENT_DO));
-        }
-
-        $this->events[$event->getEventId()] = $event;
-    }
 
     /**
      * Gets the event according to the given ID.

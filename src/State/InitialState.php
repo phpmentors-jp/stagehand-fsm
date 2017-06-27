@@ -12,35 +12,48 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\Token\TokenAwareTrait;
 
 /**
  * @since Class available since Release 2.0.0
  */
-class InitialState extends State
+class InitialState implements TransitionalStateInterface
 {
+    use TokenAwareTrait;
+
     /**
-     * @since Method available since Release 2.1.0
+     * @var TransitionEventInterface
+     *
+     * @since Property available since Release 3.0.0
      */
-    public function __construct()
+    private $transitionEvent;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEvent($eventId)
     {
-        parent::__construct(StateInterface::STATE_INITIAL);
+        if ($this->transitionEvent === null) {
+            return null;
+        } else {
+            return $this->transitionEvent->getEventId() == $eventId ? $this->transitionEvent : null;
+        }
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @throws InvalidEventException
-     *
-     * @since Method available since Release 2.2.0
+     */
+    public function getStateId()
+    {
+        return StateInterface::STATE_INITIAL;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function addTransitionEvent(TransitionEventInterface $event)
     {
-        if ($event->getEventId() != EventInterface::EVENT_START) {
-            throw new InvalidEventException(sprintf('The transition event for the state "%s" should be "%s", "%s" is specified.', $this->getStateId(), EventInterface::EVENT_START, $event->getEventId()));
-        }
-
-        parent::addTransitionEvent($event);
+        $this->transitionEvent = $event;
     }
 }

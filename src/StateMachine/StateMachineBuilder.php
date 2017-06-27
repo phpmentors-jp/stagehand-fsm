@@ -12,10 +12,7 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Stagehand\FSM\Event\DoEvent;
-use Stagehand\FSM\Event\EntryEvent;
 use Stagehand\FSM\Event\EventInterface;
-use Stagehand\FSM\Event\ExitEvent;
 use Stagehand\FSM\Event\TransitionEvent;
 use Stagehand\FSM\State\FinalState;
 use Stagehand\FSM\State\InitialState;
@@ -92,9 +89,6 @@ class StateMachineBuilder
     public function addState($stateId)
     {
         $state = new State($stateId);
-        $state->setEntryEvent(new EntryEvent());
-        $state->setExitEvent(new ExitEvent());
-        $state->setDoEvent(new DoEvent());
         $this->stateMachine->addState($state);
     }
 
