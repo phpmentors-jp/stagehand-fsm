@@ -87,7 +87,7 @@ class StateMachineEvent extends Event
      *
      * @since Method available since Release 3.0.0
      */
-    public function getTransition(): TransitionInterface
+    public function getTransition()
     {
         return $this->transition;
     }
