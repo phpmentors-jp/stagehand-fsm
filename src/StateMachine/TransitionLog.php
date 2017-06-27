@@ -15,13 +15,12 @@ namespace Stagehand\FSM\StateMachine;
 use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
-use Stagehand\FSM\Token\Token;
 use Stagehand\FSM\Transition\TransitionInterface;
 
 /**
  * @since Class available since Release 2.3.0
  */
-class TransitionLog implements TransitionInterface
+class TransitionLog
 {
     /**
      * @var \DateTime
@@ -46,7 +45,7 @@ class TransitionLog implements TransitionInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return TransitionEventInterface
      */
     public function getEvent(): TransitionEventInterface
     {
@@ -54,7 +53,7 @@ class TransitionLog implements TransitionInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return TransitionalStateInterface
      */
     public function getFromState(): TransitionalStateInterface
     {
@@ -62,7 +61,7 @@ class TransitionLog implements TransitionInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return StateInterface
      */
     public function getToState(): StateInterface
     {
@@ -75,20 +74,5 @@ class TransitionLog implements TransitionInterface
     public function getTransitionDate()
     {
         return $this->transitionDate;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setToken(Token $token)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getToken()
-    {
-        return null;
     }
 }
