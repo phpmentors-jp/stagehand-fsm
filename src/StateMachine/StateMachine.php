@@ -350,7 +350,7 @@ class StateMachine implements StateMachineInterface
     /**
      * Evaluates the guard for the given event.
      *
-     * @param EventInterface $event
+     * @param TransitionEventInterface $event
      *
      * @return bool
      *

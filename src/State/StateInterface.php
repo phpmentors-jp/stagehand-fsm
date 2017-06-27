@@ -28,7 +28,7 @@ interface StateInterface extends TokenAwareInterface
      *
      * @param string $eventId
      *
-     * @return EventInterface
+     * @return EventInterface|null
      */
     public function getEvent($eventId);
 
