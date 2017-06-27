@@ -12,9 +12,6 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\EventCollection;
-use Stagehand\FSM\Event\EventInterface;
-use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\Token\TokenAwareTrait;
 
 /**
@@ -23,6 +20,7 @@ use Stagehand\FSM\Token\TokenAwareTrait;
 class State implements TransitionalStateInterface
 {
     use TokenAwareTrait;
+    use TransitionalStateTrait;
 
     /**
      * @var string
@@ -30,83 +28,11 @@ class State implements TransitionalStateInterface
     private $stateId;
 
     /**
-     * @var EventCollection
-     *
-     * @since Property available since Release 2.2.0
-     */
-    private $eventCollection;
-
-    /**
      * @param string $stateId
      */
     public function __construct($stateId)
     {
-        $this->eventCollection = new EventCollection();
         $this->stateId = $stateId;
-    }
-
-    /**
-     * @param EventInterface $event
-     *
-     * @throws InvalidEventException
-     *
-     * @since Method available since Release 2.0.0
-     */
-    public function setEntryEvent(EventInterface $event)
-    {
-        if ($event->getEventId() != EventInterface::EVENT_ENTRY) {
-            throw new InvalidEventException(sprintf('The event "%s" is not an entry event. "%s" must be set as the ID for an entry event ', $event->getEventId(), EventInterface::EVENT_ENTRY));
-        }
-
-        $this->eventCollection->add($event);
-    }
-
-    /**
-     * @param EventInterface $event
-     *
-     * @throws InvalidEventException
-     *
-     * @since Method available since Release 2.0.0
-     */
-    public function setExitEvent(EventInterface $event)
-    {
-        if ($event->getEventId() != EventInterface::EVENT_EXIT) {
-            throw new InvalidEventException(sprintf('The event "%s" is not an exit event. "%s" must be set as the ID for an exit event ', $event->getEventId(), EventInterface::EVENT_EXIT));
-        }
-
-        $this->eventCollection->add($event);
-    }
-
-    /**
-     * @param EventInterface $event
-     *
-     * @throws InvalidEventException
-     *
-     * @since Method available since Release 2.0.0
-     */
-    public function setDoEvent(EventInterface $event)
-    {
-        if ($event->getEventId() != EventInterface::EVENT_DO) {
-            throw new InvalidEventException(sprintf('The event "%s" is not a do event. "%s" must be set as the ID for an do event ', $event->getEventId(), EventInterface::EVENT_DO));
-        }
-
-        $this->eventCollection->add($event);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEvent($eventId)
-    {
-        return $this->eventCollection->get($eventId);
-    }
-
-    /**
-     * @param TransitionEventInterface $event
-     */
-    public function addTransitionEvent(TransitionEventInterface $event)
-    {
-        $this->eventCollection->add($event);
     }
 
     /**
