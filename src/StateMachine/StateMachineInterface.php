@@ -81,9 +81,9 @@ interface StateMachineInterface
     /**
      * Starts the state machine.
      *
-     * @throws StateMachineAlreadyStartedException
+     * @param string|int $eventId
      */
-    public function start();
+    public function start($eventId);
 
     /**
      * Triggers an event in the current state.

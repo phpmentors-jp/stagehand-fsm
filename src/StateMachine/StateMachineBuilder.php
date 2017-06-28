@@ -53,9 +53,10 @@ class StateMachineBuilder
     /**
      * Sets the given state as the start state of the state machine.
      *
-     * @param string $stateId
+     * @param string     $stateId
+     * @param string|int $eventId
      */
-    public function setStartState($stateId)
+    public function setStartState($stateId, $eventId = EventInterface::EVENT_START)
     {
         $state = $this->stateMachine->getState(StateInterface::STATE_INITIAL);
         if ($state === null) {
@@ -63,7 +64,7 @@ class StateMachineBuilder
             $this->stateMachine->addState($state);
         }
 
-        $this->addTransition(StateInterface::STATE_INITIAL, $stateId, EventInterface::EVENT_START);
+        $this->addTransition(StateInterface::STATE_INITIAL, $stateId, $eventId);
     }
 
     /**
