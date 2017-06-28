@@ -23,4 +23,13 @@ interface TransitionalStateInterface extends StateInterface
      * @param TransitionEventInterface $event
      */
     public function addTransitionEvent(TransitionEventInterface $event);
+
+    /**
+     * @param string $eventId
+     *
+     * @return TransitionEventInterface|null
+     *
+     * @since Method available since Release 3.0.0
+     */
+    public function getEvent($eventId);
 }

@@ -36,14 +36,6 @@ class FinalState implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function getEvent($eventId)
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getStateId()
     {
         return StateInterface::STATE_FINAL;

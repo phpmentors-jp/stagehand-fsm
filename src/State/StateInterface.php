@@ -12,7 +12,6 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Token\TokenAwareInterface;
 
 /**
@@ -22,15 +21,6 @@ interface StateInterface extends TokenAwareInterface
 {
     const STATE_INITIAL = '__INITIAL__';
     const STATE_FINAL = '__FINAL__';
-
-    /**
-     * Gets the event according to the given ID.
-     *
-     * @param string $eventId
-     *
-     * @return EventInterface|null
-     */
-    public function getEvent($eventId);
 
     /**
      * Gets the ID of the state.
