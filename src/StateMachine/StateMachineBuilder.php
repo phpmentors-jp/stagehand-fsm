@@ -113,7 +113,7 @@ class StateMachineBuilder
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateId));
         }
 
-        $event = $state->getEvent($eventId);
+        $event = $state->getTransitionEvent($eventId);
         if ($event === null) {
             $event = new TransitionEvent($eventId);
         }

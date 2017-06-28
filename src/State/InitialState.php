@@ -32,7 +32,7 @@ class InitialState implements TransitionalStateInterface
     /**
      * {@inheritdoc}
      */
-    public function getEvent($eventId)
+    public function getTransitionEvent($eventId)
     {
         if ($this->transitionEvent === null) {
             return null;

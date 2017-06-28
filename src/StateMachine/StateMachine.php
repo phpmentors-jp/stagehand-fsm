@@ -183,7 +183,7 @@ class StateMachine implements StateMachineInterface
                 throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
             }
 
-            $event = $this->currentState->getEvent(array_shift($this->eventQueue));
+            $event = $this->currentState->getTransitionEvent(array_shift($this->eventQueue));
             if ($this->eventDispatcher !== null) {
                 $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->currentState, $event));
             }

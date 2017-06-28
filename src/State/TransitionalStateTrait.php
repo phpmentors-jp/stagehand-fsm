@@ -12,7 +12,6 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEventInterface;
 
 /**
@@ -28,13 +27,11 @@ trait TransitionalStateTrait
     protected $events = [];
 
     /**
-     * Gets the event according to the given ID.
-     *
      * @param string $eventId
      *
-     * @return EventInterface|null
+     * @return TransitionEventInterface|null
      */
-    public function getEvent($eventId)
+    public function getTransitionEvent($eventId)
     {
         return $this->events[$eventId] ?? null;
     }

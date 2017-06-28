@@ -31,5 +31,5 @@ interface TransitionalStateInterface extends StateInterface
      *
      * @since Method available since Release 3.0.0
      */
-    public function getEvent($eventId);
+    public function getTransitionEvent($eventId);
 }
