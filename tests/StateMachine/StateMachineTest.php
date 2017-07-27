@@ -118,7 +118,7 @@ class StateMachineTest extends TestCase
 
         $this->assertThat(count($this->actionCalls), $this->equalTo(3));
         $this->assertThat($this->actionCalls[0]['state'], $this->equalTo(StateInterface::STATE_INITIAL));
-        $this->assertThat($this->actionCalls[0]['event'], $this->equalTo(EventInterface::EVENT_START));
+        $this->assertThat($this->actionCalls[0]['event'], $this->equalTo(StateMachineInterface::EVENT_START));
         $this->assertThat($this->actionCalls[0]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[1]['state'], $this->equalTo('Input'));
         $this->assertThat($this->actionCalls[1]['event'], $this->equalTo(EventInterface::EVENT_ENTRY));
@@ -342,13 +342,13 @@ class StateMachineTest extends TestCase
         $this->assertThat($events[0]['event']->getStateMachine(), $this->identicalTo($stateMachine));
         $this->assertThat($events[0]['event']->getState()->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
         $this->assertThat($events[0]['event']->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\TransitionEventInterface'));
-        $this->assertThat($events[0]['event']->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_START));
+        $this->assertThat($events[0]['event']->getEvent()->getEventId(), $this->equalTo(StateMachineInterface::EVENT_START));
 
         $this->assertThat($events[1]['name'], $this->equalTo(StateMachineEvents::EVENT_TRANSITION));
         $this->assertThat($events[1]['event']->getStateMachine(), $this->identicalTo($stateMachine));
         $this->assertThat(($events[1]['event']->getTransition() === null ? $events[1]['event']->getState() : $events[1]['event']->getTransition()->getFromState())->getStateId(), $this->equalTo(StateInterface::STATE_INITIAL));
         $this->assertThat($events[1]['event']->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\TransitionEventInterface'));
-        $this->assertThat($events[1]['event']->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_START));
+        $this->assertThat($events[1]['event']->getEvent()->getEventId(), $this->equalTo(StateMachineInterface::EVENT_START));
 
         $this->assertThat($events[2]['name'], $this->equalTo(StateMachineEvents::EVENT_ENTRY));
         $this->assertThat($events[2]['event']->getStateMachine(), $this->identicalTo($stateMachine));
@@ -475,7 +475,7 @@ class StateMachineTest extends TestCase
         $transitionLogs = $stateMachine->getTransitionLog();
 
         $expectedTransitionLogs = [
-            [StateInterface::STATE_INITIAL, EventInterface::EVENT_START, 'Input'],
+            [StateInterface::STATE_INITIAL, StateMachineInterface::EVENT_START, 'Input'],
             ['Input', 'next', 'Validation'],
             ['Validation', 'valid', 'Confirmation'],
             ['Confirmation', 'next', 'Registration'],

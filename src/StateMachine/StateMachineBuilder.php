@@ -12,7 +12,6 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Event\TransitionEvent;
 use Stagehand\FSM\State\FinalState;
 use Stagehand\FSM\State\InitialState;
@@ -53,10 +52,9 @@ class StateMachineBuilder
     /**
      * Sets the given state as the start state of the state machine.
      *
-     * @param string     $stateId
-     * @param string|int $eventId
+     * @param string $stateId
      */
-    public function setStartState($stateId, $eventId = EventInterface::EVENT_START)
+    public function setStartState($stateId)
     {
         $state = $this->stateMachine->getState(StateInterface::STATE_INITIAL);
         if ($state === null) {
@@ -64,7 +62,7 @@ class StateMachineBuilder
             $this->stateMachine->addState($state);
         }
 
-        $this->addTransition(StateInterface::STATE_INITIAL, $stateId, $eventId);
+        $this->addTransition(StateInterface::STATE_INITIAL, $stateId, StateMachineInterface::EVENT_START);
     }
 
     /**

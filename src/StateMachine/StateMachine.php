@@ -133,7 +133,7 @@ class StateMachine implements StateMachineInterface
     /**
      * {@inheritdoc}
      */
-    public function start($eventId = EventInterface::EVENT_START)
+    public function start()
     {
         if ($this->currentState !== null) {
             throw new StateMachineAlreadyStartedException('The state machine is already started.');
@@ -144,7 +144,7 @@ class StateMachine implements StateMachineInterface
 
         $initialState->setToken(new Token());
         $this->currentState = $this->stateCollection->getCurrentState();
-        $this->triggerEvent($eventId);
+        $this->triggerEvent(StateMachineInterface::EVENT_START);
     }
 
     /**
