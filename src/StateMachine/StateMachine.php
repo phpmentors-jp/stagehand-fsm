@@ -77,13 +77,6 @@ class StateMachine implements StateMachineInterface
     private $eventDispatcher;
 
     /**
-     * @var bool
-     *
-     * @since Property available since Release 2.3.0
-     */
-    private $active = false;
-
-    /**
      * @var TransitionLog[]
      *
      * @since Property available since Release 2.4.0
