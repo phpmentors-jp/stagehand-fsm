@@ -43,6 +43,11 @@ class StateMachine implements StateMachineInterface
     const STATE_FINAL = '__FINAL__';
 
     /**
+     * @since Constant available since Release 3.0.0
+     */
+    const EVENT_START = '__START__';
+
+    /**
      * @var StateCollection
      *
      * @since Property available since Release 2.2.0
@@ -153,7 +158,7 @@ class StateMachine implements StateMachineInterface
 
         $initialState->setToken(new Token());
         $this->currentState = $this->stateCollection->getCurrentState();
-        $this->triggerEvent(StateMachineInterface::EVENT_START);
+        $this->triggerEvent(self::EVENT_START);
     }
 
     /**

@@ -61,7 +61,7 @@ class StateMachineBuilder
             $this->stateMachine->addState($state);
         }
 
-        $this->addTransition(StateMachine::STATE_INITIAL, $stateId, StateMachineInterface::EVENT_START);
+        $this->addTransition(StateMachine::STATE_INITIAL, $stateId, StateMachine::EVENT_START);
     }
 
     /**
