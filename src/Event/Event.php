@@ -13,9 +13,9 @@
 namespace Stagehand\FSM\Event;
 
 /**
- * @since Class available since Release 0.1.0
+ * @since Class available since Release 3.0.0
  */
-class TransitionEvent implements TransitionEventInterface
+class Event implements EventInterface
 {
     /**
      * @var string
@@ -25,7 +25,7 @@ class TransitionEvent implements TransitionEventInterface
     /**
      * @param string $eventId
      */
-    public function __construct($eventId)
+    public function __construct(string $eventId)
     {
         $this->eventId = $eventId;
     }

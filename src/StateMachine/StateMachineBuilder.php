@@ -12,7 +12,7 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Stagehand\FSM\Event\TransitionEvent;
+use Stagehand\FSM\Event\Event;
 use Stagehand\FSM\State\FinalState;
 use Stagehand\FSM\State\InitialState;
 use Stagehand\FSM\State\State;
@@ -114,7 +114,7 @@ class StateMachineBuilder
 
         $event = $state->getTransitionEvent($eventId);
         if ($event === null) {
-            $event = new TransitionEvent($eventId);
+            $event = new Event($eventId);
         }
 
         $this->stateMachine->addTransition(new Transition($nextState, $state, $event));

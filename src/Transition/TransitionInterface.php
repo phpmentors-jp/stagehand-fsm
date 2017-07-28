@@ -12,7 +12,7 @@
 
 namespace Stagehand\FSM\Transition;
 
-use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
 use Stagehand\FSM\Token\TokenAwareInterface;
@@ -33,7 +33,7 @@ interface TransitionInterface extends TokenAwareInterface
     public function getFromState(): TransitionalStateInterface;
 
     /**
-     * @return TransitionEventInterface
+     * @return EventInterface
      */
-    public function getEvent(): TransitionEventInterface;
+    public function getEvent(): EventInterface;
 }

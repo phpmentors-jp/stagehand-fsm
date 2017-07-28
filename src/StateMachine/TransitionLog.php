@@ -12,7 +12,7 @@
 
 namespace Stagehand\FSM\StateMachine;
 
-use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
 use Stagehand\FSM\Transition\TransitionInterface;
@@ -45,9 +45,9 @@ class TransitionLog
     }
 
     /**
-     * @return TransitionEventInterface
+     * @return EventInterface
      */
-    public function getEvent(): TransitionEventInterface
+    public function getEvent(): EventInterface
     {
         return $this->transition->getEvent();
     }

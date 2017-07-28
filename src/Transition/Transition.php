@@ -12,7 +12,7 @@
 
 namespace Stagehand\FSM\Transition;
 
-use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
 use Stagehand\FSM\Token\TokenAwareTrait;
@@ -35,16 +35,16 @@ class Transition implements TransitionInterface
     private $fromState;
 
     /**
-     * @var TransitionEventInterface
+     * @var EventInterface
      */
     private $event;
 
     /**
      * @param StateInterface             $toState
      * @param TransitionalStateInterface $fromState
-     * @param TransitionEventInterface   $event
+     * @param EventInterface             $event
      */
-    public function __construct(StateInterface $toState, TransitionalStateInterface $fromState, TransitionEventInterface $event)
+    public function __construct(StateInterface $toState, TransitionalStateInterface $fromState, EventInterface $event)
     {
         $this->toState = $toState;
         $this->fromState = $fromState;
@@ -72,7 +72,7 @@ class Transition implements TransitionInterface
     /**
      * {@inheritdoc}
      */
-    public function getEvent(): TransitionEventInterface
+    public function getEvent(): EventInterface
     {
         return $this->event;
     }

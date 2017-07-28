@@ -12,7 +12,7 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\Event\EventInterface;
 
 /**
  * @since Trait available since Release 3.0.0
@@ -27,7 +27,7 @@ trait TransitionalStateTrait
     /**
      * @param string $eventId
      *
-     * @return TransitionEventInterface|null
+     * @return EventInterface|null
      */
     public function getTransitionEvent($eventId)
     {
@@ -35,9 +35,9 @@ trait TransitionalStateTrait
     }
 
     /**
-     * @param TransitionEventInterface $event
+     * @param EventInterface $event
      */
-    public function addTransitionEvent(TransitionEventInterface $event)
+    public function addTransitionEvent(EventInterface $event)
     {
         $this->events[$event->getEventId()] = $event;
     }

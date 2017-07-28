@@ -12,7 +12,7 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Token\TokenAwareTrait;
 
 /**
@@ -23,7 +23,7 @@ class InitialState implements TransitionalStateInterface
     use TokenAwareTrait;
 
     /**
-     * @var TransitionEventInterface
+     * @var EventInterface
      *
      * @since Property available since Release 3.0.0
      */
@@ -52,7 +52,7 @@ class InitialState implements TransitionalStateInterface
     /**
      * {@inheritdoc}
      */
-    public function addTransitionEvent(TransitionEventInterface $event)
+    public function addTransitionEvent(EventInterface $event)
     {
         $this->transitionEvent = $event;
     }

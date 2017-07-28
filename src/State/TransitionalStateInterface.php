@@ -12,7 +12,7 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\TransitionEventInterface;
+use Stagehand\FSM\Event\EventInterface;
 
 /**
  * @since Class available since Release 2.2.0
@@ -20,14 +20,14 @@ use Stagehand\FSM\Event\TransitionEventInterface;
 interface TransitionalStateInterface extends StateInterface
 {
     /**
-     * @param TransitionEventInterface $event
+     * @param EventInterface $event
      */
-    public function addTransitionEvent(TransitionEventInterface $event);
+    public function addTransitionEvent(EventInterface $event);
 
     /**
      * @param string $eventId
      *
-     * @return TransitionEventInterface|null
+     * @return EventInterface|null
      *
      * @since Method available since Release 3.0.0
      */

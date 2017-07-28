@@ -13,7 +13,6 @@
 namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
-use Stagehand\FSM\Event\TransitionEventInterface;
 use Stagehand\FSM\State\StateActionInterface;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
@@ -187,7 +186,7 @@ class StateMachine implements StateMachineInterface
             if ($this->eventDispatcher !== null) {
                 $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->currentState, $event));
             }
-            if ($event instanceof TransitionEventInterface && $this->evaluateGuard($event)) {
+            if ($this->evaluateGuard($event)) {
                 $fromState = $this->currentState; /* @var $fromState TransitionalStateInterface */
                 $this->transition($fromState, $event);
             }
@@ -317,9 +316,9 @@ class StateMachine implements StateMachineInterface
      * Transitions to the next state.
      *
      * @param TransitionalStateInterface $fromState
-     * @param TransitionEventInterface   $event
+     * @param EventInterface             $event
      */
-    private function transition(TransitionalStateInterface $fromState, TransitionEventInterface $event)
+    private function transition(TransitionalStateInterface $fromState, EventInterface $event)
     {
         if ($fromState instanceof StateActionInterface) {
             $exitEvent = $fromState->getExitEvent();
@@ -360,13 +359,13 @@ class StateMachine implements StateMachineInterface
     /**
      * Evaluates the guard for the given event.
      *
-     * @param TransitionEventInterface $event
+     * @param EventInterface $event
      *
      * @return bool
      *
      * @since Method available since Release 2.0.0
      */
-    private function evaluateGuard(TransitionEventInterface $event)
+    private function evaluateGuard(EventInterface $event)
     {
         foreach ((array) $this->guardEvaluators as $guardEvaluator) {
             $result = call_user_func([$guardEvaluator, 'evaluate'], $event, $this->getPayload(), $this);
@@ -415,13 +414,13 @@ class StateMachine implements StateMachineInterface
 
     /**
      * @param TransitionalStateInterface $state
-     * @param TransitionEventInterface   $event
+     * @param EventInterface             $event
      *
      * @return TransitionInterface
      *
      * @since Method available since Release 3.0.0
      */
-    private function getTransition(TransitionalStateInterface $state, TransitionEventInterface $event): TransitionInterface
+    private function getTransition(TransitionalStateInterface $state, EventInterface $event): TransitionInterface
     {
         return $this->transitionMap[$state->getStateId()][$event->getEventId()];
     }
