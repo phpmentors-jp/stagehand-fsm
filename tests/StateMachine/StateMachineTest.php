@@ -14,6 +14,7 @@ namespace Stagehand\FSM\StateMachine;
 
 use PHPUnit\Framework\TestCase;
 use Stagehand\FSM\Event\EventInterface;
+use Stagehand\FSM\State\State;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\StateMachine\StateMachineTest\CallableActionRunner;
 use Stagehand\FSM\StateMachine\StateMachineTest\CallableGuardEvaluator;
@@ -113,10 +114,10 @@ class StateMachineTest extends TestCase
         $this->assertThat($this->actionCalls[0]['event'], $this->equalTo(StateMachineInterface::EVENT_START));
         $this->assertThat($this->actionCalls[0]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[1]['state'], $this->equalTo('Input'));
-        $this->assertThat($this->actionCalls[1]['event'], $this->equalTo(EventInterface::EVENT_ENTRY));
+        $this->assertThat($this->actionCalls[1]['event'], $this->equalTo(State::EVENT_ENTRY));
         $this->assertThat($this->actionCalls[1]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[2]['state'], $this->equalTo('Input'));
-        $this->assertThat($this->actionCalls[2]['event'], $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($this->actionCalls[2]['event'], $this->equalTo(State::EVENT_DO));
         $this->assertThat($this->actionCalls[2]['calledBy'], $this->equalTo('runAction'));
 
         $stateMachine->triggerEvent('next');
@@ -126,16 +127,16 @@ class StateMachineTest extends TestCase
 
         $this->assertThat(count($this->actionCalls), $this->equalTo(7));
         $this->assertThat($this->actionCalls[3]['state'], $this->equalTo('Input'));
-        $this->assertThat($this->actionCalls[3]['event'], $this->equalTo(EventInterface::EVENT_EXIT));
+        $this->assertThat($this->actionCalls[3]['event'], $this->equalTo(State::EVENT_EXIT));
         $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[4]['state'], $this->equalTo('Input'));
         $this->assertThat($this->actionCalls[4]['event'], $this->equalTo('next'));
         $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[5]['state'], $this->equalTo('Validation'));
-        $this->assertThat($this->actionCalls[5]['event'], $this->equalTo(EventInterface::EVENT_ENTRY));
+        $this->assertThat($this->actionCalls[5]['event'], $this->equalTo(State::EVENT_ENTRY));
         $this->assertThat($this->actionCalls[5]['calledBy'], $this->equalTo('runAction'));
         $this->assertThat($this->actionCalls[6]['state'], $this->equalTo('Validation'));
-        $this->assertThat($this->actionCalls[6]['event'], $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($this->actionCalls[6]['event'], $this->equalTo(State::EVENT_DO));
         $this->assertThat($this->actionCalls[6]['calledBy'], $this->equalTo('runAction'));
     }
 
@@ -194,7 +195,7 @@ class StateMachineTest extends TestCase
         $this->assertThat($this->actionCalls[3]['event'], $this->equalTo('next'));
         $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('evaluateGuard'));
         $this->assertThat($this->actionCalls[4]['state'], $this->equalTo('Input'));
-        $this->assertThat($this->actionCalls[4]['event'], $this->equalTo(EventInterface::EVENT_EXIT));
+        $this->assertThat($this->actionCalls[4]['event'], $this->equalTo(State::EVENT_EXIT));
         $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('runAction'));
     }
 
@@ -227,7 +228,7 @@ class StateMachineTest extends TestCase
         $this->assertThat($this->actionCalls[3]['event'], $this->equalTo('next'));
         $this->assertThat($this->actionCalls[3]['calledBy'], $this->equalTo('evaluateGuard'));
         $this->assertThat($this->actionCalls[4]['state'], $this->equalTo('Input'));
-        $this->assertThat($this->actionCalls[4]['event'], $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($this->actionCalls[4]['event'], $this->equalTo(State::EVENT_DO));
         $this->assertThat($this->actionCalls[4]['calledBy'], $this->equalTo('runAction'));
     }
 
@@ -346,13 +347,13 @@ class StateMachineTest extends TestCase
         $this->assertThat($events[2]['event']->getStateMachine(), $this->identicalTo($stateMachine));
         $this->assertThat($events[2]['event']->getState()->getStateId(), $this->equalTo('locked'));
         $this->assertThat($events[2]['event']->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[2]['event']->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_ENTRY));
+        $this->assertThat($events[2]['event']->getEvent()->getEventId(), $this->equalTo(State::EVENT_ENTRY));
 
         $this->assertThat($events[3]['name'], $this->equalTo(StateMachineEvents::EVENT_DO));
         $this->assertThat($events[3]['event']->getStateMachine(), $this->identicalTo($stateMachine));
         $this->assertThat($events[3]['event']->getState()->getStateId(), $this->equalTo('locked'));
         $this->assertThat($events[3]['event']->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[3]['event']->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($events[3]['event']->getEvent()->getEventId(), $this->equalTo(State::EVENT_DO));
 
         $this->assertThat($events[4]['name'], $this->equalTo(StateMachineEvents::EVENT_PROCESS));
         $this->assertThat($events[4]['event']->getStateMachine(), $this->identicalTo($stateMachine));
@@ -364,7 +365,7 @@ class StateMachineTest extends TestCase
         $this->assertThat($events[5]['event']->getStateMachine(), $this->identicalTo($stateMachine));
         $this->assertThat($events[5]['event']->getState()->getStateId(), $this->equalTo('locked'));
         $this->assertThat($events[5]['event']->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[5]['event']->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_EXIT));
+        $this->assertThat($events[5]['event']->getEvent()->getEventId(), $this->equalTo(State::EVENT_EXIT));
 
         $this->assertThat($events[6]['name'], $this->equalTo(StateMachineEvents::EVENT_TRANSITION));
         $this->assertThat($events[6]['event']->getStateMachine(), $this->identicalTo($stateMachine));
@@ -376,13 +377,13 @@ class StateMachineTest extends TestCase
         $this->assertThat($events[7]['event']->getStateMachine(), $this->identicalTo($stateMachine));
         $this->assertThat($events[7]['event']->getState()->getStateId(), $this->equalTo('unlocked'));
         $this->assertThat($events[7]['event']->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[7]['event']->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_ENTRY));
+        $this->assertThat($events[7]['event']->getEvent()->getEventId(), $this->equalTo(State::EVENT_ENTRY));
 
         $this->assertThat($events[8]['name'], $this->equalTo(StateMachineEvents::EVENT_DO));
         $this->assertThat($events[8]['event']->getStateMachine(), $this->identicalTo($stateMachine));
         $this->assertThat($events[8]['event']->getState()->getStateId(), $this->equalTo('unlocked'));
         $this->assertThat($events[8]['event']->getEvent(), $this->isInstanceOf('Stagehand\FSM\Event\EventInterface'));
-        $this->assertThat($events[8]['event']->getEvent()->getEventId(), $this->equalTo(EventInterface::EVENT_DO));
+        $this->assertThat($events[8]['event']->getEvent()->getEventId(), $this->equalTo(State::EVENT_DO));
     }
 
     /**

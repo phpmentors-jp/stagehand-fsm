@@ -12,9 +12,7 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\DoEvent;
-use Stagehand\FSM\Event\EntryEvent;
-use Stagehand\FSM\Event\ExitEvent;
+use Stagehand\FSM\Event\EventInterface;
 
 /**
  * @since Trait available since Release 3.0.0
@@ -22,40 +20,40 @@ use Stagehand\FSM\Event\ExitEvent;
 trait StateActionTrait
 {
     /**
-     * @var EntryEvent
+     * @var EventInterface
      */
     protected $entryEvent;
 
     /**
-     * @var ExitEvent
+     * @var EventInterface
      */
     protected $exitEvent;
 
     /**
-     * @var DoEvent
+     * @var EventInterface
      */
     protected $doEvent;
 
     /**
-     * @return EntryEvent
+     * @return EventInterface
      */
-    public function getEntryEvent(): EntryEvent
+    public function getEntryEvent(): EventInterface
     {
         return $this->entryEvent;
     }
 
     /**
-     * @return ExitEvent
+     * @return EventInterface
      */
-    public function getExitEvent(): ExitEvent
+    public function getExitEvent(): EventInterface
     {
         return $this->exitEvent;
     }
 
     /**
-     * @return DoEvent
+     * @return EventInterface
      */
-    public function getDoEvent(): DoEvent
+    public function getDoEvent(): EventInterface
     {
         return $this->doEvent;
     }

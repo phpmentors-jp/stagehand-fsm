@@ -12,9 +12,7 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\DoEvent;
-use Stagehand\FSM\Event\EntryEvent;
-use Stagehand\FSM\Event\ExitEvent;
+use Stagehand\FSM\Event\Event;
 use Stagehand\FSM\Token\TokenAwareTrait;
 
 /**
@@ -27,6 +25,21 @@ class State implements TransitionalStateInterface, StateActionInterface
     use TransitionalStateTrait;
 
     /**
+     * @since Constant available since Release 3.0.0
+     */
+    const EVENT_ENTRY = '__ENTRY__';
+
+    /**
+     * @since Constant available since Release 3.0.0
+     */
+    const EVENT_EXIT = '__EXIT__';
+
+    /**
+     * @since Constant available since Release 3.0.0
+     */
+    const EVENT_DO = '__DO__';
+
+    /**
      * @var string
      */
     private $stateId;
@@ -37,9 +50,9 @@ class State implements TransitionalStateInterface, StateActionInterface
     public function __construct($stateId)
     {
         $this->stateId = $stateId;
-        $this->entryEvent = new EntryEvent();
-        $this->exitEvent = new ExitEvent();
-        $this->doEvent = new DoEvent();
+        $this->entryEvent = new Event(self::EVENT_ENTRY);
+        $this->exitEvent = new Event(self::EVENT_EXIT);
+        $this->doEvent = new Event(self::EVENT_DO);
     }
 
     /**
