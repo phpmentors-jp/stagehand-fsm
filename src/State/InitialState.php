@@ -30,6 +30,21 @@ class InitialState implements TransitionalStateInterface
     private $transitionEvent;
 
     /**
+     * @var string
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $stateId;
+
+    /**
+     * @param string $stateId
+     */
+    public function __construct(string $stateId)
+    {
+        $this->stateId = $stateId;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getTransitionEvent($eventId)
@@ -46,7 +61,7 @@ class InitialState implements TransitionalStateInterface
      */
     public function getStateId()
     {
-        return StateInterface::STATE_INITIAL;
+        return $this->stateId;
     }
 
     /**

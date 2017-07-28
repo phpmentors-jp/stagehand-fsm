@@ -19,9 +19,6 @@ use Stagehand\FSM\Token\TokenAwareInterface;
  */
 interface StateInterface extends TokenAwareInterface
 {
-    const STATE_INITIAL = '__INITIAL__';
-    const STATE_FINAL = '__FINAL__';
-
     /**
      * Gets the ID of the state.
      *

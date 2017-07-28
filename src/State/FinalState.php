@@ -27,10 +27,20 @@ class FinalState implements StateInterface
     private $token;
 
     /**
+     * @var string
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $stateId;
+
+    /**
+     * @param string $stateId
+     *
      * @since Method available since Release 2.1.0
      */
-    public function __construct()
+    public function __construct(string $stateId)
     {
+        $this->stateId = $stateId;
     }
 
     /**
@@ -38,7 +48,7 @@ class FinalState implements StateInterface
      */
     public function getStateId()
     {
-        return StateInterface::STATE_FINAL;
+        return $this->stateId;
     }
 
     /**

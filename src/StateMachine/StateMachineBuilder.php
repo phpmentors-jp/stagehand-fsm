@@ -16,7 +16,6 @@ use Stagehand\FSM\Event\Event;
 use Stagehand\FSM\State\FinalState;
 use Stagehand\FSM\State\InitialState;
 use Stagehand\FSM\State\State;
-use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\Transition\Transition;
 
 /**
@@ -56,13 +55,13 @@ class StateMachineBuilder
      */
     public function setStartState($stateId)
     {
-        $state = $this->stateMachine->getState(StateInterface::STATE_INITIAL);
+        $state = $this->stateMachine->getState(StateMachine::STATE_INITIAL);
         if ($state === null) {
-            $state = new InitialState();
+            $state = new InitialState(StateMachine::STATE_INITIAL);
             $this->stateMachine->addState($state);
         }
 
-        $this->addTransition(StateInterface::STATE_INITIAL, $stateId, StateMachineInterface::EVENT_START);
+        $this->addTransition(StateMachine::STATE_INITIAL, $stateId, StateMachineInterface::EVENT_START);
     }
 
     /**
@@ -73,11 +72,11 @@ class StateMachineBuilder
      */
     public function setEndState($stateId, $eventId)
     {
-        if ($this->stateMachine->getState(StateInterface::STATE_FINAL) === null) {
-            $this->stateMachine->addState(new FinalState());
+        if ($this->stateMachine->getState(StateMachine::STATE_FINAL) === null) {
+            $this->stateMachine->addState(new FinalState(StateMachine::STATE_FINAL));
         }
 
-        $this->addTransition($stateId, StateInterface::STATE_FINAL, $eventId);
+        $this->addTransition($stateId, StateMachine::STATE_FINAL, $eventId);
     }
 
     /**

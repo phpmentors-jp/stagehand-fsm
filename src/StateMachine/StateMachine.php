@@ -33,6 +33,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class StateMachine implements StateMachineInterface
 {
     /**
+     * @since Constant available since Release 3.0.0
+     */
+    const STATE_INITIAL = '__INITIAL__';
+
+    /**
+     * @since Constant available since Release 3.0.0
+     */
+    const STATE_FINAL = '__FINAL__';
+
+    /**
      * @var StateCollection
      *
      * @since Property available since Release 2.2.0
@@ -138,7 +148,7 @@ class StateMachine implements StateMachineInterface
             throw new StateMachineAlreadyStartedException('The state machine is already started.');
         }
 
-        $initialState = $this->getState(StateInterface::STATE_INITIAL);
+        $initialState = $this->getState(self::STATE_INITIAL);
         assert($initialState !== null);
 
         $initialState->setToken(new Token());
@@ -215,7 +225,7 @@ class StateMachine implements StateMachineInterface
             throw $this->createStateMachineNotStartedException();
         }
 
-        if ($this->currentState->getStateId() == StateInterface::STATE_FINAL) {
+        if ($this->currentState->getStateId() == self::STATE_FINAL) {
             throw new StateMachineAlreadyShutdownException('The state machine was already shutdown.');
         }
 
@@ -281,7 +291,7 @@ class StateMachine implements StateMachineInterface
             return false;
         }
 
-        return $this->currentState != StateInterface::STATE_FINAL;
+        return $this->currentState != self::STATE_FINAL;
     }
 
     /**
@@ -293,7 +303,7 @@ class StateMachine implements StateMachineInterface
             return false;
         }
 
-        return $this->currentState == StateInterface::STATE_FINAL;
+        return $this->currentState == self::STATE_FINAL;
     }
 
     /**
