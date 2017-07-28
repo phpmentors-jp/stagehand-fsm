@@ -18,7 +18,6 @@ use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\StateMachine\StateMachineTest\CallableActionRunner;
 use Stagehand\FSM\StateMachine\StateMachineTest\CallableGuardEvaluator;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
-use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 use Stagehand\FSM\Transition\TransitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -48,13 +47,6 @@ class StateMachineTest extends TestCase
      * @since Property available since Release 3.0.0
      */
     private $actionRunner;
-
-    /**
-     * @var GuardEvaluatorInterface
-     *
-     * @since Property available since Release 3.0.0
-     */
-    private $guardEvaluator;
 
     /**
      * @param EventInterface $event
