@@ -22,6 +22,7 @@ use Stagehand\FSM\Token\TokenAwareTrait;
  */
 class State implements TransitionalStateInterface, StateActionInterface
 {
+    use StateActionTrait;
     use TokenAwareTrait;
     use TransitionalStateTrait;
 

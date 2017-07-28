@@ -19,8 +19,6 @@ use Stagehand\FSM\Event\TransitionEventInterface;
  */
 trait TransitionalStateTrait
 {
-    use StateActionTrait;
-
     /**
      * @var array
      */
