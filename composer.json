@@ -14,7 +14,7 @@
     "require": {
         "php": ">=5.3.3",
         "phpmentors/domain-kata": "~1.4",
-        "symfony/event-dispatcher": "~2.8|~3.0"
+        "symfony/event-dispatcher": "~2.8|~3.0|~4.0"
     },
     "require-dev": {
         "phake/phake": "~2.3",
