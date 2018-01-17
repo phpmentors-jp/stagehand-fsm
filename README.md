@@ -55,7 +55,7 @@ Add the dependency to `piece/stagehand-fsm` into your `composer.json` file as th
 Stable version:
 
 ```
-composer require piece/stagehand-fsm "2.5.*"
+composer require piece/stagehand-fsm "2.6.*"
 ```
 
 Development version:
@@ -70,7 +70,7 @@ If you find a bug or have a question, or want to request a feature, create an is
 
 ## Copyright
 
-Copyright (c) 2006-2008, 2011-2017 KUBO Atsuhiro, All rights reserved.
+Copyright (c) 2006-2008, 2011-2018 KUBO Atsuhiro, All rights reserved.
 
 ## License
 
