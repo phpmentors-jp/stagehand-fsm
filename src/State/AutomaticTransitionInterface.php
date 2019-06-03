@@ -12,29 +12,13 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Event\EventInterface;
-
 /**
  * @since Interface available since Release 3.0.0
  */
-interface StateActionInterface
+interface AutomaticTransitionInterface
 {
-    const EVENT_ENTRY = '__ENTRY__';
-    const EVENT_EXIT = '__EXIT__';
-    const EVENT_DO = '__DO__';
-
     /**
-     * @return EventInterface
+     * @return EventInterface|null
      */
-    public function getEntryEvent(): EventInterface;
-
-    /**
-     * @return EventInterface
-     */
-    public function getExitEvent(): EventInterface;
-
-    /**
-     * @return EventInterface
-     */
-    public function getDoEvent(): EventInterface;
+    public function getAutomaticTransitionEvent();
 }

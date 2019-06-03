@@ -14,7 +14,9 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\Event;
 use Stagehand\FSM\State\FinalState;
+use Stagehand\FSM\State\ForkState;
 use Stagehand\FSM\State\InitialState;
+use Stagehand\FSM\State\JoinState;
 use Stagehand\FSM\State\State;
 use Stagehand\FSM\Transition\Transition;
 
@@ -99,16 +101,24 @@ class StateMachineBuilder
      *
      * @throws StateNotFoundException
      */
-    public function addTransition($stateId, $nextStateId, $eventId)
+    public function addTransition($stateId, $nextStateId, $eventId = null)
     {
         $state = $this->stateMachine->getState($stateId);
         if ($state === null) {
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $stateId));
         }
 
+        if ($state instanceof ForkState) {
+            $eventId = StateMachine::EVENT_FORK;
+        }
+
         $nextState = $this->stateMachine->getState($nextStateId);
         if ($nextState === null) {
             throw new StateNotFoundException(sprintf('The state "%s" is not found.', $nextStateId));
+        }
+
+        if ($nextState instanceof JoinState) {
+            $eventId = StateMachine::EVENT_JOIN;
         }
 
         $event = $state->getTransitionEvent($eventId);
@@ -117,5 +127,41 @@ class StateMachineBuilder
         }
 
         $this->stateMachine->addTransition(new Transition($nextState, $state, $event));
+    }
+
+    /**
+     * @param string $stateId
+     */
+    public function addForkState($stateId)
+    {
+        $state = new ForkState($stateId);
+        $this->stateMachine->addState($state);
+    }
+
+    /**
+     * @param string $stateId
+     */
+    public function addJoinState($stateId)
+    {
+        $state = new JoinState($stateId);
+        $this->stateMachine->addState($state);
+    }
+
+    /**
+     * @param string $parentStateId
+     * @param $stateMachineId
+     * @param callable $callback
+     */
+    public function addChild($parentStateId, $stateMachineId, callable $callback)
+    {
+        $parentState = $this->stateMachine->getState($parentStateId);
+        if ($parentState === null) {
+            throw new StateNotFoundException(sprintf('The state "%s" is not found.', $parentStateId));
+        }
+
+        $builder = new static($stateMachineId);
+        call_user_func($callback, $builder);
+
+        $parentState->addChild($builder->getStateMachine());
     }
 }

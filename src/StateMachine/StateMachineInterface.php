@@ -80,8 +80,10 @@ interface StateMachineInterface
 
     /**
      * Starts the state machine.
+     *
+     * @param StateMachineInterface|null $parent
      */
-    public function start();
+    public function start(StateMachineInterface $parent = null);
 
     /**
      * Triggers an event in the current state.
