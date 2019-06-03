@@ -15,15 +15,12 @@ namespace Stagehand\FSM\Transition;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
-use Stagehand\FSM\Token\TokenAwareTrait;
 
 /**
  * @since Class available since Release 3.0.0
  */
 class Transition implements TransitionInterface
 {
-    use TokenAwareTrait;
-
     /**
      * @var StateInterface
      */

@@ -12,20 +12,11 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Token\Token;
-
 /**
  * @since Class available since Release 2.0.0
  */
 class FinalState implements StateInterface
 {
-    /**
-     * @var Token
-     *
-     * @since Property available since Release 3.0.0
-     */
-    private $token;
-
     /**
      * @var string
      *
@@ -49,29 +40,5 @@ class FinalState implements StateInterface
     public function getStateId()
     {
         return $this->stateId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setToken(Token $token)
-    {
-        $this->token = $token;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getToken()
-    {
-        return $this->token;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasToken(): bool
-    {
-        return $this->token !== null;
     }
 }

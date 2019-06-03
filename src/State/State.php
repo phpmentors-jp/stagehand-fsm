@@ -13,7 +13,6 @@
 namespace Stagehand\FSM\State;
 
 use Stagehand\FSM\Event\Event;
-use Stagehand\FSM\Token\TokenAwareTrait;
 
 /**
  * @since Class available since Release 0.1.0
@@ -21,7 +20,6 @@ use Stagehand\FSM\Token\TokenAwareTrait;
 class State implements TransitionalStateInterface, StateActionInterface
 {
     use StateActionTrait;
-    use TokenAwareTrait;
     use TransitionalStateTrait;
 
     /**

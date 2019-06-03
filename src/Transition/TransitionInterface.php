@@ -15,12 +15,11 @@ namespace Stagehand\FSM\Transition;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
-use Stagehand\FSM\Token\TokenAwareInterface;
 
 /**
  * @since Class available since Release 3.0.0
  */
-interface TransitionInterface extends TokenAwareInterface
+interface TransitionInterface
 {
     /**
      * @return StateInterface

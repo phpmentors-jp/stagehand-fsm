@@ -17,7 +17,6 @@ use Stagehand\FSM\State\StateActionInterface;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
-use Stagehand\FSM\Token\Token;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
 use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 use Stagehand\FSM\Transition\TransitionInterface;
@@ -149,8 +148,7 @@ class StateMachine implements StateMachineInterface
         $initialState = $this->getState(self::STATE_INITIAL);
         assert($initialState !== null);
 
-        $initialState->setToken(new Token());
-        $this->currentState = $this->stateCollection->getCurrentState();
+        $this->currentState = $initialState;
         $this->triggerEvent(self::EVENT_START);
     }
 
@@ -340,23 +338,19 @@ class StateMachine implements StateMachineInterface
         }
 
         $transition = $this->getTransition($fromState, $event);
-        $transition->setToken($fromState->getToken());
-        $this->previousState = $fromState;
-        $this->currentState = null;
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, null, $event, $transition));
         }
         $this->runAction($event, $transition);
-        $transition->getToState()->setToken($transition->getToken());
-        $toState = $this->stateCollection->getCurrentState();
-        $this->currentState = $toState;
+        $this->previousState = $transition->getFromState();
+        $this->currentState = $transition->getToState();
         $this->transitionLog[] = $this->createTransitionLogEntry($transition);
 
-        if ($toState instanceof StateActionInterface) {
-            $entryEvent = $toState->getEntryEvent();
+        if ($transition->getToState() instanceof StateActionInterface) {
+            $entryEvent = $transition->getToState()->getEntryEvent();
             if ($entryEvent !== null) {
                 if ($this->eventDispatcher !== null) {
-                    $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $toState, $entryEvent));
+                    $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $transition->getToState(), $entryEvent));
                 }
 
                 $this->runAction($entryEvent);

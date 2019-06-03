@@ -13,15 +13,12 @@
 namespace Stagehand\FSM\State;
 
 use Stagehand\FSM\Event\EventInterface;
-use Stagehand\FSM\Token\TokenAwareTrait;
 
 /**
  * @since Class available since Release 2.0.0
  */
 class InitialState implements TransitionalStateInterface
 {
-    use TokenAwareTrait;
-
     /**
      * @var EventInterface
      *
