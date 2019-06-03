@@ -1,12 +1,12 @@
-version: '2'
+version: '3'
 services:
-    app:
-        container_name: "phpmentors.stagehand-fsm.app"
-        image: "phpmentors/php-app:php70"
-        volumes:
-            - ".:/var/app"
-        environment:
-            TERM: "xterm"
-            TZ: "Asia/Tokyo"
-            LANG: "ja_JP.UTF-8"
-            PHP_INI: "docker/php.ini"
+  app:
+    build: docker
+    network_mode: bridge
+    volumes:
+      - .:/var/app
+    working_dir: /var/app
+    environment:
+      TZ: "Asia/Tokyo"
+      LANG: "ja_JP.UTF-8"
+#      PHP_INI: "docker/php.ini"
