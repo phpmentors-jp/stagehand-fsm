@@ -23,6 +23,31 @@ use Stagehand\FSM\Transition\TransitionInterface;
 interface StateMachineInterface
 {
     /**
+     * @since Constant available since Release 3.0.0
+     */
+    const STATE_INITIAL = '__INITIAL__';
+
+    /**
+     * @since Constant available since Release 3.0.0
+     */
+    const STATE_FINAL = '__FINAL__';
+
+    /**
+     * @since Constant available since Release 3.0.0
+     */
+    const EVENT_START = '__START__';
+
+    /**
+     * @since Constant available since Release 3.0.0
+     */
+    const EVENT_FORK = '__FORK__';
+
+    /**
+     * @since Constant available since Release 3.0.0
+     */
+    const EVENT_JOIN = '__JOIN__';
+
+    /**
      * Sets the payload to the state machine.
      *
      * @param mixed $payload

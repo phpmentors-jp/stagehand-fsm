@@ -110,8 +110,8 @@ class ForkAndJoinTest extends TestCase
 
         $this->assertThat(count($this->actionLogger), $this->equalTo(37));
         $this->assertThat($this->actionLogger[0]['stateMachine'], $this->equalTo('ForkAndJoin'));
-        $this->assertThat($this->actionLogger[0]['state'], $this->equalTo(StateMachine::STATE_INITIAL));
-        $this->assertThat($this->actionLogger[0]['event'], $this->equalTo(StateMachine::EVENT_START));
+        $this->assertThat($this->actionLogger[0]['state'], $this->equalTo(StateMachineInterface::STATE_INITIAL));
+        $this->assertThat($this->actionLogger[0]['event'], $this->equalTo(StateMachineInterface::EVENT_START));
         $this->assertThat($this->actionLogger[1]['stateMachine'], $this->equalTo('ForkAndJoin'));
         $this->assertThat($this->actionLogger[1]['state'], $this->equalTo('FillOrder'));
         $this->assertThat($this->actionLogger[1]['event'], $this->equalTo(StateActionInterface::EVENT_ENTRY));
@@ -135,13 +135,13 @@ class ForkAndJoinTest extends TestCase
         $this->assertThat($this->actionLogger[7]['event'], $this->equalTo(StateActionInterface::EVENT_EXIT));
         $this->assertThat($this->actionLogger[8]['stateMachine'], $this->equalTo('ForkAndJoin'));
         $this->assertThat($this->actionLogger[8]['state'], $this->equalTo('FORK'));
-        $this->assertThat($this->actionLogger[8]['event'], $this->equalTo(StateMachine::EVENT_FORK));
+        $this->assertThat($this->actionLogger[8]['event'], $this->equalTo(StateMachineInterface::EVENT_FORK));
         $this->assertThat($this->actionLogger[9]['stateMachine'], $this->equalTo('ForkAndJoin'));
         $this->assertThat($this->actionLogger[9]['state'], $this->equalTo('ProcessOrder'));
         $this->assertThat($this->actionLogger[9]['event'], $this->equalTo(StateActionInterface::EVENT_ENTRY));
         $this->assertThat($this->actionLogger[10]['stateMachine'], $this->equalTo('AcceptOrder'));
-        $this->assertThat($this->actionLogger[10]['state'], $this->equalTo(StateMachine::STATE_INITIAL));
-        $this->assertThat($this->actionLogger[10]['event'], $this->equalTo(StateMachine::EVENT_START));
+        $this->assertThat($this->actionLogger[10]['state'], $this->equalTo(StateMachineInterface::STATE_INITIAL));
+        $this->assertThat($this->actionLogger[10]['event'], $this->equalTo(StateMachineInterface::EVENT_START));
         $this->assertThat($this->actionLogger[11]['stateMachine'], $this->equalTo('AcceptOrder'));
         $this->assertThat($this->actionLogger[11]['state'], $this->equalTo('AcceptOrder1'));
         $this->assertThat($this->actionLogger[11]['event'], $this->equalTo(StateActionInterface::EVENT_ENTRY));
@@ -149,8 +149,8 @@ class ForkAndJoinTest extends TestCase
         $this->assertThat($this->actionLogger[12]['state'], $this->equalTo('AcceptOrder1'));
         $this->assertThat($this->actionLogger[12]['event'], $this->equalTo(StateActionInterface::EVENT_DO));
         $this->assertThat($this->actionLogger[13]['stateMachine'], $this->equalTo('ShipOrder'));
-        $this->assertThat($this->actionLogger[13]['state'], $this->equalTo(StateMachine::STATE_INITIAL));
-        $this->assertThat($this->actionLogger[13]['event'], $this->equalTo(StateMachine::EVENT_START));
+        $this->assertThat($this->actionLogger[13]['state'], $this->equalTo(StateMachineInterface::STATE_INITIAL));
+        $this->assertThat($this->actionLogger[13]['event'], $this->equalTo(StateMachineInterface::EVENT_START));
         $this->assertThat($this->actionLogger[14]['stateMachine'], $this->equalTo('ShipOrder'));
         $this->assertThat($this->actionLogger[14]['state'], $this->equalTo('ShipOrder1'));
         $this->assertThat($this->actionLogger[14]['event'], $this->equalTo(StateActionInterface::EVENT_ENTRY));
@@ -201,7 +201,7 @@ class ForkAndJoinTest extends TestCase
         $this->assertThat($this->actionLogger[29]['event'], $this->equalTo(StateActionInterface::EVENT_EXIT));
         $this->assertThat($this->actionLogger[30]['stateMachine'], $this->equalTo('ForkAndJoin'));
         $this->assertThat($this->actionLogger[30]['state'], $this->equalTo('ProcessOrder'));
-        $this->assertThat($this->actionLogger[30]['event'], $this->equalTo(StateMachine::EVENT_JOIN));
+        $this->assertThat($this->actionLogger[30]['event'], $this->equalTo(StateMachineInterface::EVENT_JOIN));
         $this->assertThat($this->actionLogger[31]['stateMachine'], $this->equalTo('ForkAndJoin'));
         $this->assertThat($this->actionLogger[31]['state'], $this->equalTo('JOIN'));
         $this->assertThat($this->actionLogger[31]['event'], $this->equalTo(StateActionInterface::EVENT_ENTRY));

@@ -57,13 +57,13 @@ class StateMachineBuilder
      */
     public function setStartState($stateId)
     {
-        $state = $this->stateMachine->getState(StateMachine::STATE_INITIAL);
+        $state = $this->stateMachine->getState(StateMachineInterface::STATE_INITIAL);
         if ($state === null) {
-            $state = new InitialState(StateMachine::STATE_INITIAL);
+            $state = new InitialState(StateMachineInterface::STATE_INITIAL);
             $this->stateMachine->addState($state);
         }
 
-        $this->addTransition(StateMachine::STATE_INITIAL, $stateId, StateMachine::EVENT_START);
+        $this->addTransition(StateMachineInterface::STATE_INITIAL, $stateId, StateMachineInterface::EVENT_START);
     }
 
     /**
@@ -74,11 +74,11 @@ class StateMachineBuilder
      */
     public function setEndState($stateId, $eventId)
     {
-        if ($this->stateMachine->getState(StateMachine::STATE_FINAL) === null) {
-            $this->stateMachine->addState(new FinalState(StateMachine::STATE_FINAL));
+        if ($this->stateMachine->getState(StateMachineInterface::STATE_FINAL) === null) {
+            $this->stateMachine->addState(new FinalState(StateMachineInterface::STATE_FINAL));
         }
 
-        $this->addTransition($stateId, StateMachine::STATE_FINAL, $eventId);
+        $this->addTransition($stateId, StateMachineInterface::STATE_FINAL, $eventId);
     }
 
     /**
@@ -109,7 +109,7 @@ class StateMachineBuilder
         }
 
         if ($state instanceof ForkState) {
-            $eventId = StateMachine::EVENT_FORK;
+            $eventId = StateMachineInterface::EVENT_FORK;
         }
 
         $nextState = $this->stateMachine->getState($nextStateId);
@@ -118,7 +118,7 @@ class StateMachineBuilder
         }
 
         if ($nextState instanceof JoinState) {
-            $eventId = StateMachine::EVENT_JOIN;
+            $eventId = StateMachineInterface::EVENT_JOIN;
         }
 
         $event = $state->getTransitionEvent($eventId);

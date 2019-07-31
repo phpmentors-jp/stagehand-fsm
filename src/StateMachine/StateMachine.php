@@ -34,31 +34,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class StateMachine implements StateMachineInterface
 {
     /**
-     * @since Constant available since Release 3.0.0
-     */
-    const STATE_INITIAL = '__INITIAL__';
-
-    /**
-     * @since Constant available since Release 3.0.0
-     */
-    const STATE_FINAL = '__FINAL__';
-
-    /**
-     * @since Constant available since Release 3.0.0
-     */
-    const EVENT_START = '__START__';
-
-    /**
-     * @since Constant available since Release 3.0.0
-     */
-    const EVENT_FORK = '__FORK__';
-
-    /**
-     * @since Constant available since Release 3.0.0
-     */
-    const EVENT_JOIN = '__JOIN__';
-
-    /**
      * @var StateCollection
      *
      * @since Property available since Release 2.2.0
