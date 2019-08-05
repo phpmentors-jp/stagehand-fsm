@@ -13,11 +13,12 @@
 namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
+use Stagehand\FSM\State\AutomaticTransitionInterface;
+use Stagehand\FSM\State\ParentStateInterface;
 use Stagehand\FSM\State\StateActionInterface;
 use Stagehand\FSM\State\StateCollection;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\State\TransitionalStateInterface;
-use Stagehand\FSM\Token\Token;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
 use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 use Stagehand\FSM\Transition\TransitionInterface;
@@ -32,21 +33,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class StateMachine implements StateMachineInterface
 {
-    /**
-     * @since Constant available since Release 3.0.0
-     */
-    const STATE_INITIAL = '__INITIAL__';
-
-    /**
-     * @since Constant available since Release 3.0.0
-     */
-    const STATE_FINAL = '__FINAL__';
-
-    /**
-     * @since Constant available since Release 3.0.0
-     */
-    const EVENT_START = '__START__';
-
     /**
      * @var StateCollection
      *
@@ -119,6 +105,13 @@ class StateMachine implements StateMachineInterface
     private $previousState;
 
     /**
+     * @var StateMachine
+     *
+     * @since Property available since Release 3.0.0
+     */
+    private $parent;
+
+    /**
      * @param string $stateMachineId
      */
     public function __construct($stateMachineId = null)
@@ -140,7 +133,7 @@ class StateMachine implements StateMachineInterface
     /**
      * {@inheritdoc}
      */
-    public function start()
+    public function start(StateMachineInterface $parent = null)
     {
         if ($this->currentState !== null) {
             throw new StateMachineAlreadyStartedException('The state machine is already started.');
@@ -149,8 +142,10 @@ class StateMachine implements StateMachineInterface
         $initialState = $this->getState(self::STATE_INITIAL);
         assert($initialState !== null);
 
-        $initialState->setToken(new Token());
-        $this->currentState = $this->stateCollection->getCurrentState();
+        if ($parent !== null) {
+            $this->parent = $parent;
+        }
+        $this->currentState = $initialState;
         $this->triggerEvent(self::EVENT_START);
     }
 
@@ -175,6 +170,10 @@ class StateMachine implements StateMachineInterface
      */
     public function getPayload()
     {
+        if ($this->parent !== null) {
+            return $this->parent->getPayload();
+        }
+
         return $this->payload;
     }
 
@@ -194,9 +193,22 @@ class StateMachine implements StateMachineInterface
             if ($this->eventDispatcher !== null) {
                 $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->currentState, $event));
             }
-            if ($this->evaluateGuard($event)) {
+            if ($this->evaluateGuard($this, $event)) {
                 $fromState = $this->currentState; /* @var $fromState TransitionalStateInterface */
-                $this->transition($fromState, $event);
+                $toState = $this->transition($fromState, $event);
+
+                if ($toState instanceof ParentStateInterface) {
+                    $this->fork($toState);
+                }
+
+                if ($toState->getStateId() == self::STATE_FINAL) {
+                    if ($this->parent != null) {
+                        $parentCurrentState = $this->parent->getCurrentState();
+                        if ($parentCurrentState instanceof ParentStateInterface) {
+                            $this->parent->join($parentCurrentState);
+                        }
+                    }
+                }
             }
 
             if ($this->currentState instanceof StateActionInterface) {
@@ -206,8 +218,12 @@ class StateMachine implements StateMachineInterface
                         $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_DO, new StateMachineEvent($this, $this->currentState, $doEvent));
                     }
 
-                    $this->runAction($doEvent);
+                    $this->runAction($this, $doEvent);
                 }
+            }
+
+            if ($this->currentState instanceof AutomaticTransitionInterface) {
+                $this->queueEvent($this->currentState->getAutomaticTransitionEvent()->getEventId());
             }
         } while (count($this->eventQueue) > 0);
     }
@@ -259,6 +275,10 @@ class StateMachine implements StateMachineInterface
      */
     public function setPayload($payload)
     {
+        if ($this->parent !== null) {
+            return $this->parent->setPayload($payload);
+        }
+
         $this->payload = $payload;
     }
 
@@ -289,7 +309,7 @@ class StateMachine implements StateMachineInterface
             return false;
         }
 
-        return $this->currentState != self::STATE_FINAL;
+        return $this->currentState->getStateId() != self::STATE_FINAL;
     }
 
     /**
@@ -301,7 +321,7 @@ class StateMachine implements StateMachineInterface
             return false;
         }
 
-        return $this->currentState == self::STATE_FINAL;
+        return $this->currentState->getStateId() == self::STATE_FINAL;
     }
 
     /**
@@ -309,6 +329,10 @@ class StateMachine implements StateMachineInterface
      */
     public function addActionRunner(ActionRunnerInterface $actionRunner)
     {
+        if ($this->parent !== null) {
+            return $this->parent->addActionRunner($actionRunner);
+        }
+
         $this->actionRunners[] = $actionRunner;
     }
 
@@ -317,6 +341,10 @@ class StateMachine implements StateMachineInterface
      */
     public function addGuardEvaluator(GuardEvaluatorInterface $guardEvaluator)
     {
+        if ($this->parent !== null) {
+            return $this->parent->addGuardEvaluator($guardEvaluator);
+        }
+
         $this->guardEvaluators[] = $guardEvaluator;
     }
 
@@ -325,6 +353,8 @@ class StateMachine implements StateMachineInterface
      *
      * @param TransitionalStateInterface $fromState
      * @param EventInterface             $event
+     *
+     * @return StateInterface
      */
     private function transition(TransitionalStateInterface $fromState, EventInterface $event)
     {
@@ -335,21 +365,17 @@ class StateMachine implements StateMachineInterface
                     $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $fromState, $exitEvent));
                 }
 
-                $this->runAction($exitEvent);
+                $this->runAction($this, $exitEvent);
             }
         }
 
         $transition = $this->getTransition($fromState, $event);
-        $transition->setToken($fromState->getToken());
-        $this->previousState = $fromState;
-        $this->currentState = null;
         if ($this->eventDispatcher !== null) {
             $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, null, $event, $transition));
         }
-        $this->runAction($event, $transition);
-        $transition->getToState()->setToken($transition->getToken());
-        $toState = $this->stateCollection->getCurrentState();
-        $this->currentState = $toState;
+        $this->runAction($this, $event, $transition);
+        $this->previousState = $fromState;
+        $this->currentState = $toState = $transition->getToState();
         $this->transitionLog[] = $this->createTransitionLogEntry($transition);
 
         if ($toState instanceof StateActionInterface) {
@@ -359,24 +385,31 @@ class StateMachine implements StateMachineInterface
                     $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $toState, $entryEvent));
                 }
 
-                $this->runAction($entryEvent);
+                $this->runAction($this, $entryEvent);
             }
         }
+
+        return $toState;
     }
 
     /**
      * Evaluates the guard for the given event.
      *
-     * @param EventInterface $event
+     * @param StateMachineInterface $stateMachine
+     * @param EventInterface        $event
      *
      * @return bool
      *
      * @since Method available since Release 2.0.0
      */
-    private function evaluateGuard(EventInterface $event)
+    private function evaluateGuard(StateMachineInterface $stateMachine, EventInterface $event)
     {
+        if ($this->parent !== null) {
+            return $this->parent->evaluateGuard($stateMachine, $event);
+        }
+
         foreach ((array) $this->guardEvaluators as $guardEvaluator) {
-            $result = call_user_func([$guardEvaluator, 'evaluate'], $event, $this->getPayload(), $this);
+            $result = call_user_func([$guardEvaluator, 'evaluate'], $event, $this->getPayload(), $stateMachine);
             if (!$result) {
                 return false;
             }
@@ -388,15 +421,22 @@ class StateMachine implements StateMachineInterface
     /**
      * Runs the action for the given event.
      *
+     * @param StateMachineInterface    $stateMachine
      * @param EventInterface           $event
      * @param TransitionInterface|null $transition
      *
+     * @return bool
+     *
      * @since Method available since Release 2.0.0
      */
-    private function runAction(EventInterface $event, TransitionInterface $transition = null)
+    private function runAction(StateMachineInterface $stateMachine, EventInterface $event, TransitionInterface $transition = null)
     {
+        if ($this->parent !== null) {
+            return $this->parent->runAction($stateMachine, $event, $transition);
+        }
+
         foreach ((array) $this->actionRunners as $actionRunner) {
-            call_user_func([$actionRunner, 'run'], $event, $this->getPayload(), $this, $transition);
+            call_user_func([$actionRunner, 'run'], $event, $this->getPayload(), $stateMachine, $transition);
         }
     }
 
@@ -431,5 +471,29 @@ class StateMachine implements StateMachineInterface
     private function getTransition(TransitionalStateInterface $state, EventInterface $event): TransitionInterface
     {
         return $this->transitionMap[$state->getStateId()][$event->getEventId()];
+    }
+
+    /**
+     * @param ParentStateInterface $parent
+     */
+    private function fork(ParentStateInterface $parent)
+    {
+        foreach ($parent->getChildren() as $child) {
+            $child->start($this);
+        }
+    }
+
+    /**
+     * @param ParentStateInterface $parent
+     */
+    private function join(ParentStateInterface $parent)
+    {
+        foreach ($parent->getChildren() as $child) {
+            if (!$child->isEnded()) {
+                return;
+            }
+        }
+
+        $this->triggerEvent(self::EVENT_JOIN);
     }
 }

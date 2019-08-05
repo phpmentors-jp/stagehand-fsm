@@ -19,6 +19,10 @@ use Stagehand\FSM\Event\EventInterface;
  */
 interface StateActionInterface
 {
+    const EVENT_ENTRY = '__ENTRY__';
+    const EVENT_EXIT = '__EXIT__';
+    const EVENT_DO = '__DO__';
+
     /**
      * @return EventInterface
      */

@@ -15,34 +15,27 @@ namespace Stagehand\FSM\State;
 use Stagehand\FSM\Event\EventInterface;
 
 /**
- * @since Class available since Release 2.0.0
+ * @since Trait available since Release 3.0.0
  */
-class InitialState implements TransitionalStateInterface
+trait AutomaticTransitionTrait
 {
     /**
      * @var EventInterface
-     *
-     * @since Property available since Release 3.0.0
      */
     private $transitionEvent;
 
     /**
-     * @var string
-     *
-     * @since Property available since Release 3.0.0
+     * @param EventInterface $event
      */
-    private $stateId;
-
-    /**
-     * @param string $stateId
-     */
-    public function __construct(string $stateId)
+    public function addTransitionEvent(EventInterface $event)
     {
-        $this->stateId = $stateId;
+        $this->transitionEvent = $event;
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $eventId
+     *
+     * @return EventInterface|null
      */
     public function getTransitionEvent($eventId)
     {
@@ -54,18 +47,10 @@ class InitialState implements TransitionalStateInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return EventInterface|null
      */
-    public function getStateId()
+    public function getAutomaticTransitionEvent()
     {
-        return $this->stateId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addTransitionEvent(EventInterface $event)
-    {
-        $this->transitionEvent = $event;
+        return $this->transitionEvent;
     }
 }

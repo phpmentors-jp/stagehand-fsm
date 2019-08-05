@@ -13,25 +13,25 @@
 namespace Stagehand\FSM\State;
 
 /**
- * @since Class available since Release 2.0.0
+ * @since Class available since Release 3.0.0
  */
-class FinalState implements StateInterface
+class JoinState implements TransitionalStateInterface, AutomaticTransitionInterface, StateActionInterface
 {
+    use AutomaticTransitionTrait;
+    use StateActionTrait;
+
     /**
      * @var string
-     *
-     * @since Property available since Release 3.0.0
      */
     private $stateId;
 
     /**
      * @param string $stateId
-     *
-     * @since Method available since Release 2.1.0
      */
     public function __construct(string $stateId)
     {
         $this->stateId = $stateId;
+        $this->initializeStateActionEvents();
     }
 
     /**

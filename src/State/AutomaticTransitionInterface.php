@@ -10,25 +10,15 @@
  * distribution, and is available at http://opensource.org/licenses/BSD-2-Clause
  */
 
-namespace Stagehand\FSM\Token;
+namespace Stagehand\FSM\State;
 
 /**
- * @since Class available since Release 3.0.0
+ * @since Interface available since Release 3.0.0
  */
-interface TokenAwareInterface
+interface AutomaticTransitionInterface
 {
     /**
-     * @param Token $token
+     * @return EventInterface|null
      */
-    public function setToken(Token $token);
-
-    /**
-     * @return Token|null
-     */
-    public function getToken();
-
-    /**
-     * @return bool
-     */
-    public function hasToken();
+    public function getAutomaticTransitionEvent();
 }

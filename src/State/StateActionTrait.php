@@ -12,6 +12,7 @@
 
 namespace Stagehand\FSM\State;
 
+use Stagehand\FSM\Event\Event;
 use Stagehand\FSM\Event\EventInterface;
 
 /**
@@ -56,5 +57,12 @@ trait StateActionTrait
     public function getDoEvent(): EventInterface
     {
         return $this->doEvent;
+    }
+
+    protected function initializeStateActionEvents()
+    {
+        $this->entryEvent = new Event(StateActionInterface::EVENT_ENTRY);
+        $this->exitEvent = new Event(StateActionInterface::EVENT_EXIT);
+        $this->doEvent = new Event(StateActionInterface::EVENT_DO);
     }
 }

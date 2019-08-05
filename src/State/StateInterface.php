@@ -12,12 +12,10 @@
 
 namespace Stagehand\FSM\State;
 
-use Stagehand\FSM\Token\TokenAwareInterface;
-
 /**
  * @since Class available since Release 2.0.0
  */
-interface StateInterface extends TokenAwareInterface
+interface StateInterface
 {
     /**
      * Gets the ID of the state.
@@ -25,9 +23,4 @@ interface StateInterface extends TokenAwareInterface
      * @return string
      */
     public function getStateId();
-
-    /**
-     * @return bool
-     */
-    public function hasToken(): bool;
 }

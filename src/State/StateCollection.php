@@ -64,20 +64,4 @@ class StateCollection
     {
         return $this->states;
     }
-
-    /**
-     * @return StateInterface|null
-     *
-     * @since Method available since Release 3.0.0
-     */
-    public function getCurrentState()
-    {
-        foreach (array_values($this->states) as $state) { /* @var $state StateInterface */
-            if ($state->hasToken()) {
-                return $state;
-            }
-        }
-
-        return null;
-    }
 }

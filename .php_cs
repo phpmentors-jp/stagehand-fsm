@@ -11,6 +11,7 @@ return PhpCsFixer\Config::create()
         'blank_line_after_opening_tag' => false,
         'ordered_imports' => true,
         'phpdoc_no_empty_return' => false,
+        'yoda_style' => false,
     ])
     ->setFinder($finder)
     ;
