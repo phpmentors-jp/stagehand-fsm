@@ -14,17 +14,31 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
+use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 use Stagehand\FSM\Transition\TransitionInterface;
 
 /**
  * @since Class available since Release 3.0.0
  */
-class ActionLogger implements ActionRunnerInterface, \ArrayAccess, \Countable
+class ActionLogger implements ActionRunnerInterface, GuardEvaluatorInterface, \ArrayAccess, \Countable
 {
+    /**
+     * @var GuardEvaluatorInterface
+     */
+    private $guardEvaluator;
+
     /**
      * @var array
      */
     private $runActions = [];
+
+    /**
+     * @param GuardEvaluatorInterface $guardEvaluator
+     */
+    public function setGuardEvaluator(GuardEvaluatorInterface $guardEvaluator)
+    {
+        $this->guardEvaluator = $guardEvaluator;
+    }
 
     /**
      * {@inheritdoc}
@@ -35,7 +49,27 @@ class ActionLogger implements ActionRunnerInterface, \ArrayAccess, \Countable
             'stateMachine' => $stateMachine->getStateMachineId(),
             'state' => $transition === null ? $stateMachine->getCurrentState()->getStateId() : $transition->getFromState()->getStateId(),
             'event' => $event->getEventId(),
+            'calledBy' => 'runAction',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return bool
+     */
+    public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine)
+    {
+        $result = $this->guardEvaluator->evaluate($event, $payload, $stateMachine);
+        $this->runActions[] = [
+            'stateMachine' => $stateMachine->getStateMachineId(),
+            'state' => $stateMachine->getCurrentState()->getStateId(),
+            'event' => $event->getEventId(),
+            'calledBy' => 'evaluateGuard',
+            'result' => $result,
+        ];
+
+        return $result;
     }
 
     /**
