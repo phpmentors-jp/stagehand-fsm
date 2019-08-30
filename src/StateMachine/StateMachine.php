@@ -190,22 +190,25 @@ class StateMachine implements StateMachineInterface
             }
 
             $event = $this->currentState->getTransitionEvent(array_shift($this->eventQueue));
-            if ($this->eventDispatcher !== null) {
-                $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->currentState, $event));
-            }
-            if ($this->evaluateGuard($this, $event)) {
-                $fromState = $this->currentState; /* @var $fromState TransitionalStateInterface */
-                $toState = $this->transition($fromState, $event);
-
-                if ($toState instanceof ParentStateInterface) {
-                    $this->fork($toState);
+            if ($event !== null) {
+                if ($this->eventDispatcher !== null) {
+                    $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->currentState, $event));
                 }
+                if ($this->evaluateGuard($this, $event)) {
+                    $fromState = $this->currentState;
+                    /* @var $fromState TransitionalStateInterface */
+                    $toState = $this->transition($fromState, $event);
 
-                if ($toState->getStateId() == self::STATE_FINAL) {
-                    if ($this->parent != null) {
-                        $parentCurrentState = $this->parent->getCurrentState();
-                        if ($parentCurrentState instanceof ParentStateInterface) {
-                            $this->parent->join($parentCurrentState);
+                    if ($toState instanceof ParentStateInterface) {
+                        $this->fork($toState);
+                    }
+
+                    if ($toState->getStateId() == self::STATE_FINAL) {
+                        if ($this->parent != null) {
+                            $parentCurrentState = $this->parent->getCurrentState();
+                            if ($parentCurrentState instanceof ParentStateInterface) {
+                                $this->parent->join($parentCurrentState);
+                            }
                         }
                     }
                 }
