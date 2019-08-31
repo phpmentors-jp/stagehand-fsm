@@ -141,7 +141,7 @@ class StateMachineTest extends TestCase
             /**
              * {@inheritdoc}
              */
-            public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine)
+            public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine, TransitionInterface $transition)
             {
                 if ($stateMachine->getCurrentState()->getStateId() == StateMachineInterface::STATE_INITIAL && $event->getEventId() == StateMachineInterface::EVENT_START) {
                     return true;
@@ -182,7 +182,7 @@ class StateMachineTest extends TestCase
             /**
              * {@inheritdoc}
              */
-            public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine)
+            public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine, TransitionInterface $transition)
             {
                 if ($stateMachine->getCurrentState()->getStateId() == 'Input' && $event->getEventId() == 'next') {
                     return false;
@@ -250,7 +250,7 @@ class StateMachineTest extends TestCase
             /**
              * {@inheritdoc}
              */
-            public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine)
+            public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine, TransitionInterface $transition)
             {
                 if ($stateMachine->getCurrentState()->getStateId() == 'Input' && $event->getEventId() == 'next') {
                     $payload->foo = 'baz';

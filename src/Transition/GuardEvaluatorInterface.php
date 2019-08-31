@@ -24,8 +24,9 @@ interface GuardEvaluatorInterface
      * @param EventInterface        $event
      * @param mixed                 $payload
      * @param StateMachineInterface $stateMachine
+     * @param TransitionInterface   $transition
      *
      * @return bool
      */
-    public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine);
+    public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine, TransitionInterface $transition);
 }

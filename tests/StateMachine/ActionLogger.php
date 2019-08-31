@@ -58,9 +58,9 @@ class ActionLogger implements ActionRunnerInterface, GuardEvaluatorInterface, \A
      *
      * @return bool
      */
-    public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine)
+    public function evaluate(EventInterface $event, $payload, StateMachineInterface $stateMachine, TransitionInterface $transition)
     {
-        $result = $this->guardEvaluator->evaluate($event, $payload, $stateMachine);
+        $result = $this->guardEvaluator->evaluate($event, $payload, $stateMachine, $transition);
         $this->runActions[] = [
             'stateMachine' => $stateMachine->getStateMachineId(),
             'state' => $stateMachine->getCurrentState()->getStateId(),
