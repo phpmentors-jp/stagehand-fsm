@@ -29,6 +29,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @see  http://www.sparxsystems.com/resources/uml2_tutorial/uml2_statediagram.html
  * @see  http://pear.php.net/package/FSM
  * @see  http://www.generation5.org/content/2003/FSM_Tutorial.asp
+ * @see  https://sparxsystems.com/enterprise_architect_user_guide/14.0/model_simulation/example__fork_and_join.html
  * @since Class available since Release 0.1.0
  */
 class StateMachine implements StateMachineInterface
@@ -200,18 +201,6 @@ class StateMachine implements StateMachineInterface
                     $transition = $this->getTransition($fromState, $event);
                     if ($this->evaluateGuard($this, $event, $transition)) {
                         $toState = $this->transition($transition);
-                        if ($toState instanceof ParentStateInterface) {
-                            $this->fork($toState);
-                        }
-
-                        if ($toState->getStateId() == self::STATE_FINAL) {
-                            if ($this->parent != null) {
-                                $parentCurrentState = $this->parent->getCurrentState();
-                                if ($parentCurrentState instanceof ParentStateInterface) {
-                                    $this->parent->join($parentCurrentState);
-                                }
-                            }
-                        }
                     }
                 }
             }
@@ -224,6 +213,21 @@ class StateMachine implements StateMachineInterface
                     }
 
                     $this->runAction($this, $doEvent);
+                }
+            }
+
+            if (isset($toState)) {
+                if ($toState instanceof ParentStateInterface) {
+                    $this->fork($toState);
+                }
+
+                if ($toState->getStateId() == self::STATE_FINAL) {
+                    if ($this->parent != null) {
+                        $parentCurrentState = $this->parent->getCurrentState();
+                        if ($parentCurrentState instanceof ParentStateInterface) {
+                            $this->parent->join($parentCurrentState);
+                        }
+                    }
                 }
             }
 
