@@ -221,4 +221,23 @@ class ForkAndJoinTest extends TestCase
         $this->assertThat($this->actionLogger[36]['state'], $this->equalTo('CloseOrder'));
         $this->assertThat($this->actionLogger[36]['event'], $this->equalTo(StateActionInterface::EVENT_DO));
     }
+
+    /**
+     * @test
+     */
+    public function forkMustHaveExactlyOneIncomingTransition()
+    {
+        $this->builder->addState('AnotherStateToFORK');
+
+        try {
+            $this->builder->addTransition('AnotherStateToFORK', 'FORK', 'next');
+        } catch (ConstraintException $e) {
+            $this->assertTrue(true);
+
+            return;
+        } catch (\Exception $e) {
+        }
+
+        $this->fail('An expected exception has not been raised.');
+    }
 }
