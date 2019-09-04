@@ -14,7 +14,6 @@ namespace Stagehand\FSM\StateMachine;
 
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\AutomaticTransitionInterface;
-use Stagehand\FSM\State\ForkState;
 use Stagehand\FSM\State\ParentStateInterface;
 use Stagehand\FSM\State\StateActionInterface;
 use Stagehand\FSM\State\StateCollection;
@@ -295,36 +294,10 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
-     * @param TransitionInterface $subject
-     *
-     * @throws ConstraintException
-     *
-     * @since Method available since Release 3.0.0
-     */
-    private function assertForkMustHaveExactlyOneIncomingTransition(TransitionInterface $subject)
-    {
-        foreach ($this->transitionMap as $fromStateId => $transitionsByEvents) {
-            foreach ($transitionsByEvents as $eventId => $transition) { /* @var $transition TransitionInterface */
-                if ($transition->getToState() === $subject->getToState()) {
-                    throw new ConstraintException(sprintf(
-                        'Failed to add a transition "[%s]:%s -> [%s]" because another transition "[%s]:%s -> [%s]" already exists. A fork state must have exactly one incoming transition.',
-                        $subject->getFromState()->getStateId(), $subject->getEvent()->getEventId(), $subject->getToState()->getStateId(),
-                        $transition->getFromState()->getStateId(), $transition->getEvent()->getEventId(), $transition->getToState()->getStateId()
-                    ));
-                }
-            }
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function addTransition(TransitionInterface $transition)
     {
-        if ($transition->getToState() instanceof ForkState) {
-            $this->assertForkMustHaveExactlyOneIncomingTransition($transition);
-        }
-
         $this->transitionMap[$transition->getFromState()->getStateId()][$transition->getEvent()->getEventId()] = $transition;
     }
 
