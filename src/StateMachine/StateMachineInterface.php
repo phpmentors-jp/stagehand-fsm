@@ -165,4 +165,11 @@ interface StateMachineInterface
      * @since Method available since Release 3.0.0
      */
     public function addGuardEvaluator(GuardEvaluatorInterface $guardEvaluator);
+
+    /**
+     * @return array
+     *
+     * @since Method available since Release 3.0.0
+     */
+    public function getTransitionMap();
 }

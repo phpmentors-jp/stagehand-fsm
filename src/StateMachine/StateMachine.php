@@ -387,6 +387,14 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getTransitionMap()
+    {
+        return $this->transitionMap;
+    }
+
+    /**
      * Transitions to the next state.
      *
      * @param TransitionInterface $transition
