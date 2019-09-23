@@ -18,6 +18,7 @@ use Stagehand\FSM\State\ForkState;
 use Stagehand\FSM\State\InitialState;
 use Stagehand\FSM\State\JoinState;
 use Stagehand\FSM\State\State;
+use Stagehand\FSM\State\TransitionalStateInterface;
 use Stagehand\FSM\Transition\Transition;
 
 /**
@@ -26,7 +27,7 @@ use Stagehand\FSM\Transition\Transition;
 class StateMachineBuilder
 {
     /**
-     * @var StateMachine
+     * @var StateMachineInterface
      */
     private $stateMachine;
 
@@ -119,6 +120,8 @@ class StateMachineBuilder
 
         if ($nextState instanceof JoinState) {
             $eventId = StateMachineInterface::EVENT_JOIN;
+        } elseif ($nextState instanceof ForkState) {
+            $this->assertForkMustHaveExactlyOneIncomingTransition($nextState, $state);
         }
 
         $event = $state->getTransitionEvent($eventId);
@@ -163,5 +166,26 @@ class StateMachineBuilder
         call_user_func($callback, $builder);
 
         $parentState->addChild($builder->getStateMachine());
+    }
+
+    /**
+     * @param ForkState                  $toState
+     * @param TransitionalStateInterface $fromState
+     *
+     * @since Method available since Release 3.0.0
+     */
+    private function assertForkMustHaveExactlyOneIncomingTransition(ForkState $toState, TransitionalStateInterface $fromState)
+    {
+        foreach ($this->stateMachine->getTransitionMap() as $fromStateId => $transitionsByEvents) {
+            foreach ($transitionsByEvents as $eventId => $transition) { /* @var $transition TransitionInterface */
+                if ($transition->getToState() === $toState) {
+                    throw new ConstraintException(sprintf(
+                        'Failed to add a transition "[%s] -> [%s]" because another transition "[%s]:%s -> [%s]" already exists. A fork state must have exactly one incoming transition.',
+                        $fromState->getStateId(), $toState->getStateId(),
+                        $transition->getFromState()->getStateId(), $transition->getEvent()->getEventId(), $transition->getToState()->getStateId()
+                    ));
+                }
+            }
+        }
     }
 }

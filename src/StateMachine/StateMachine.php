@@ -29,6 +29,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @see  http://www.sparxsystems.com/resources/uml2_tutorial/uml2_statediagram.html
  * @see  http://pear.php.net/package/FSM
  * @see  http://www.generation5.org/content/2003/FSM_Tutorial.asp
+ * @see  https://sparxsystems.com/enterprise_architect_user_guide/14.0/model_simulation/example__fork_and_join.html
+ * @see  https://online.visual-paradigm.com/diagrams/tutorials/state-machine-diagram-tutorial/
+ * @see  https://www.uml-diagrams.org/state-machine-diagrams.html
  * @since Class available since Release 0.1.0
  */
 class StateMachine implements StateMachineInterface
@@ -190,23 +193,16 @@ class StateMachine implements StateMachineInterface
             }
 
             $event = $this->currentState->getTransitionEvent(array_shift($this->eventQueue));
-            if ($this->eventDispatcher !== null) {
-                $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->currentState, $event));
-            }
-            if ($this->evaluateGuard($this, $event)) {
-                $fromState = $this->currentState; /* @var $fromState TransitionalStateInterface */
-                $toState = $this->transition($fromState, $event);
-
-                if ($toState instanceof ParentStateInterface) {
-                    $this->fork($toState);
+            if ($event !== null) {
+                if ($this->eventDispatcher !== null) {
+                    $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->currentState, $event));
                 }
 
-                if ($toState->getStateId() == self::STATE_FINAL) {
-                    if ($this->parent != null) {
-                        $parentCurrentState = $this->parent->getCurrentState();
-                        if ($parentCurrentState instanceof ParentStateInterface) {
-                            $this->parent->join($parentCurrentState);
-                        }
+                $fromState = $this->currentState;
+                if ($fromState instanceof TransitionalStateInterface) {
+                    $transition = $this->getTransition($fromState, $event);
+                    if ($this->evaluateGuard($this, $event, $transition)) {
+                        $toState = $this->transition($transition);
                     }
                 }
             }
@@ -219,6 +215,21 @@ class StateMachine implements StateMachineInterface
                     }
 
                     $this->runAction($this, $doEvent);
+                }
+            }
+
+            if (isset($toState)) {
+                if ($toState instanceof ParentStateInterface) {
+                    $this->fork($toState);
+                }
+
+                if ($toState->getStateId() == self::STATE_FINAL) {
+                    if ($this->parent != null) {
+                        $parentCurrentState = $this->parent->getCurrentState();
+                        if ($parentCurrentState instanceof ParentStateInterface) {
+                            $this->parent->join($parentCurrentState);
+                        }
+                    }
                 }
             }
 
@@ -349,32 +360,38 @@ class StateMachine implements StateMachineInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getTransitionMap()
+    {
+        return $this->transitionMap;
+    }
+
+    /**
      * Transitions to the next state.
      *
-     * @param TransitionalStateInterface $fromState
-     * @param EventInterface             $event
+     * @param TransitionInterface $transition
      *
      * @return StateInterface
      */
-    private function transition(TransitionalStateInterface $fromState, EventInterface $event)
+    private function transition(TransitionInterface $transition)
     {
-        if ($fromState instanceof StateActionInterface) {
-            $exitEvent = $fromState->getExitEvent();
+        if ($transition->getFromState() instanceof StateActionInterface) {
+            $exitEvent = $transition->getFromState()->getExitEvent();
             if ($exitEvent !== null) {
                 if ($this->eventDispatcher !== null) {
-                    $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $fromState, $exitEvent));
+                    $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $transition->getFromState(), $exitEvent));
                 }
 
                 $this->runAction($this, $exitEvent);
             }
         }
 
-        $transition = $this->getTransition($fromState, $event);
         if ($this->eventDispatcher !== null) {
-            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, null, $event, $transition));
+            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, null, $transition->getEvent(), $transition));
         }
-        $this->runAction($this, $event, $transition);
-        $this->previousState = $fromState;
+        $this->runAction($this, $transition->getEvent(), $transition);
+        $this->previousState = $transition->getFromState();
         $this->currentState = $toState = $transition->getToState();
         $this->transitionLog[] = $this->createTransitionLogEntry($transition);
 
@@ -397,19 +414,20 @@ class StateMachine implements StateMachineInterface
      *
      * @param StateMachineInterface $stateMachine
      * @param EventInterface        $event
+     * @param TransitionInterface   $transition
      *
      * @return bool
      *
      * @since Method available since Release 2.0.0
      */
-    private function evaluateGuard(StateMachineInterface $stateMachine, EventInterface $event)
+    private function evaluateGuard(StateMachineInterface $stateMachine, EventInterface $event, TransitionInterface $transition)
     {
         if ($this->parent !== null) {
-            return $this->parent->evaluateGuard($stateMachine, $event);
+            return $this->parent->evaluateGuard($stateMachine, $event, $transition);
         }
 
         foreach ((array) $this->guardEvaluators as $guardEvaluator) {
-            $result = call_user_func([$guardEvaluator, 'evaluate'], $event, $this->getPayload(), $stateMachine);
+            $result = call_user_func([$guardEvaluator, 'evaluate'], $event, $this->getPayload(), $stateMachine, $transition);
             if (!$result) {
                 return false;
             }
