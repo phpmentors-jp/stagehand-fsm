@@ -22,7 +22,7 @@ use Stagehand\FSM\State\TransitionalStateInterface;
 use Stagehand\FSM\Transition\ActionRunnerInterface;
 use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 use Stagehand\FSM\Transition\TransitionInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @see  http://en.wikipedia.org/wiki/Finite_state_machine
@@ -195,7 +195,7 @@ class StateMachine implements StateMachineInterface
             $event = $this->currentState->getTransitionEvent(array_shift($this->eventQueue));
             if ($event !== null) {
                 if ($this->eventDispatcher !== null) {
-                    $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_PROCESS, new StateMachineEvent($this, $this->currentState, $event));
+                    $this->eventDispatcher->dispatch(new StateMachineEvent($this, $this->currentState, $event), StateMachineEvents::EVENT_PROCESS);
                 }
 
                 $fromState = $this->currentState;
@@ -211,7 +211,7 @@ class StateMachine implements StateMachineInterface
                 $doEvent = $this->currentState->getDoEvent();
                 if ($doEvent !== null) {
                     if ($this->eventDispatcher !== null) {
-                        $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_DO, new StateMachineEvent($this, $this->currentState, $doEvent));
+                        $this->eventDispatcher->dispatch(new StateMachineEvent($this, $this->currentState, $doEvent), StateMachineEvents::EVENT_DO);
                     }
 
                     $this->runAction($this, $doEvent);
@@ -380,7 +380,7 @@ class StateMachine implements StateMachineInterface
             $exitEvent = $transition->getFromState()->getExitEvent();
             if ($exitEvent !== null) {
                 if ($this->eventDispatcher !== null) {
-                    $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_EXIT, new StateMachineEvent($this, $transition->getFromState(), $exitEvent));
+                    $this->eventDispatcher->dispatch(new StateMachineEvent($this, $transition->getFromState(), $exitEvent), StateMachineEvents::EVENT_EXIT);
                 }
 
                 $this->runAction($this, $exitEvent);
@@ -388,7 +388,7 @@ class StateMachine implements StateMachineInterface
         }
 
         if ($this->eventDispatcher !== null) {
-            $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_TRANSITION, new StateMachineEvent($this, null, $transition->getEvent(), $transition));
+            $this->eventDispatcher->dispatch(new StateMachineEvent($this, null, $transition->getEvent(), $transition), StateMachineEvents::EVENT_TRANSITION);
         }
         $this->runAction($this, $transition->getEvent(), $transition);
         $this->previousState = $transition->getFromState();
@@ -399,7 +399,7 @@ class StateMachine implements StateMachineInterface
             $entryEvent = $toState->getEntryEvent();
             if ($entryEvent !== null) {
                 if ($this->eventDispatcher !== null) {
-                    $this->eventDispatcher->dispatch(StateMachineEvents::EVENT_ENTRY, new StateMachineEvent($this, $toState, $entryEvent));
+                    $this->eventDispatcher->dispatch(new StateMachineEvent($this, $toState, $entryEvent), StateMachineEvents::EVENT_ENTRY);
                 }
 
                 $this->runAction($this, $entryEvent);
