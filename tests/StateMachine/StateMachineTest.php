@@ -19,7 +19,7 @@ use Stagehand\FSM\Transition\ActionRunnerInterface;
 use Stagehand\FSM\Transition\GuardEvaluatorInterface;
 use Stagehand\FSM\Transition\TransitionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @since Class available since Release 0.1.0

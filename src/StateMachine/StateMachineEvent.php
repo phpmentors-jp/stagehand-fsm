@@ -15,7 +15,7 @@ namespace Stagehand\FSM\StateMachine;
 use Stagehand\FSM\Event\EventInterface;
 use Stagehand\FSM\State\StateInterface;
 use Stagehand\FSM\Transition\TransitionInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @since Class available since Release 2.1.0
