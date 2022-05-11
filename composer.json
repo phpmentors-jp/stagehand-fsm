@@ -1,5 +1,5 @@
 {
-    "name": "piece/stagehand-fsm",
+    "name": "phpmentors/stagehand-fsm",
     "type": "library",
     "description": "A finite state machine",
     "keywords": ["fsm", "state machine"],
@@ -12,9 +12,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=7.0",
         "phpmentors/domain-kata": "~1.4",
-        "symfony/event-dispatcher": "~2.8|~3.0|~4.0"
+        "symfony/event-dispatcher": "~4.0|~5.0"
     },
     "require-dev": {
         "phake/phake": "~2.3",
